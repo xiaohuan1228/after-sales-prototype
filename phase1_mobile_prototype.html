@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>售后端重构 Phase1 - 手机端原型</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, "PingFang SC", sans-serif; background: #e5e7eb; padding: 20px; color: #333; }
+  .stage { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+  .phone { width: 375px; height: 760px; background: #f5f7fa; border-radius: 32px; border: 8px solid #1a1a1a; position: relative; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.2); }
+  .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 24px; background: #1a1a1a; border-radius: 0 0 16px 16px; z-index: 10; }
+  .status-bar { height: 36px; padding: 12px 20px 0; display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; }
+  .role-tag { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); background: #1890ff; color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+  .app-header { background: #fff; padding: 8px 16px 12px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+  .app-title { font-size: 17px; font-weight: 600; }
+  .role-switch { display: flex; gap: 4px; }
+  .role-btn { font-size: 11px; padding: 3px 8px; background: #f0f2f5; border-radius: 10px; cursor: pointer; border: none; }
+  .role-btn.active { background: #1890ff; color: #fff; }
+  .scroll-area { height: calc(100% - 130px); overflow-y: auto; padding-bottom: 20px; }
+  .tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 56px; background: #fff; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-around; align-items: center; }
+  .tab { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #999; cursor: pointer; }
+  .tab.active { color: #1890ff; }
+  .tab-icon { font-size: 18px; }
+  /* 卡片 */
+  .card { background: #fff; margin: 10px 12px; padding: 12px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .card-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-title { font-size: 14px; font-weight: 600; }
+  .card-desc { font-size: 12px; color: #666; margin-top: 4px; line-height: 1.5; }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+  .card-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f5f5f5; }
+  .meta-item { font-size: 11px; color: #888; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 10px; }
+  .tag-p0 { background: #fff1f0; color: #ff4d4f; }
+  .tag-p1 { background: #fff7e6; color: #fa8c16; }
+  .tag-p2 { background: #f6ffed; color: #52c41a; }
+  .tag-blue { background: #e6f7ff; color: #1890ff; }
+  .tag-purple { background: #f9f0ff; color: #722ed1; }
+  .tag-warn { background: #fffbe6; color: #faad14; }
+  .btn { flex: 1; height: 32px; border-radius: 4px; border: none; font-size: 12px; cursor: pointer; }
+  .btn-primary { background: #1890ff; color: #fff; }
+  .btn-default { background: #f5f5f5; color: #333; }
+  .btn-success { background: #52c41a; color: #fff; }
+  .btn-warn { background: #faad14; color: #fff; }
+  .btn-danger { background: #ff4d4f; color: #fff; }
+  /* 顶部状态条 */
+  .quick-stats { display: flex; padding: 10px 12px; gap: 8px; }
+  .qs-item { flex: 1; background: #fff; padding: 8px; border-radius: 8px; text-align: center; }
+  .qs-num { font-size: 16px; font-weight: 600; color: #1890ff; }
+  .qs-label { font-size: 10px; color: #888; margin-top: 2px; }
+  /* 详情视图 */
+  .detail-header { background: linear-gradient(135deg, #1890ff, #36cfc9); color: #fff; padding: 16px; }
+  .detail-id { font-size: 12px; opacity: 0.9; }
+  .detail-title { font-size: 16px; font-weight: 600; margin-top: 6px; }
+  .back-btn { color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+  .section { background: #fff; margin: 10px 12px; padding: 12px; border-radius: 10px; }
+  .section-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #333; }
+  .info-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; }
+  .info-label { color: #888; }
+  /* 时间线 */
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline-item { position: relative; padding-bottom: 12px; }
+  .timeline-item:before { content: ''; position: absolute; left: -16px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid #d9d9d9; z-index: 1; }
+  .timeline-item.done:before { background: #52c41a; border-color: #52c41a; }
+  .timeline-item.current:before { background: #1890ff; border-color: #1890ff; box-shadow: 0 0 0 3px #e6f7ff; }
+  .timeline-item:after { content: ''; position: absolute; left: -12px; top: 14px; width: 2px; bottom: 0; background: #f0f0f0; }
+  .timeline-item:last-child:after { display: none; }
+  .tl-name { font-size: 12px; font-weight: 500; }
+  .tl-time { font-size: 10px; color: #999; margin-top: 2px; }
+  .tl-desc { font-size: 11px; color: #666; margin-top: 4px; background: #fafafa; padding: 6px 8px; border-radius: 4px; }
+  /* 主状态条 */
+  .master-status { background: #fff; margin: 10px 12px; padding: 12px; border-radius: 10px; }
+  .ms-flow { display: flex; align-items: center; }
+  .ms-step { flex: 1; text-align: center; }
+  .ms-circle { width: 22px; height: 22px; border-radius: 50%; background: #f0f0f0; color: #999; margin: 0 auto; font-size: 11px; line-height: 22px; }
+  .ms-circle.done { background: #52c41a; color: #fff; }
+  .ms-circle.current { background: #1890ff; color: #fff; box-shadow: 0 0 0 3px #e6f7ff; }
+  .ms-label { font-size: 10px; margin-top: 4px; color: #666; }
+  .ms-line { height: 2px; background: #f0f0f0; flex: 0.3; }
+  .ms-line.done { background: #52c41a; }
+  .hidden { display: none !important; }
+  /* 弹窗 */
+  .sheet-mask { display: none; position: absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.5); z-index: 50; }
+  .sheet-mask.show { display: block; }
+  .sheet { position: absolute; bottom: -100%; left: 0; right: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 16px; transition: bottom 0.3s; max-height: 80%; overflow-y: auto; }
+  .sheet.show { bottom: 0; }
+  .sheet-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; text-align: center; }
+  .form-item { margin-bottom: 10px; }
+  .form-label { font-size: 12px; color: #888; margin-bottom: 4px; display: block; }
+  .form-input { width: 100%; padding: 8px 10px; border: 1px solid #d9d9d9; border-radius: 6px; font-size: 13px; }
+  textarea.form-input { resize: vertical; }
+  .checklist-item { display: flex; align-items: center; padding: 8px; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+  .checklist-item input { margin-right: 10px; }
+  .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .photo-slot { aspect-ratio: 1; background: #f0f2f5; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #ccc; border: 1px dashed #d9d9d9; }
+  .stage-title { width: 100%; text-align: center; margin-bottom: 12px; font-size: 18px; font-weight: 600; color: #444; }
+</style>
+</head>
+<body>
+
+<div class="stage-title">售后系统手机端 · 多角色协同原型（同一张维修子单）</div>
+
+<div class="stage">
+  <!-- 服务站视角 -->
+  <div style="position: relative;">
+    <div class="role-tag" style="background:#1890ff;">服务站站长 / 技师</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>📶 100%</span></div>
+      <div class="app-header">
+        <div class="app-title" id="title-station">服务站工作台</div>
+        <button class="role-btn" onclick="switchView('station','list')">返回</button>
+      </div>
+
+      <div class="scroll-area" id="station-scroll">
+        <!-- 列表视图 -->
+        <div id="station-list">
+          <div class="quick-stats">
+            <div class="qs-item"><div class="qs-num">3</div><div class="qs-label">待接单</div></div>
+            <div class="qs-item"><div class="qs-num">5</div><div class="qs-label">诊断中</div></div>
+            <div class="qs-item"><div class="qs-num">2</div><div class="qs-label">待预约</div></div>
+            <div class="qs-item"><div class="qs-num">4</div><div class="qs-label">维修中</div></div>
+          </div>
+
+          <div class="card" onclick="openStationDetail()">
+            <div class="card-row">
+              <div>
+                <div class="card-title">WO-2026060001 · 故障维修</div>
+                <div class="card-desc">车辆定位漂移，无法正常配送</div>
+              </div>
+              <span class="tag tag-p0">P0</span>
+            </div>
+            <div class="card-meta">
+              <span class="tag tag-blue">服务站诊断中</span>
+              <span class="meta-item">🚚 JXG-001234</span>
+              <span class="meta-item">📍 北京亦庄站点</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-default" onclick="event.stopPropagation();openSheet('sheetUpgrade')">升级复诊</button>
+              <button class="btn btn-primary" onclick="event.stopPropagation();openSheet('sheetDiagnose')">执行诊断</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-row">
+              <div>
+                <div class="card-title">WO-2026060005 · 周期保养</div>
+                <div class="card-desc">10000 公里保养，等待备件</div>
+              </div>
+              <span class="tag tag-p2">P2</span>
+            </div>
+            <div class="card-meta">
+              <span class="tag tag-warn">待配件</span>
+              <span class="meta-item">🚚 JXG-001260</span>
+              <span class="meta-item">📦 预计明日到货</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-default">更新备件</button>
+              <button class="btn btn-primary">发起预约</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-row">
+              <div>
+                <div class="card-title">WO-2026060007 · 故障维修</div>
+                <div class="card-desc">传感器读数异常，已预约现场</div>
+              </div>
+              <span class="tag tag-p1">P1</span>
+            </div>
+            <div class="card-meta">
+              <span class="tag tag-blue">已预约</span>
+              <span class="meta-item">⏰ 14:30 到场</span>
+              <span class="meta-item">👷 张师傅</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-default">技师出发</button>
+              <button class="btn btn-primary">到场签到</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-row">
+              <div>
+                <div class="card-title">WO-2026060010 · 故障维修</div>
+                <div class="card-desc">维修中，已更换刹车片</div>
+              </div>
+              <span class="tag tag-p1">P1</span>
+            </div>
+            <div class="card-meta">
+              <span class="tag tag-blue">维修开始</span>
+              <span class="meta-item">⏱ 已用 38 分钟</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-success" onclick="openSheet('sheetSubmit')">维修完成并提交验收</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 详情视图 -->
+        <div id="station-detail" class="hidden">
+          <div class="detail-header">
+            <button class="back-btn" onclick="switchView('station','list')">‹ 返回</button>
+            <div class="detail-id" style="margin-top:8px;">WO-2026060001</div>
+            <div class="detail-title">故障维修 · 定位漂移</div>
+            <div style="margin-top:8px;"><span class="tag tag-p0">P0</span> <span class="tag" style="background:rgba(255,255,255,0.25);color:#fff;">维修中</span> <span class="tag" style="background:rgba(255,255,255,0.25);color:#fff;">服务站诊断中</span></div>
+          </div>
+          <div class="master-status">
+            <div class="section-title">主工单状态</div>
+            <div class="ms-flow">
+              <div class="ms-step"><div class="ms-circle done">✓</div><div class="ms-label">受理</div></div>
+              <div class="ms-line done"></div>
+              <div class="ms-step"><div class="ms-circle current">2</div><div class="ms-label">维修中</div></div>
+              <div class="ms-line"></div>
+              <div class="ms-step"><div class="ms-circle">3</div><div class="ms-label">待验收</div></div>
+              <div class="ms-line"></div>
+              <div class="ms-step"><div class="ms-circle">4</div><div class="ms-label">已完成</div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">工单信息</div>
+            <div class="info-row"><span class="info-label">车辆</span><span>JXG-001234</span></div>
+            <div class="info-row"><span class="info-label">站点</span><span>北京亦庄站点</span></div>
+            <div class="info-row"><span class="info-label">车辆位置</span><span style="color:#1890ff;">📍 查看位置</span></div>
+            <div class="info-row"><span class="info-label">现场联系人</span><span>李站长 138****1234</span></div>
+            <div class="info-row"><span class="info-label">SLA</span><span style="color:#ff4d4f;">剩余 23 分钟</span></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">维修子单进度</div>
+            <div class="timeline">
+              <div class="timeline-item done"><div class="tl-name">待服务站接单</div><div class="tl-time">09:12</div><div class="tl-desc">张师傅已接单</div></div>
+              <div class="timeline-item current"><div class="tl-name">服务站诊断中</div><div class="tl-time">09:18 · 进行中</div><div class="tl-desc">京小鸽诊断 v2.3.1 · 故障码 P0420 / U0100</div></div>
+              <div class="timeline-item"><div class="tl-name">待配件</div></div>
+              <div class="timeline-item"><div class="tl-name">待预约</div></div>
+              <div class="timeline-item"><div class="tl-name">已预约</div></div>
+              <div class="timeline-item"><div class="tl-name">已到场</div></div>
+              <div class="timeline-item"><div class="tl-name">维修开始</div></div>
+              <div class="timeline-item"><div class="tl-name">维修完成</div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">操作</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button class="btn btn-default" onclick="openSheet('sheetUpgrade')">升级售后/研发</button>
+              <button class="btn btn-primary" onclick="openSheet('sheetDiagnose')">完成诊断</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab active"><div class="tab-icon">📋</div><div>工单</div></div>
+        <div class="tab"><div class="tab-icon">🔧</div><div>诊断</div></div>
+        <div class="tab"><div class="tab-icon">📦</div><div>备件</div></div>
+        <div class="tab"><div class="tab-icon">👤</div><div>我的</div></div>
+      </div>
+
+      <!-- 弹层：诊断结果 -->
+      <div class="sheet-mask" id="sheetMask-station"></div>
+      <div class="sheet" id="sheetDiagnose">
+        <div class="sheet-title">提交诊断结果</div>
+        <div class="form-item"><label class="form-label">诊断工具</label><input class="form-input" value="京小鸽诊断 v2.3.1" readonly></div>
+        <div class="form-item"><label class="form-label">故障码</label><input class="form-input" value="P0420 / U0100"></div>
+        <div class="form-item"><label class="form-label">诊断结论</label><textarea class="form-input" rows="3" placeholder="请填写诊断结论"></textarea></div>
+        <div class="form-item"><label class="form-label">现场图片</label>
+          <div class="photo-grid"><div class="photo-slot">📷</div><div class="photo-slot">📷</div><div class="photo-slot">+</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-default" onclick="closeSheet('station')">取消</button>
+          <button class="btn btn-primary" onclick="alert('诊断结果已同步到主工单和站点');closeSheet('station')">提交</button>
+        </div>
+      </div>
+
+      <!-- 弹层：升级复诊 -->
+      <div class="sheet" id="sheetUpgrade">
+        <div class="sheet-title">升级售后/研发复诊</div>
+        <div class="form-item"><label class="form-label">升级类型</label><select class="form-input"><option>无法定位故障</option><option>疑似软件版本问题</option><option>疑似硬件问题</option><option>疑似设计缺陷</option></select></div>
+        <div class="form-item"><label class="form-label">升级原因</label><textarea class="form-input" rows="3" placeholder="详细说明已尝试的排查项和遇到的问题"></textarea></div>
+        <div class="form-item"><label class="form-label">期望反馈时间</label><select class="form-input"><option>2 小时内</option><option>4 小时内</option><option>当日</option></select></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-default" onclick="closeSheet('station')">取消</button>
+          <button class="btn btn-warn" onclick="alert('已升级，售后/研发将在期望时间内回传结论');closeSheet('station')">确认升级</button>
+        </div>
+      </div>
+
+      <!-- 弹层：提交验收 -->
+      <div class="sheet" id="sheetSubmit">
+        <div class="sheet-title">提交验收资料</div>
+        <div class="form-item"><label class="form-label">故障原因</label><textarea class="form-input" rows="2" placeholder="根因分析"></textarea></div>
+        <div class="form-item"><label class="form-label">维修动作</label><textarea class="form-input" rows="2" placeholder="本次维修的操作"></textarea></div>
+        <div class="form-item"><label class="form-label">备件更换</label><input class="form-input" value="刹车片 ×2 - ¥320"></div>
+        <div class="form-item"><label class="form-label">总费用</label><input class="form-input" value="¥420.00"></div>
+        <div class="form-item"><label class="form-label">维修图片（前/中/后）</label>
+          <div class="photo-grid"><div class="photo-slot">📷</div><div class="photo-slot">📷</div><div class="photo-slot">📷</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-default" onclick="closeSheet('station')">取消</button>
+          <button class="btn btn-success" onclick="alert('已提交验收，主工单进入待验收状态');closeSheet('station')">提交验收</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 站点视角 -->
+  <div style="position: relative;">
+    <div class="role-tag" style="background:#52c41a;">站点负责人</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>📶 100%</span></div>
+      <div class="app-header">
+        <div class="app-title">站点工作台</div>
+      </div>
+      <div class="scroll-area">
+        <div class="quick-stats">
+          <div class="qs-item"><div class="qs-num">2</div><div class="qs-label">待预约确认</div></div>
+          <div class="qs-item"><div class="qs-num">1</div><div class="qs-label">待到场</div></div>
+          <div class="qs-item"><div class="qs-num">3</div><div class="qs-label">维修中</div></div>
+          <div class="qs-item"><div class="qs-num">2</div><div class="qs-label">待验收</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060001 · 定位漂移</div>
+              <div class="card-desc">服务站正在诊断，预计 30 分钟完成</div>
+            </div>
+            <span class="tag tag-p0">P0</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-blue">服务站诊断中</span>
+            <span class="meta-item">🚚 JXG-001234</span>
+          </div>
+          <div style="background:#f0f9ff;padding:8px;margin-top:8px;border-radius:6px;font-size:12px;color:#1890ff;">
+            💡 服务站当前进度：诊断中（同步自服务站工作台）
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060007 · 传感器异常</div>
+              <div class="card-desc">服务站发起预约：今日 14:30 到场</div>
+            </div>
+            <span class="tag tag-p1">P1</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-warn">待预约确认</span>
+            <span class="meta-item">👷 张师傅</span>
+            <span class="meta-item">⏱ 预计 1 小时</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-default" onclick="alert('已驳回预约，请服务站重新协调时间')">改期</button>
+            <button class="btn btn-primary" onclick="alert('已确认预约，预约信息同步给服务站和小哥')">确认预约</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060004 · 制动异常</div>
+              <div class="card-desc">维修已完成，请按清单验收</div>
+            </div>
+            <span class="tag tag-p1">P1</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-purple">待验收</span>
+            <span class="meta-item">💰 费用 ¥420</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-danger" onclick="alert('请填写验收驳回原因，工单将退回服务站')">验收驳回</button>
+            <button class="btn btn-success" onclick="openSheet('sheetVerify')">按清单验收</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060005 · 周期保养</div>
+              <div class="card-desc">备件未到货，预约暂停</div>
+            </div>
+            <span class="tag tag-p2">P2</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-warn">待配件</span>
+            <span class="meta-item">📦 预计明日到货</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab active"><div class="tab-icon">📋</div><div>任务</div></div>
+        <div class="tab"><div class="tab-icon">📅</div><div>预约</div></div>
+        <div class="tab"><div class="tab-icon">✅</div><div>验收</div></div>
+        <div class="tab"><div class="tab-icon">👤</div><div>我的</div></div>
+      </div>
+
+      <!-- 验收弹层 -->
+      <div class="sheet-mask" id="sheetMask-site"></div>
+      <div class="sheet" id="sheetVerify">
+        <div class="sheet-title">验收清单 · WO-2026060004</div>
+        <div class="checklist-item"><input type="checkbox" checked>车辆启动验证</div>
+        <div class="checklist-item"><input type="checkbox" checked>故障码已清除</div>
+        <div class="checklist-item"><input type="checkbox" checked>最小闭环任务试跑</div>
+        <div class="checklist-item"><input type="checkbox" checked>维修前/中/后图片齐全</div>
+        <div class="checklist-item"><input type="checkbox" checked>备件费用确认</div>
+        <div class="form-item" style="margin-top:12px;"><label class="form-label">验收备注</label><textarea class="form-input" rows="2" placeholder="可填写补充说明"></textarea></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-default" onclick="closeSheet('site')">取消</button>
+          <button class="btn btn-success" onclick="alert('验收通过！主工单已归档完成');closeSheet('site')">验收通过</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 售后/研发视角 -->
+  <div style="position: relative;">
+    <div class="role-tag" style="background:#722ed1;">售后/研发工程师</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>📶 100%</span></div>
+      <div class="app-header">
+        <div class="app-title">复诊队列</div>
+      </div>
+      <div class="scroll-area">
+        <div class="quick-stats">
+          <div class="qs-item"><div class="qs-num">7</div><div class="qs-label">待复诊</div></div>
+          <div class="qs-item"><div class="qs-num">2</div><div class="qs-label">超时</div></div>
+          <div class="qs-item"><div class="qs-num">15</div><div class="qs-label">本周已结</div></div>
+          <div class="qs-item"><div class="qs-num">3</div><div class="qs-label">转研发</div></div>
+        </div>
+
+        <div class="card" style="border-left:3px solid #ff4d4f;">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060003 · 软件复诊</div>
+              <div class="card-desc">OTA 后行为异常，疑似版本问题</div>
+            </div>
+            <span class="tag tag-p1">P1</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-purple">售后/研发复诊中</span>
+            <span class="meta-item" style="color:#ff4d4f;">⏰ 还剩 1.5 小时</span>
+          </div>
+          <div style="background:#fafafa;margin-top:8px;padding:8px;border-radius:6px;font-size:11px;line-height:1.6;">
+            <div><strong>升级类型：</strong>疑似软件版本问题</div>
+            <div><strong>升级原因：</strong>OTA 升级到 v3.2.0 后出现连续偏航上报，已尝试重置但无效</div>
+            <div><strong>已上传：</strong>诊断日志包.zip · 现场视频 ×2 · 故障码截图</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-default">查看日志</button>
+            <button class="btn btn-primary" onclick="openSheet('sheetReview')">填写结论</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026060015 · 故障维修</div>
+              <div class="card-desc">服务站无法定位电池告警根因</div>
+            </div>
+            <span class="tag tag-p1">P1</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag tag-purple">复诊中</span>
+            <span class="meta-item">⏰ 还剩 3 小时</span>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-default">查看日志</button>
+            <button class="btn btn-primary">填写结论</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-row">
+            <div>
+              <div class="card-title">WO-2026059998 · 已复诊完成</div>
+              <div class="card-desc">建议动作：版本回滚至 v3.1.5</div>
+            </div>
+            <span class="tag tag-p1">P1</span>
+          </div>
+          <div class="card-meta">
+            <span class="tag" style="background:#f6ffed;color:#52c41a;">已回传</span>
+            <span class="meta-item">🚀 已转研发缺陷 #JD-3421</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab active"><div class="tab-icon">🔍</div><div>复诊</div></div>
+        <div class="tab"><div class="tab-icon">📊</div><div>看板</div></div>
+        <div class="tab"><div class="tab-icon">🚀</div><div>缺陷</div></div>
+        <div class="tab"><div class="tab-icon">👤</div><div>我的</div></div>
+      </div>
+
+      <!-- 结论弹层 -->
+      <div class="sheet-mask" id="sheetMask-rd"></div>
+      <div class="sheet" id="sheetReview">
+        <div class="sheet-title">复诊结论 · WO-2026060003</div>
+        <div class="form-item"><label class="form-label">复诊结论</label><textarea class="form-input" rows="3" placeholder="根因分析与处置建议"></textarea></div>
+        <div class="form-item"><label class="form-label">建议动作</label><select class="form-input"><option>继续维修</option><option>补充诊断</option><option>等待配件</option><option>版本修复</option><option>转研发缺陷</option></select></div>
+        <div class="form-item"><label class="form-label">是否转研发缺陷</label>
+          <select class="form-input"><option>否</option><option>是 - 高优先级</option><option>是 - 普通</option></select>
+        </div>
+        <div class="form-item"><label class="form-label">备注</label><textarea class="form-input" rows="2" placeholder="对服务站的临时处置建议"></textarea></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="btn btn-default" onclick="closeSheet('rd')">取消</button>
+          <button class="btn btn-primary" onclick="alert('结论已回传，服务站、站点、运营都将收到通知');closeSheet('rd')">提交结论</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:20px;padding:16px;color:#666;font-size:12px;">
+  💡 三个角色围绕同一张维修子单协作 · 数据实时同步 · 减少重复录入
+</div>
+
+<script>
+function switchView(role, view){
+  if(role === 'station'){
+    document.getElementById('station-list').classList.toggle('hidden', view!=='list');
+    document.getElementById('station-detail').classList.toggle('hidden', view!=='detail');
+    document.getElementById('title-station').innerText = view==='detail'?'工单详情':'服务站工作台';
+  }
+}
+function openStationDetail(){ switchView('station','detail'); }
+
+function openSheet(id){
+  const sheet = document.getElementById(id);
+  // 找到所属手机
+  const phone = sheet.closest('.phone');
+  const mask = phone.querySelector('.sheet-mask');
+  if(mask) mask.classList.add('show');
+  sheet.classList.add('show');
+  if(mask) mask.onclick = ()=>{ phone.querySelectorAll('.sheet').forEach(s=>s.classList.remove('show')); mask.classList.remove('show'); };
+}
+function closeSheet(role){
+  const idMap = {station:'sheetMask-station', site:'sheetMask-site', rd:'sheetMask-rd'};
+  const mask = document.getElementById(idMap[role]);
+  if(mask){
+    mask.classList.remove('show');
+    mask.closest('.phone').querySelectorAll('.sheet').forEach(s=>s.classList.remove('show'));
+  }
+}
+</script>
+</body>
+</html>

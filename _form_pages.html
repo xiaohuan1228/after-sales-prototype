@@ -1,0 +1,225 @@
+      <!-- ======== 新建工单页 ======== -->
+      <div id="page-new-order" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('workorder')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;">新建工单</span>
+          <button class="btn btn-default" onclick="closeFormPage('workorder')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitNew()" style="min-width:72px;">提交工单</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">基本信息</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="newType"><option value="">请选择</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="newPri"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">来源</label><select class="form-control" id="newSrc"><option value="">请选择</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">推荐服务站</label><select class="form-control" id="newStation"><option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">提报人</label><input class="form-control" id="newReporter" placeholder="姓名"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">手机号</label><input class="form-control" id="newReporterPhone" placeholder="138****1234" maxlength="11"></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">车辆信息</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">车辆编号</label><input class="form-control" id="newVehicle" placeholder="如 JXG-001234"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">车型</label><input class="form-control" id="newVehicleModel" placeholder="如 miniVan量产"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">车号</label><input class="form-control" id="newVehicleNo" placeholder="如 JDE6067"></div>
+              <div class="form-item" style="margin:0;grid-column:span 3;"><label class="form-label required">所属站点</label><input class="form-control" id="newSite" placeholder="所属站点名称" style="max-width:360px;"></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">问题描述</div>
+            <div class="form-item" style="margin:0;"><textarea class="form-control" rows="5" id="newDesc" placeholder="详细描述故障现象，如：车辆定位漂移，无法正常调度"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 编辑工单页 ======== -->
+      <div id="page-edit-order" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('edit-back')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;" id="editOrderPageTitle">编辑工单</span>
+          <button class="btn btn-default" onclick="closeFormPage('edit-back')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitEdit()" style="min-width:72px;">保存修改</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">基本信息</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="editType"><option value="">请选择</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="editPri"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">来源</label><select class="form-control" id="editSrc"><option value="">请选择</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option><option>运营巡检导入</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">推荐服务站</label><select class="form-control" id="editStation"><option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option><option>武汉外协</option><option>天津市冀津贸易有限公司</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">提报人</label><input class="form-control" id="editReporter" placeholder="姓名"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">手机号</label><input class="form-control" id="editPhone" placeholder="138****1234" maxlength="11"></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">车辆与站点</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">车辆编号</label><input class="form-control" id="editVehicle" placeholder="如 JXG-001234"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">车型</label><input class="form-control" id="editVehicleModel" placeholder="如 miniVan量产"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">车号</label><input class="form-control" id="editVehicleNo" placeholder="如 JDE6067"></div>
+              <div class="form-item" style="margin:0;grid-column:span 3;"><label class="form-label required">所属站点</label><input class="form-control" id="editSite"placeholder="所属站点" style="max-width:360px;"></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">问题描述</div>
+            <div class="form-item" style="margin:0;"><textarea class="form-control" rows="5" id="editDesc" placeholder="详细描述故障现象"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 缺陷提报页 ======== -->
+      <div id="page-defect" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('defect-back')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;">缺陷提报</span>
+          <button class="btn btn-default" onclick="closeFormPage('defect-back')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitDefect()" style="min-width:72px;">确认提报</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">问题基本信息</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;grid-column:span 3;"><label class="form-label required">问题标题</label><input class="form-control" id="defectTitle" placeholder="请输入问题标题（简洁描述现象）"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">严重程度</label><select class="form-control" id="defectSeverity"><option value="">请选择</option><option>P0 - 致命</option><option>P1 - 严重</option><option>P2 - 一般</option><option>P3 - 轻微</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">Rover 版本</label><select class="form-control" id="defectRoverVer"><option value="">请选择</option><option>v3.2.1</option><option>v3.2.0</option><option>v3.1.5</option><option>v3.1.0</option><option>v3.0.8</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">发生时间</label><input class="form-control" id="defectTime" type="datetime-local"></div>
+              <div class="form-item" style="margin:0;">
+                <label class="form-label required">是否碰撞/剐蹭</label>
+                <div style="display:flex;gap:20px;height:32px;align-items:center;">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="radio" name="defectCrash" value="是" style="accent-color:#1890ff;"> 是</label>
+                  <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="radio" name="defectCrash" value="否" checked style="accent-color:#1890ff;"> 否</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">问题描述</div>
+            <div class="form-item" style="margin:0;"><textarea class="form-control" rows="5" id="defectDesc" placeholder="详细描述问题复现步骤、异常现象、影响范围等"></textarea></div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">附件上传</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="defect-upload-box" onclick="document.getElementById('defectFileInput').click()" style="width:120px;height:90px;">
+                <span style="font-size:22px;color:#bbb;">↑</span>
+                <span style="color:#999;font-size:12px;margin-top:2px;">点击上传</span>
+              </div>
+              <span style="color:#bbb;font-size:12px;">支持 jpg/png，最大 10MB</span>
+            </div>
+            <input type="file" id="defectFileInput" accept="image/*" multiple style="display:none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 批量创建工单页 ======== -->
+      <div id="page-batch-order" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('workorder')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;">批量创建工单</span>
+          <button class="btn btn-default" onclick="closeFormPage('workorder')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitBatch()" style="min-width:72px;">确认提交</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">批量配置</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="batchType" onchange="updateBatchPreview()"><option value="">请选择</option><option>故障维修</option><option>现场救援</option><option>周期保养</option><option>外观损伤</option><option>车辆批改</option><option>软件复诊</option><option>转站需求</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="batchPri" onchange="updateBatchPreview()"><option value="P1" selected>P1</option><option value="P0">P0</option><option value="P2">P2</option></select></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">车辆列表 <span style="font-weight:400;color:#999;font-size:12px;text-transform:none;letter-spacing:0;margin-left:4px;">每行一辆，格式：车辆编号｜问题描述</span></div>
+            <div class="form-item" style="margin:0 0 14px;"><textarea class="form-control" rows="8" id="batchText" oninput="updateBatchPreview()" placeholder="JXG-001234｜定位漂移&#10;JXG-001235｜电池告警&#10;JXG-001236｜车门故障"></textarea></div>
+            <div class="section-title" style="margin-top:0;">创建预览 <span style="font-weight:700;color:#1890ff;font-size:12px;text-transform:none;letter-spacing:0;margin-left:4px;">共 <span id="batchCount">0</span> 条</span></div>
+            <div class="preview-list" id="batchPreview" style="max-height:240px;overflow-y:auto;">请先填写上方车辆列表...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 批量生成保养工单页 ======== -->
+      <div id="page-maint-batch" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('maint')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;">批量生成保养工单</span>
+          <button class="btn btn-default" onclick="closeFormPage('maint')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitMaintBatch()" style="min-width:72px;">确认生成</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">待生成工单列表 <span id="maintBatchCount" style="font-weight:700;color:#1890ff;font-size:13px;text-transform:none;letter-spacing:0;margin-left:4px;">0</span> 辆</div>
+            <div class="table-wrap" style="max-height:420px;overflow-y:auto;">
+              <table style="width:100%;"><thead><tr><th>车辆</th><th>站点</th><th>计划类型</th><th>预计日期</th><th>紧迫度</th></tr></thead><tbody id="maintBatchPreviewBody"></tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 新建维修子单页 ======== -->
+      <div id="page-add-sub-order" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('sub-back')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;">新建维修子单</span>
+          <button class="btn btn-default" onclick="closeFormPage('sub-back')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="submitAddSubOrder()" style="min-width:72px;">创建子单</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">子单信息</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;grid-column:span 3;"><label class="form-label required">子单标题</label><input class="form-control" id="subOrderTitle" placeholder="如：服务站诊断 / 配件更换 / 现场维修"></div>
+              <div class="form-item" style="margin:0;grid-column:span 2;"><label class="form-label required">负责人</label><input class="form-control" id="subOrderAssignee" placeholder="负责人姓名"></div>
+              <div class="form-item" style="margin:0;"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">开始时间</label><input class="form-control" id="subOrderStart" type="datetime-local"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">预计结束时间</label><input class="form-control" id="subOrderEnd" type="datetime-local"></div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">任务描述</div>
+            <div class="form-item" style="margin:0;"><textarea class="form-control" rows="4" id="subOrderDesc" placeholder="描述本次子单的任务内容、注意事项或执行要求"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 编辑工单类型页 ======== -->
+      <div id="page-type-edit" class="hidden">
+        <div class="detail-page-header">
+          <button class="btn btn-default" onclick="closeFormPage('config')" style="margin-right:8px;">← 返回</button>
+          <span style="font-size:16px;font-weight:700;color:#111;flex:1;" id="typeEditPageTitle">编辑工单类型</span>
+          <button class="btn btn-default" onclick="closeFormPage('config')" style="min-width:72px;">取消</button>
+          <button class="btn btn-primary" onclick="saveTypeEdit()" style="min-width:72px;">保存</button>
+        </div>
+        <div style="max-width:900px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">基础配置</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label required">类型名称</label><input class="form-control" id="teTypeName" placeholder="如 故障维修"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">编码</label><input class="form-control" id="teTypeCode" placeholder="如 REPAIR"></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">默认优先级</label><select class="form-control" id="teTypePri"><option value="P0">P0</option><option value="P1" selected>P1</option><option value="P2">P2</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">是否创建子单</label><select class="form-control" id="teTypeSub"><option value="是">是</option><option value="否">否</option><option value="按需">按需</option></select></div>
+              <div class="form-item" style="margin:0;grid-column:span 2;"><label class="form-label">验收模板</label><input class="form-control" id="teTypeTpl" placeholder="如 故障维修标准模板"></div>
+              <div class="form-item" style="margin:0;display:flex;align-items:center;gap:10px;">
+                <label style="font-size:12px;color:#555;font-weight:500;margin:0;">启用状态</label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;margin:0;"><input type="checkbox" id="teTypeEnabled" checked style="accent-color:#1890ff;width:15px;height:15px;"> 启用</label>
+              </div>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">主状态流程</div>
+            <div id="teMasterList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:32px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input class="form-control" id="teMasterInput" placeholder="输入主状态名称后按回车或点击添加" style="height:32px;flex:1;max-width:360px;">
+              <button class="btn btn-default" style="height:32px;white-space:nowrap;" onclick="addTeStatus('master')">+ 添加</button>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">子状态流程</div>
+            <div id="teSubList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:32px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input class="form-control" id="teSubInput" placeholder="输入子状态名称后按回车或点击添加" style="height:32px;flex:1;max-width:360px;">
+              <button class="btn btn-default" style="height:32px;white-space:nowrap;" onclick="addTeStatus('sub')">+ 添加</button>
+            </div>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,32 @@
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+
+# Node modules
+node_modules/
+npm-debug.log
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+tmp/
+temp/
+dist/
+build/
