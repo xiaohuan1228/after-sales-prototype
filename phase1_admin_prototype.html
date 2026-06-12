@@ -1476,12 +1476,6 @@ function getFlow(type) {
 const masterStatusList = flowTemplates['故障维修'].master;
 const subStatusList = flowTemplates['故障维修'].sub;
 
-// ===== 自动受理配置（需在 initTypeTable 之前赋值）=====
-var _typeAutoAcceptMap = {
-  '故障维修':'是','现场救援':'是','周期保养':'否',
-  '软件复诊':'是','外观损伤':'是','车辆批改':'否','转站需求':'否'
-};
-var _typeAutoCondMap = {};
 var _typeEnabledMap = {};
 
 // ===== 服务站数据 =====
@@ -3016,14 +3010,13 @@ function submitNew(){
   var now = new Date().toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-');
   // 自动受理判断
   var flow = flowTemplates[t] || flowTemplates['故障维修'];
-  var autoAccept = _typeAutoAcceptMap[t] === '是';
-  var initStatus = autoAccept ? flow.master[1] : '待受理';
-  var initSub = autoAccept ? (flow.sub[0] || '-') : '-';
+  var initStatus = '待受理';
+  var initSub = '-';
   var selectedStation = document.getElementById('newStation').value || '待推荐';
-  var initStation = autoAccept ? (selectedStation !== '待推荐' ? selectedStation : '天津市冀津贸易有限公司') : selectedStation;
-  var initNext = autoAccept ? flow.sub[1] || flow.master[2] || '-' : '运营受理';
-  var initLastOp = autoAccept ? '系统自动受理' : document.getElementById('newReporter').value || '运营手动';
-  orders.unshift({id:id, title:title, vehicle:vInfo.vehicle||vno, site:s, type:t, pri:p, status:initStatus, sub:initSub, station:initStation, sla:autoAccept?'剩余 60 分钟':'剩余 60 分钟', next:initNext, desc:document.getElementById('newDesc').value,
+  var initStation = selectedStation;
+  var initNext = '运营受理';
+  var initLastOp = document.getElementById('newReporter').value || '运营手动';
+  orders.unshift({id:id, title:title, vehicle:vInfo.vehicle||vno, site:s, type:t, pri:p, status:initStatus, sub:initSub, station:initStation, sla:'剩余 60 分钟', next:initNext, desc:document.getElementById('newDesc').value,
     reporter: document.getElementById('newSiteContact').value || '运营手动',
     reporterPhone: document.getElementById('newSitePhone').value || '-',
     reporterRole: '站点负责人',
@@ -3033,10 +3026,10 @@ function submitNew(){
     stationManager: document.getElementById('newStationManager').value || '-',
     defectNo: document.getElementById('newDefectNo').value.trim() || '-',
     relatedDefect: document.getElementById('newRelatedDefect').value.trim() || '-',
-    acceptResult: autoAccept ? '通过' : undefined,
-    acceptTime: autoAccept ? now : undefined,
-    acceptBy: autoAccept ? '系统自动' : undefined,
-    acceptComment: autoAccept ? '自动受理：该工单类型已配置自动受理' : undefined,
+    acceptResult: undefined,
+    acceptTime: undefined,
+    acceptBy: undefined,
+    acceptComment: undefined,
     photos: _newPhotos.length > 0 ? _newPhotos.slice() : undefined,
     planStart: document.getElementById('newPlanStart').value || now,
     planEnd: document.getElementById('newPlanEnd').value || ''
@@ -3049,7 +3042,7 @@ function submitNew(){
   document.getElementById('newStation').innerHTML='<option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option><option>武汉外协</option><option>天津市冀津贸易有限公司</option><option>广州服务站</option>';
   _newPhotos=[];
   renderNewPhotos();
-  showToast(autoAccept ? '已创建工单 ' + id + '（自动受理）' : '已创建主工单 ' + id, 'success');
+  showToast('已创建主工单 ' + id, 'success');
 }
 function updateBatchPreview(){
   var text=document.getElementById('batchText').value.trim();
