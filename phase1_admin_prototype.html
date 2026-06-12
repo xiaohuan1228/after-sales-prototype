@@ -980,19 +980,6 @@
               <div class="form-item" style="margin:0;"><label class="form-label required">类型名称</label><input class="form-control" id="teTypeName" placeholder="如 故障维修"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">编码</label><input class="form-control" id="teTypeCode" placeholder="如 REPAIR"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">默认优先级</label><select class="form-control" id="teTypePri"><option value="P0">P0</option><option value="P1" selected>P1</option><option value="P2">P2</option></select></div>
-              <div class="form-item" style="margin:0;"><label class="form-label">是否创建子单</label><select class="form-control" id="teTypeSub"><option value="是">是</option><option value="否">否</option><option value="按需">按需</option></select></div>
-              <div class="form-item" style="margin:0;"><label class="form-label">自动受理</label><select class="form-control" id="teTypeAutoAccept" onchange="toggleAutoAcceptDetail()"><option value="否">否 — 需运营手动受理</option><option value="是">是 — 满足条件自动受理</option></select></div>
-              <div class="form-item" style="margin:0;grid-column:span 3;display:none;" id="autoAcceptDetail">
-                <div style="background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;padding:12px 14px;">
-                  <div style="font-size:12px;color:#888;margin-bottom:8px;">自动受理条件（勾选表示需要满足该条件才自动受理）</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:16px;">
-                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;"><input type="checkbox" id="teAutoPri0" style="accent-color:#1890ff;width:14px;height:14px;"> P0 优先级</label>
-                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;"><input type="checkbox" id="teAutoInfoComplete" style="accent-color:#1890ff;width:14px;height:14px;"> 信息完整（车辆/站点/描述）</label>
-                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;"><input type="checkbox" id="teAutoHasPhoto" style="accent-color:#1890ff;width:14px;height:14px;"> 包含照片</label>
-                  </div>
-                  <div style="font-size:11px;color:#bbb;margin-top:8px;">未勾选任何条件 = 无条件自动受理</div>
-                </div>
-              </div>
               <div class="form-item" style="margin:0;grid-column:span 2;"><label class="form-label">验收模板</label><select class="form-control" id="teTypeTpl"><option value="">请选择验收模板</option><option>故障维修标准模板</option><option>现场救援模板</option><option>保养清单</option><option>软件复诊模板</option><option>外观验收</option><option>批改流程模板</option><option>转站流程模板</option><option>通用验收模板</option><option>暂无模板</option></select></div>
               <div class="form-item" style="margin:0;display:flex;align-items:center;gap:10px;">
                 <label style="font-size:12px;color:#555;font-weight:500;margin:0;">启用状态</label>
@@ -1001,17 +988,62 @@
             </div>
           </div>
           <div class="detail-card">
-            <div class="section-title" style="margin-top:0;">主状态流程</div>
-            <div id="teMasterList" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:32px;"></div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <input class="form-control" id="teMasterInput" placeholder="输入主状态名称后按回车或点击添加" style="height:32px;flex:1;max-width:360px;">
-              <button class="btn btn-default" style="height:32px;white-space:nowrap;" onclick="addTeStatus('master')">+ 添加</button>
-            </div>
-          </div>
-          <div class="detail-card">
             <div class="section-title" style="margin-top:0;">环节子节点配置</div>
             <div style="font-size:12px;color:#888;margin-bottom:12px;">为每个主状态阶段配置子节点步骤，受理后将按此自动生成子单</div>
             <div id="tePhasesContainer" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+            <!-- 新增任务弹窗 -->
+            <div id="addPhaseNodeModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+              <div style="background:#fff;border-radius:8px;width:480px;max-height:80vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+                <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
+                  <span id="addPhaseModalTitle" style="font-size:15px;font-weight:600;color:#333;">新增任务</span>
+                  <span onclick="closeAddPhaseNodeModal()" style="cursor:pointer;color:#999;font-size:20px;line-height:1;">×</span>
+                </div>
+                <div style="padding:16px 20px;">
+                  <div style="margin-bottom:12px;">
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">任务名称 <span style="color:#ff4d4f;">*</span></label>
+                    <input id="addPhaseTaskInput" type="text" placeholder="请输入任务名称" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;">
+                  </div>
+                  <div style="margin-bottom:12px;">
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">状态名称</label>
+                    <input id="addPhaseSubInput" type="text" placeholder="默认与任务名称相同" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;">
+                  </div>
+                  <div style="margin-bottom:12px;">
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">任务描述</label>
+                    <textarea id="addPhaseDescInput" placeholder="请输入任务描述" rows="3" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;resize:vertical;"></textarea>
+                  </div>
+                  <div style="margin-bottom:12px;">
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">责任人绑定</label>
+                    <select id="addPhaseExecutorSelect" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;">
+                      <option value="">未指定</option>
+                      <option value="服务站主管">服务站主管</option>
+                      <option value="技师组长">技师组长</option>
+                      <option value="值班技师">值班技师</option>
+                      <option value="配件专员">配件专员</option>
+                      <option value="调度专员">调度专员</option>
+                      <option value="质检专员">质检专员</option>
+                    </select>
+                  </div>
+                  <div style="margin-bottom:16px;">
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">SLA 设置</label>
+                    <select id="addPhaseSlaSelect" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;">
+                      <option value="">无SLA要求</option>
+                      <option value="30min">30分钟</option>
+                      <option value="1h">1小时</option>
+                      <option value="2h">2小时</option>
+                      <option value="4h">4小时</option>
+                      <option value="8h">8小时</option>
+                      <option value="24h">24小时</option>
+                      <option value="48h">48小时</option>
+                    </select>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button onclick="closeAddPhaseNodeModal()" style="padding:6px 16px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;cursor:pointer;background:#fff;">取消</button>
+                    <button onclick="confirmAddPhaseNode()" style="padding:6px 16px;border:none;border-radius:4px;font-size:13px;cursor:pointer;background:#1890ff;color:#fff;">确定</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1358,82 +1390,82 @@ const flowTemplates = {
     master: ['待受理','维修中','待验收','验收驳回','已完成'],
     sub: ['待服务站接单','服务站诊断中','待配件','待预约','已预约','已到场','维修开始','维修完成'],
     phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工'},
-      {task:'故障诊断',sub:'服务站诊断中',desc:'服务站技师对故障进行诊断分析'},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件'},
-      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间'},
-      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师'},
-      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到'},
-      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障'},
-      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果'}
+      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'故障诊断',sub:'服务站诊断中',desc:'服务站技师对故障进行诊断分析',executor:'',sla:''},
+      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
+      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间',executor:'',sla:''},
+      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师',executor:'',sla:''},
+      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果',executor:'',sla:''}
     ]}
   },
   '现场救援': {
     master: ['待受理','维修中','已完成'],
     sub: ['已派单','技师出发','已到场','救援处理中','救援完成'],
     phases: {'维修中':[
-      {task:'派单调度',sub:'已派单',desc:'调度中心派单给救援技师'},
-      {task:'技师出发',sub:'技师出发',desc:'救援技师出发前往现场'},
-      {task:'到场救援',sub:'已到场',desc:'技师到达现场开始救援'},
-      {task:'救援处理',sub:'救援处理中',desc:'执行现场救援处理'},
-      {task:'救援完成',sub:'救援完成',desc:'完成救援并确认车辆状态'}
+      {task:'派单调度',sub:'已派单',desc:'调度中心派单给救援技师',executor:'',sla:''},
+      {task:'技师出发',sub:'技师出发',desc:'救援技师出发前往现场',executor:'',sla:''},
+      {task:'到场救援',sub:'已到场',desc:'技师到达现场开始救援',executor:'',sla:''},
+      {task:'救援处理',sub:'救援处理中',desc:'执行现场救援处理',executor:'',sla:''},
+      {task:'救援完成',sub:'救援完成',desc:'完成救援并确认车辆状态',executor:'',sla:''}
     ]}
   },
   '周期保养': {
     master: ['待受理','维修中','待验收','验收驳回','已完成'],
     sub: ['待服务站接单','服务站诊断中','待配件','待预约','已预约','已到场','保养开始','保养完成'],
     phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工'},
-      {task:'保养诊断',sub:'服务站诊断中',desc:'对车辆进行保养前诊断'},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件'},
-      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间'},
-      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师'},
-      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到'},
-      {task:'保养执行',sub:'保养开始',desc:'执行车辆保养操作'},
-      {task:'保养完成',sub:'保养完成',desc:'完成保养并提交结果'}
+      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'保养诊断',sub:'服务站诊断中',desc:'对车辆进行保养前诊断',executor:'',sla:''},
+      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
+      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间',executor:'',sla:''},
+      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师',executor:'',sla:''},
+      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'保养执行',sub:'保养开始',desc:'执行车辆保养操作',executor:'',sla:''},
+      {task:'保养完成',sub:'保养完成',desc:'完成保养并提交结果',executor:'',sla:''}
     ]}
   },
   '软件复诊': {
     master: ['待受理','复诊中','待验收','验收驳回','已完成'],
     sub: ['待接单','日志收集中','已升级','结论已回传','完成'],
     phases: {'复诊中':[
-      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程'},
-      {task:'日志采集',sub:'日志收集中',desc:'采集车辆日志用于分析'},
-      {task:'升级研发',sub:'已升级',desc:'问题升级至研发团队处理'},
-      {task:'结论回传',sub:'结论已回传',desc:'研发结论回传并确认'},
-      {task:'复诊完成',sub:'完成',desc:'完成复诊流程'}
+      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程',executor:'',sla:''},
+      {task:'日志采集',sub:'日志收集中',desc:'采集车辆日志用于分析',executor:'',sla:''},
+      {task:'升级研发',sub:'已升级',desc:'问题升级至研发团队处理',executor:'',sla:''},
+      {task:'结论回传',sub:'结论已回传',desc:'研发结论回传并确认',executor:'',sla:''},
+      {task:'复诊完成',sub:'完成',desc:'完成复诊流程',executor:'',sla:''}
     ]}
   },
   '外观损伤': {
     master: ['待受理','维修中','待验收','验收驳回','已完成'],
     sub: ['待服务站接单','损伤评估中','待配件','维修开始','维修完成'],
     phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工'},
-      {task:'损伤评估',sub:'损伤评估中',desc:'评估车辆外观损伤情况'},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件'},
-      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障'},
-      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果'}
+      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'损伤评估',sub:'损伤评估中',desc:'评估车辆外观损伤情况',executor:'',sla:''},
+      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
+      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果',executor:'',sla:''}
     ]}
   },
   '车辆批改': {
     master: ['待受理','维修中','已完成'],
     sub: ['待接单','批改执行中','批改完成'],
     phases: {'维修中':[
-      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程'},
-      {task:'批改执行',sub:'批改执行中',desc:'执行车辆批改操作'},
-      {task:'批改完成',sub:'批改完成',desc:'完成批改并提交结果'}
+      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程',executor:'',sla:''},
+      {task:'批改执行',sub:'批改执行中',desc:'执行车辆批改操作',executor:'',sla:''},
+      {task:'批改完成',sub:'批改完成',desc:'完成批改并提交结果',executor:'',sla:''}
     ]}
   },
   '转站需求': {
     master: ['待受理','转运中','已完成'],
     sub: ['待调度','调度确认','车辆装载','运输中','已到达目标站','完成交接'],
     phases: {'转运中':[
-      {task:'调度安排',sub:'待调度',desc:'安排转运调度计划'},
-      {task:'调度确认',sub:'调度确认',desc:'确认调度方案'},
-      {task:'车辆装载',sub:'车辆装载',desc:'车辆装载到运输车'},
-      {task:'运输转运',sub:'运输中',desc:'运输中转至目标站'},
-      {task:'到达目标站',sub:'已到达目标站',desc:'到达目标服务站'},
-      {task:'交接完成',sub:'完成交接',desc:'完成车辆交接'}
+      {task:'调度安排',sub:'待调度',desc:'安排转运调度计划',executor:'',sla:''},
+      {task:'调度确认',sub:'调度确认',desc:'确认调度方案',executor:'',sla:''},
+      {task:'车辆装载',sub:'车辆装载',desc:'车辆装载到运输车',executor:'',sla:''},
+      {task:'运输转运',sub:'运输中',desc:'运输中转至目标站',executor:'',sla:''},
+      {task:'到达目标站',sub:'已到达目标站',desc:'到达目标服务站',executor:'',sla:''},
+      {task:'交接完成',sub:'完成交接',desc:'完成车辆交接',executor:'',sla:''}
     ]}
   }
 };
@@ -2421,6 +2453,8 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
     var taskName = node.task || node;
     var subName  = node.sub  || node;
     var descText = node.desc || '';
+    var executorText = node.executor || '';
+    var slaText = node.sla || '';
     var isDone = i < curIdx;
     var isCur  = i === curIdx;
     var dotCls    = 'timeline-dot'+(isDone?' done':isCur?' current':'');
@@ -2452,6 +2486,8 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
         '<span class="'+textCls+'">'+taskName+'</span>'+
       '</div>'+
       (descText ? '<div style="font-size:11px;color:#888;margin-top:1px;">'+descText+'</div>' : '')+
+      (executorText ? '<span style="display:inline-block;font-size:10px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:0 4px;margin-top:2px;margin-right:4px;">负责人: '+executorText+'</span>' : '')+
+      (slaText ? '<span style="display:inline-block;font-size:10px;color:#fa8c16;background:#fff7e6;border-radius:3px;padding:0 4px;margin-top:2px;">SLA: '+slaText+'</span>' : '')+
       metaHtml+
       detailHtml+
     '</div></div>';
@@ -3490,17 +3526,10 @@ function openTypeAddModal(){
   document.getElementById('teTypeName').value = '';
   document.getElementById('teTypeCode').value = '';
   document.getElementById('teTypePri').value = 'P2';
-  document.getElementById('teTypeSub').value = '是';
   document.getElementById('teTypeTpl').value = '';
   document.getElementById('teTypeEnabled').checked = true;
-  document.getElementById('teTypeAutoAccept').value = '否';
-  document.getElementById('teAutoPri0').checked = false;
-  document.getElementById('teAutoInfoComplete').checked = false;
-  document.getElementById('teAutoHasPhoto').checked = false;
-  toggleAutoAcceptDetail();
   _teMasterSteps = ['待受理','维修中','已完成'];
-  _tePhases = {'维修中':[{task:'待接单',sub:'待接单',desc:''},{task:'处理中',sub:'处理中',desc:''},{task:'处理完成',sub:'处理完成',desc:''}]};
-  renderTeStatusTags();
+  _tePhases = {'维修中':[{task:'待接单',sub:'待接单',desc:'',executor:'',sla:''},{task:'处理中',sub:'处理中',desc:'',executor:'',sla:''},{task:'处理完成',sub:'处理完成',desc:'',executor:'',sla:''}]};
   renderTePhases();
   document.getElementById('typeEditPageTitle').textContent = '新增工单类型';
   showFormPage('page-type-edit');
@@ -3548,8 +3577,6 @@ function initTypeTable() {
     var pri  = typePriMap[t] || 'P2';
     var priCls = pri==='P0'?'tag-p0':pri==='P1'?'tag-p1':'tag-p2';
     var sub  = typeSubMap[t] || '是';
-    var autoAccept = _typeAutoAcceptMap[t] || '否';
-    var autoTag = autoAccept === '是' ? '<span class="tag tag-done">自动</span>' : '<span class="tag tag-rejected">手动</span>';
     var tpl  = typeTplMap[t] || '—';
     var steps = '';
     var phases = flowTemplates[t].phases;
@@ -3676,20 +3703,10 @@ var _typePriMap = {
   '故障维修':'P1','现场救援':'P0','周期保养':'P2',
   '软件复诊':'P1','外观损伤':'P2','车辆批改':'P2','转站需求':'P1'
 };
-var _typeSubMap = {
-  '故障维修':'是','现场救援':'按需','周期保养':'是',
-  '软件复诊':'按需','外观损伤':'是','车辆批改':'否','转站需求':'否'
-};
 var _typeTplMap = {
   '故障维修':'故障维修标准模板','现场救援':'现场救援模板','周期保养':'保养清单',
   '软件复诊':'软件复诊模板','外观损伤':'外观验收','车辆批改':'批改流程模板','转站需求':'转站流程模板'
 };
-
-function toggleAutoAcceptDetail() {
-  var val = document.getElementById('teTypeAutoAccept').value;
-  var detail = document.getElementById('autoAcceptDetail');
-  if (detail) detail.style.display = val === '是' ? 'block' : 'none';
-}
 
 function openTypeEditModal(typeName) {
   _typeEditKey = typeName;
@@ -3697,27 +3714,19 @@ function openTypeEditModal(typeName) {
   document.getElementById('teTypeName').value = typeName;
   document.getElementById('teTypeCode').value = _typeCodeMap[typeName] || typeName.toUpperCase();
   document.getElementById('teTypePri').value = _typePriMap[typeName] || 'P2';
-  document.getElementById('teTypeSub').value = _typeSubMap[typeName] || '是';
   document.getElementById('teTypeTpl').value = _typeTplMap[typeName] || '';
   document.getElementById('teTypeEnabled').checked = _typeEnabledMap[typeName] !== false;
-  document.getElementById('teTypeAutoAccept').value = _typeAutoAcceptMap[typeName] || '否';
-  var cond = _typeAutoCondMap[typeName] || {};
-  document.getElementById('teAutoPri0').checked = !!cond.pri0;
-  document.getElementById('teAutoInfoComplete').checked = !!cond.infoComplete;
-  document.getElementById('teAutoHasPhoto').checked = !!cond.hasPhoto;
-  toggleAutoAcceptDetail();
   _teMasterSteps = flow.master.slice();
   // 加载 phases 数据，深拷贝
   _tePhases = {};
   if (flow.phases) {
     Object.keys(flow.phases).forEach(function(k) {
       _tePhases[k] = flow.phases[k].map(function(n) {
-        if (n && typeof n === 'object') return {task: n.task, sub: n.sub, desc: n.desc || ''};
+        if (n && typeof n === 'object') return {task: n.task, sub: n.sub, desc: n.desc || '', executor: n.executor || '', sla: n.sla || ''};
         return {task: n, sub: n, desc: ''};
       });
     });
   }
-  renderTeStatusTags('master');
   renderTePhases();
   document.getElementById('typeEditPageTitle').textContent = '编辑工单类型 · ' + typeName;
   showFormPage('page-type-edit');
@@ -3727,7 +3736,6 @@ function openTypeEditModal(typeName) {
 function renderTePhases() {
   var container = document.getElementById('tePhasesContainer');
   if (!container) return;
-  // 找出需要配置子节点的主状态阶段（非"待受理"、"已完成"、"受理驳回"等端点状态）
   var actionablePhases = _teMasterSteps.filter(function(s) {
     return s !== '待受理' && s !== '已完成' && s !== '受理驳回';
   });
@@ -3735,53 +3743,86 @@ function renderTePhases() {
   actionablePhases.forEach(function(phase) {
     var nodes = _tePhases[phase] || [];
     var phaseColor = phase === '维修中' ? '#1890ff' : phase === '复诊中' ? '#722ed1' : phase === '转运中' ? '#fa8c16' : phase === '待验收' ? '#52c41a' : '#1890ff';
-    html += '<div style="border:1px solid #f0f0f0;border-radius:8px;padding:12px 14px;background:#fafafa;">';
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
-    html += '<span style="font-size:13px;font-weight:600;color:'+phaseColor+';">'+phase+'</span>';
-    html += '<span style="font-size:11px;color:#999;">'+nodes.length+' 个任务</span>';
+    html += '<div style="border:1px solid #e8e8e8;border-radius:8px;margin-bottom:12px;overflow:hidden;">';
+    // 阶段标题栏
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,'+phaseColor+'11,'+phaseColor+'22);border-bottom:1px solid #e8e8e8;">';
+    html += '<div style="display:flex;align-items:center;gap:8px;">';
+    html += '<span style="width:4px;height:16px;border-radius:2px;background:'+phaseColor+';display:inline-block;"></span>';
+    html += '<span style="font-size:14px;font-weight:600;color:'+phaseColor+';">'+phase+'</span>';
+    html += '<span style="font-size:11px;color:#999;background:#f5f5f5;border-radius:10px;padding:1px 8px;">'+nodes.length+' 个任务</span>';
     html += '</div>';
+    html += '<button onclick="openAddPhaseNodeModal(\''+phase+'\')" style="border:1px dashed '+phaseColor+';color:'+phaseColor+';background:#fff;border-radius:4px;padding:3px 10px;font-size:12px;cursor:pointer;">+ 新增任务</button>';
+    html += '</div>';
+    // 任务列表
+    if (nodes.length === 0) {
+      html += '<div style="padding:20px;text-align:center;color:#bbb;font-size:12px;">暂无任务，点击上方新增</div>';
+    } else {
+      nodes.forEach(function(node, idx) {
+        var isObj = node && typeof node === 'object';
+        var taskName = isObj ? (node.task || '') : node;
+        var subName = isObj ? (node.sub || '') : node;
+        var descText = isObj ? (node.desc || '') : '';
+        var executor = isObj ? (node.executor || '') : '';
+        var sla = isObj ? (node.sla || '') : '';
+        html += '<div style="display:flex;align-items:flex-start;padding:10px 14px;border-bottom:1px solid #f5f5f5;gap:10px;">';
+        // 序号
+        html += '<span style="min-width:22px;height:22px;border-radius:50%;background:'+phaseColor+';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;margin-top:2px;">'+(idx+1)+'</span>';
+        // 信息区
+        html += '<div style="flex:1;min-width:0;">';
+        html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">';
+        html += '<span style="font-size:13px;font-weight:600;color:#333;">'+taskName+'</span>';
+        html += '<span style="font-size:11px;color:#fff;background:#52c41a;border-radius:3px;padding:1px 6px;">'+subName+'</span>';
+        if (executor) html += '<span style="font-size:11px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:1px 6px;">负责人: '+executor+'</span>';
+        if (sla) html += '<span style="font-size:11px;color:#fa8c16;background:#fff7e6;border-radius:3px;padding:1px 6px;">SLA: '+sla+'</span>';
+        html += '</div>';
+        if (descText) html += '<div style="font-size:12px;color:#666;line-height:1.5;">'+descText+'</div>';
+        html += '</div>';
+        // 删除按钮
+        html += '<span onclick="removePhaseNode(\''+phase+'\','+idx+')" style="cursor:pointer;color:#bbb;font-size:16px;line-height:1;padding:4px;" title="删除">\u00d7</span>';
+        html += '</div>';
+      });
+    }
     html += '</div>';
   });
   container.innerHTML = html;
-  // 绑定 Enter 键
-  actionablePhases.forEach(function(phase) {
-    var inp = document.getElementById('phaseInput-' + phase);
-    if (inp) {
-      inp.onkeydown = function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); addPhaseNode(phase); }
-      };
-    }
-    var subInp = document.getElementById('phaseSubInput-' + phase);
-    if (subInp) {
-      subInp.onkeydown = function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); addPhaseNode(phase); }
-      };
-    }
-    var descInp = document.getElementById('phaseDescInput-' + phase);
-    if (descInp) {
-      descInp.onkeydown = function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); addPhaseNode(phase); }
-      };
-    }
-  });
+}
+
+// 当前新增任务的目标阶段
+var _addPhaseTarget = '';
+
+function openAddPhaseNodeModal(phase) {
+  _addPhaseTarget = phase;
+  document.getElementById('addPhaseTaskInput').value = '';
+  document.getElementById('addPhaseSubInput').value = '';
+  document.getElementById('addPhaseDescInput').value = '';
+  document.getElementById('addPhaseExecutorSelect').value = '';
+  document.getElementById('addPhaseSlaSelect').value = '';
+  document.getElementById('addPhaseModalTitle').textContent = '新增任务 · ' + phase;
+  document.getElementById('addPhaseNodeModal').style.display = 'flex';
+}
+
+function closeAddPhaseNodeModal() {
+  document.getElementById('addPhaseNodeModal').style.display = 'none';
+  _addPhaseTarget = '';
+}
+
+function confirmAddPhaseNode() {
+  var taskVal = document.getElementById('addPhaseTaskInput').value.trim();
+  var subVal = document.getElementById('addPhaseSubInput').value.trim();
+  var descVal = document.getElementById('addPhaseDescInput').value.trim();
+  var executorVal = document.getElementById('addPhaseExecutorSelect').value;
+  var slaVal = document.getElementById('addPhaseSlaSelect').value;
+  if (!taskVal) { showToast('请填写任务名称','warning'); return; }
+  if (!subVal) subVal = taskVal;
+  if (!_tePhases[_addPhaseTarget]) _tePhases[_addPhaseTarget] = [];
+  _tePhases[_addPhaseTarget].push({task: taskVal, sub: subVal, desc: descVal, executor: executorVal, sla: slaVal});
+  closeAddPhaseNodeModal();
+  renderTePhases();
 }
 
 function addPhaseNode(phase) {
-  var inp = document.getElementById('phaseInput-' + phase);
-  var subInp = document.getElementById('phaseSubInput-' + phase);
-  var descInp = document.getElementById('phaseDescInput-' + phase);
-  if (!inp) return;
-  var taskVal = inp.value.trim();
-  var subVal  = subInp ? subInp.value.trim() : taskVal;
-  var descVal = descInp ? descInp.value.trim() : '';
-  if (!taskVal) return;
-  if (!subVal) subVal = taskVal;
-  if (!_tePhases[phase]) _tePhases[phase] = [];
-  _tePhases[phase].push({task: taskVal, sub: subVal, desc: descVal});
-  inp.value = '';
-  if (subInp) subInp.value = '';
-  if (descInp) descInp.value = '';
-  renderTePhases();
+  // 兼容旧调用，打开弹窗
+  openAddPhaseNodeModal(phase);
 }
 
 function removePhaseNode(phase, idx) {
@@ -3791,32 +3832,7 @@ function removePhaseNode(phase, idx) {
   }
 }
 
-function renderTeStatusTags(kind) {
-  var listId = 'teMasterList';
-  var arr = _teMasterSteps;
-  var container = document.getElementById(listId);
-  container.innerHTML = arr.map(function(s, i) {
-    return '<span style="display:inline-flex;align-items:center;gap:4px;background:#f0f7ff;border:1px solid #91d5ff;color:#1890ff;border-radius:4px;padding:3px 8px;font-size:12px;">'
-      + s
-      + '<span onclick="removeTeStatus('+i+')" style="cursor:pointer;color:#bbb;margin-left:2px;line-height:1;font-size:14px;" title="删除">×</span>'
-      + '</span>';
-  }).join('');
-}
 
-function addTeStatus() {
-  var inp = document.getElementById('teNewStatus');
-  if (!inp || !inp.value.trim()) return;
-  _teMasterSteps.push(inp.value.trim());
-  inp.value = '';
-  renderTeStatusTags('master');
-  renderTePhases();
-}
-
-function removeTeStatus(idx) {
-  _teMasterSteps.splice(parseInt(idx), 1);
-  renderTeStatusTags('master');
-  renderTePhases();
-}
 
 function saveTypeEdit() {
   var typeName = _typeEditKey || document.getElementById('teTypeName').value.trim();
@@ -3842,7 +3858,7 @@ function saveTypeEdit() {
   flow.phases = {};
   Object.keys(_tePhases).forEach(function(k) {
     flow.phases[k] = _tePhases[k].map(function(n) {
-      return {task: n.task, sub: n.sub, desc: n.desc || ''};
+      return {task: n.task, sub: n.sub, desc: n.desc || '', executor: n.executor || '', sla: n.sla || ''};
     });
   });
   initTypeTable();
