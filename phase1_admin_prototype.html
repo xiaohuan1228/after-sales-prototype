@@ -36,7 +36,7 @@
   .page-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #111; }
 
   /* ===== stat-card 升级 ===== */
-  .stat-cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 16px; }
   .stat-card { background: #fff; padding: 16px 16px 14px; border-radius: 8px; cursor: pointer; border: 1.5px solid transparent; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; }
   .stat-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:8px 0 0 8px; background: #e8e8e8; transition: background 0.2s; }
   .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
@@ -298,6 +298,287 @@
   .cost-del-btn:hover { background: #fff1f0; }
   .cost-add-btn { color: #1890ff; }
   .cost-add-btn:hover { background: #e6f7ff; }
+
+  /* ===== 京东物流参考风格：蓝色顶栏 + 白色业务菜单 + 轻量表格 ===== */
+  body { background:#eef0f4; color:#1f2937; }
+  .layout { background:#eef0f4; }
+  .sidebar {
+    width: 206px;
+    background:#fff;
+    color:#1f2937;
+    padding:0 0 14px;
+    box-shadow:2px 0 10px rgba(15,23,42,0.08);
+    border-right:1px solid #e5e7eb;
+    z-index:20;
+  }
+  .logo {
+    height:56px;
+    padding:0 16px;
+    background:#2f6bed;
+    color:#fff;
+    border-bottom:none;
+    font-size:15px;
+    letter-spacing:0;
+  }
+  .logo-icon {
+    background:#fff;
+    color:#2f6bed;
+    border-radius:4px;
+    font-weight:800;
+  }
+  .nav-item {
+    color:#475569;
+    margin:3px 10px;
+    padding:10px 12px;
+    border-radius:4px;
+    font-size:13px;
+  }
+  .nav-item:hover { background:#f3f7ff; color:#2f6bed; }
+  .nav-item.active {
+    background:#eaf1ff;
+    color:#2f6bed;
+    box-shadow:none;
+    font-weight:600;
+  }
+  .nav-item.active::before {
+    left:-10px;
+    width:3px;
+    height:22px;
+    background:#2f6bed;
+    border-radius:0 3px 3px 0;
+  }
+  .nav-badge {
+    background:#ff4d4f;
+    border-radius:9px;
+    box-shadow:none;
+    animation:none;
+  }
+  .main { background:#eef0f4; }
+  .header {
+    height:56px;
+    background:#2f6bed;
+    color:#fff;
+    padding:0 20px 0 28px;
+    box-shadow:0 1px 0 rgba(255,255,255,0.12);
+  }
+  .breadcrumb,
+  .breadcrumb span,
+  .header span { color:rgba(255,255,255,0.94) !important; }
+  .header-notif {
+    background:rgba(255,255,255,0.14);
+    color:#fff;
+  }
+  .header-notif:hover { background:rgba(255,255,255,0.24); }
+  .avatar {
+    background:rgba(255,255,255,0.2);
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.32);
+  }
+  .content { padding:18px 20px 24px; background:#eef0f4; }
+  .page-title {
+    margin-bottom:12px;
+    font-size:18px;
+    color:#111827;
+  }
+  .filter-bar,
+  .table-wrap,
+  .config-tabs,
+  .detail-card,
+  .detail-side-card,
+  .detail-page-header,
+  .stat-card {
+    border-radius:4px;
+    box-shadow:none;
+    border:1px solid #e8edf5;
+  }
+  .filter-bar {
+    padding:16px;
+    gap:12px;
+    background:#fff;
+    position:relative;
+    top:auto;
+  }
+  .filter-bar input,
+  .filter-bar select,
+  .form-control,
+  .cascader-trigger {
+    border-radius:3px;
+    border-color:#d9dee8;
+    background:#fff;
+  }
+  .filter-bar input:focus,
+  .filter-bar select:focus,
+  .form-control:focus,
+  .cascader-trigger.open {
+    border-color:#2f6bed;
+    box-shadow:0 0 0 2px rgba(47,107,237,0.10);
+  }
+  .stat-cards {
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    gap:10px;
+  }
+  .stat-card {
+    padding:13px 14px 12px;
+    background:#fff;
+    transition:box-shadow .18s, border-color .18s, transform .18s;
+  }
+  .stat-card:hover {
+    transform:none;
+    box-shadow:0 6px 16px rgba(15,23,42,0.08);
+  }
+  .stat-card.active {
+    border-color:#2f6bed;
+    background:#f4f8ff;
+    box-shadow:none;
+  }
+  .stat-card.active::before,
+  .stat-card::before { border-radius:4px 0 0 4px; }
+  .stat-value { font-size:24px; color:#111827; }
+  .stat-label {
+    color:#64748b;
+    text-transform:none;
+    letter-spacing:0;
+    font-size:12px;
+  }
+  .btn {
+    height:32px;
+    border-radius:3px;
+    font-weight:500;
+  }
+  .btn-primary { background:#2f6bed; }
+  .btn-primary:hover { background:#1f5be3; }
+  .btn-default { background:#fff; border-color:#d9dee8; }
+  th {
+    background:#f3f6fb;
+    color:#334155;
+    border-bottom:1px solid #e5eaf2;
+    padding:11px 12px;
+  }
+  td {
+    padding:11px 12px;
+    border-bottom:1px solid #eef2f7;
+    color:#334155;
+  }
+  tbody tr:nth-child(even) { background:#fafbfd; }
+  tbody tr:hover { background:#edf5ff; }
+  td.col-action,
+  th.col-action { background:inherit; }
+  .tab-nav { background:#fff; }
+  .tab-item.active {
+    color:#2f6bed;
+    border-bottom-color:#2f6bed;
+  }
+  .tag {
+    border-radius:10px;
+    padding:1px 8px;
+  }
+  .drawer-header,
+  .modal-header {
+    background:#f8fafc;
+  }
+  .action-bar {
+    background:rgba(255,255,255,0.96);
+  }
+
+  /* 克制版视觉：单主色、弱化状态色，避免页面显得花 */
+  :root { --brand:#2f6bed; --ink:#1f2937; --muted:#64748b; --line:#e5e7eb; --soft:#f7f9fc; --risk:#d93025; --warn:#9a6a13; }
+  body, .layout, .main, .content { background:#f1f3f6; color:var(--ink); }
+  .header, .logo { background:var(--brand); }
+  .sidebar { box-shadow:none; border-right:1px solid var(--line); }
+  .nav-item { color:#475569; }
+  .nav-item:hover { background:#f6f8fc; color:var(--brand); }
+  .nav-item.active { background:#eef4ff; color:var(--brand); }
+  .nav-item.active::before { background:var(--brand); }
+  .filter-bar, .table-wrap, .config-tabs, .detail-card, .detail-side-card, .detail-page-header, .stat-card, .modal, .drawer {
+    border-color:#e6ebf2;
+    box-shadow:none;
+  }
+  .stat-card::before { background:#d8dee8; }
+  .stat-card.warning::before,
+  .stat-card.danger::before,
+  .stat-card.success::before,
+  .stat-card.purple::before { background:#d8dee8; }
+  .stat-card.active::before { background:var(--brand); }
+  .stat-card:hover { box-shadow:0 4px 12px rgba(15,23,42,0.06); }
+  .stat-value { color:#111827; }
+  .btn-primary, .btn-success { background:var(--brand); color:#fff; }
+  .btn-primary:hover, .btn-success:hover { background:#245bd8; }
+  .btn-danger { background:#fff; color:var(--risk); border:1px solid #efc9c5; }
+  .btn-danger:hover { background:#fff7f6; color:var(--risk); }
+  .tag,
+  .tag-status,
+  .tag-pending,
+  .tag-doing,
+  .tag-verify,
+  .tag-done,
+  .tag-rejected,
+  .tag-p0,
+  .tag-p1,
+  .tag-p2 {
+    background:#f3f4f6 !important;
+    color:#475569 !important;
+    border:1px solid #e5e7eb !important;
+    border-radius:10px;
+  }
+  .tag-status,
+  .tag-doing { background:#eef4ff !important; color:var(--brand) !important; border-color:#d6e4ff !important; }
+  .tag-pending { background:#fff8e6 !important; color:var(--warn) !important; border-color:#f0dfad !important; }
+  .tag-rejected { background:#fff1f0 !important; color:var(--risk) !important; border-color:#f3c5c1 !important; }
+  .sla-warn { color:var(--risk); }
+  th { background:#f6f8fb; color:#475569; }
+  tbody tr:nth-child(even) { background:#fbfcfe; }
+  tbody tr:hover { background:#f3f7ff; }
+  .step-circle.done, .timeline-dot.done { background:#94a3b8; border-color:#94a3b8; color:#fff; }
+  .step-circle.current, .timeline-dot.current { background:var(--brand); border-color:var(--brand); color:#fff; box-shadow:0 0 0 3px rgba(47,107,237,0.12); }
+  .step-label.current-label, .timeline-status.current { color:var(--brand); }
+  .step-line.done { background:#cbd5e1; }
+  .content [style*="#52c41a"],
+  .content [style*="#722ed1"],
+  .content [style*="#fa8c16"],
+  .content [style*="#389e0d"],
+  .content [style*="#d48806"] { color:#64748b !important; }
+  .content [style*="background:#f6ffed"],
+  .content [style*="background:#f9f0ff"],
+  .content [style*="background:#fff7e6"],
+  .content [style*="background:#fffbe6"],
+  .content [style*="background:#e6f7ff"] {
+    background:#f3f4f6 !important;
+    border-color:#e5e7eb !important;
+  }
+  .content [style*="background:#fff1f0"] {
+    background:#fff7f6 !important;
+    border-color:#efc9c5 !important;
+  }
+  .stat-card[data-status="待验收"]::before { background:#18a058; }
+  .stat-card[data-status="待验收"].active { border-color:#18a058; background:#f0fff7; }
+  .stat-card[data-status="受理超时"],
+  .stat-card[data-status="验收驳回"] {
+    background:#fff;
+    border-color:#f1c7c2;
+  }
+  .stat-card[data-status="受理超时"]::before,
+  .stat-card[data-status="验收驳回"]::before {
+    background:#d93025;
+  }
+  .stat-card[data-status="受理超时"] .stat-value,
+  .stat-card[data-status="验收驳回"] .stat-value {
+    color:#d93025;
+  }
+  .stat-card[data-status="受理超时"] .stat-label,
+  .stat-card[data-status="验收驳回"] .stat-label {
+    color:#8f1d16;
+    font-weight:600;
+  }
+  .stat-card[data-status="受理超时"].active,
+  .stat-card[data-status="验收驳回"].active {
+    background:#fff;
+    border-color:#d93025;
+  }
+  .tag-verify { background:#e8fff4 !important; color:#078245 !important; border-color:#b7ebc6 !important; }
+  .tag-rejected { background:#f3f4f6 !important; color:#64748b !important; border-color:#e5e7eb !important; }
+  .tag-p0 { background:#fff1f0 !important; color:#d93025 !important; border-color:#f3c5c1 !important; }
+  .tag-p1 { background:#fff8e6 !important; color:#9a6a13 !important; border-color:#f0dfad !important; }
+  .tag-p2 { background:#eef8ee !important; color:#237a3b !important; border-color:#cbe7cf !important; }
 </style>
 </head>
 <body>
@@ -335,14 +616,17 @@
       <div id="page-workorder">
         <div class="page-title">工单管理</div>
         <div class="stat-cards" id="statCards">
-          <div class="stat-card warning" data-status="待受理" onclick="filterByCard(this,'待受理')">
-            <div class="stat-label">待受理</div><div class="stat-value" id="cnt-待受理">0</div>
+          <div class="stat-card warning" data-status="待分派" onclick="filterByCard(this,'待分派')">
+            <div class="stat-label">待分派</div><div class="stat-value" id="cnt-待分派">0</div>
           </div>
-          <div class="stat-card" data-status="维修中" onclick="filterByCard(this,'维修中')">
-            <div class="stat-label">维修中</div><div class="stat-value" id="cnt-维修中">0</div>
+          <div class="stat-card danger" data-status="受理超时" onclick="filterByCard(this,'受理超时')">
+            <div class="stat-label">受理超时</div><div class="stat-value" id="cnt-受理超时">0</div>
+          </div>
+          <div class="stat-card" data-status="处理中" onclick="filterByCard(this,'处理中')">
+            <div class="stat-label">处理中</div><div class="stat-value" id="cnt-处理中">0</div>
           </div>
           <div class="stat-card purple" data-status="已升级" onclick="filterByCard(this,'已升级')">
-            <div class="stat-label">已升级</div><div class="stat-value" id="cnt-已升级">0</div>
+            <div class="stat-label">技术支持</div><div class="stat-value" id="cnt-已升级">0</div>
           </div>
           <div class="stat-card" data-status="待验收" onclick="filterByCard(this,'待验收')">
             <div class="stat-label">待验收</div><div class="stat-value" id="cnt-待验收">0</div>
@@ -370,8 +654,8 @@
             </div>
           </div>
           <select id="fType"><option value="">工单类型</option></select>
-          <select id="fStatus"><option value="">主状态</option><option>待受理</option><option>维修中</option><option>待验收</option><option>已完成</option><option>验收驳回</option></select>
-          <select id="fSub"><option value="">子状态</option><option>待服务站接单</option><option>服务站诊断中</option><option>已升级</option><option>待配件</option><option>已预约</option><option>维修开始</option><option>维修完成</option></select>
+          <select id="fStatus"><option value="">主状态</option><option>待分派</option><option>处理中</option><option>待验收</option><option>已完成</option><option>已关闭</option></select>
+          <select id="fSub"><option value="">子状态</option><option>待分派</option><option>待服务站受理</option><option>远程诊断中</option><option>备件确认中</option><option>待备件</option><option>备件已齐套</option><option>技术支持中</option><option>待预约上门</option><option>已预约</option><option>待到场</option><option>已到场</option><option>维修中</option><option>维修自检中</option><option>待提交维修结果</option><option>验收驳回</option><option>重新处理中</option><option>待站点验收</option><option>已归档</option><option>服务站拒绝关闭</option></select>
           <select id="fPri"><option value="">优先级</option><option>P0</option><option>P1</option><option>P2</option></select>
           <select id="fSrc"><option value="">来源</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option><option>运营巡检导入</option></select>
           <select id="fOem"><option value="">整车厂</option><option>长安凯程</option><option>东风柳汽</option><option>上汽大通</option></select>
@@ -406,9 +690,10 @@
       <!-- 保养管理 -->
       <div id="page-maint" class="hidden">
         <div class="page-title">保养管理</div>
-        <div class="stat-cards" style="grid-template-columns:repeat(4,1fr);" id="maintStatCards">
+        <div class="stat-cards" style="grid-template-columns:repeat(5,1fr);" id="maintStatCards">
           <div class="stat-card danger" data-mcard="overdue" onclick="filterMaintByCard(this,'overdue')"><div class="stat-label">已逾期</div><div class="stat-value" id="mcnt-overdue">0</div></div>
           <div class="stat-card warning" data-mcard="week" onclick="filterMaintByCard(this,'week')"><div class="stat-label">7天内待保养</div><div class="stat-value" id="mcnt-week">0</div></div>
+          <div class="stat-card" data-mcard="待客户确认" onclick="filterMaintByCard(this,'待客户确认')"><div class="stat-label">待客户确认</div><div class="stat-value" id="mcnt-待客户确认">0</div></div>
           <div class="stat-card" data-mcard="已提单" onclick="filterMaintByCard(this,'已提单')"><div class="stat-label">已提单</div><div class="stat-value" id="mcnt-已提单">0</div></div>
           <div class="stat-card success" data-mcard="done" onclick="filterMaintByCard(this,'done')"><div class="stat-label">本月已完成</div><div class="stat-value" id="mcnt-done">0</div></div>
         </div>
@@ -432,7 +717,7 @@
                     <div class="cascader-col" id="mhCascaderCol3"></div>
                   </div>
                 </div>
-                <select id="mhType"><option value="">保养类型</option><option>首保</option><option>小保</option><option>大保</option><option>季度点检</option></select>
+                <select id="mhType"><option value="">保养类型</option><option>首保</option><option>小保养</option><option>大保养</option></select>
                 <select id="mhResult"><option value="">结果</option><option>正常完成</option><option>发现问题</option></select>
                 <button class="btn btn-primary" onclick="applyMaintFilter()">筛选</button>
                 <button class="btn btn-default" onclick="resetMaintFilter()">重置</button>
@@ -442,7 +727,7 @@
                 <tbody id="maintHistBody"></tbody>
               </table></div>
             </div>
-            <div id="maint-plan">
+              <div id="maint-plan">
               <div class="filter-bar">
                 <input type="text" id="mpKw" placeholder="搜索车辆/站点">
                 <div class="cascader-wrap" id="mpCascaderWrap">
@@ -456,13 +741,15 @@
                     <div class="cascader-col" id="mpCascaderCol3"></div>
                   </div>
                 </div>
-                <select id="mpUrgency"><option value="">紧迫度</option><option>已逾期</option><option>7天内</option><option>30天内</option><option>30天以上</option><option>已提单</option></select>
+                <select id="mpType"><option value="">保养类型</option><option>首保</option><option>小保养</option><option>大保养</option></select>
+                <select id="mpStatus"><option value="">状态</option><option>待提醒</option><option>待客户确认</option><option>已提单</option></select>
+                <select id="mpUrgency"><option value="">紧迫度</option><option>已逾期</option><option>7天内</option><option>30天内</option><option>30天以上</option></select>
                 <button class="btn btn-primary" onclick="applyPlanFilter()">筛选</button>
                 <button class="btn btn-default" onclick="resetPlanFilter()">重置</button>
                 <button class="btn btn-default" style="margin-left:auto;" onclick="openMaintBatch()">批量生成工单</button>
               </div>
               <div class="table-wrap"><table>
-                <thead><tr><th><input type="checkbox" id="planCheckAll" onclick="toggleAllPlanCheck(this)"></th><th>车辆</th><th>站点</th><th>当前里程(km)</th><th>上次保养时间</th><th>上次里程(km)</th><th>计划里程(km)</th><th>预计日期</th><th>关联工单</th><th>紧迫度</th><th class="col-action">操作</th></tr></thead>
+                <thead><tr><th><input type="checkbox" id="planCheckAll" onclick="toggleAllPlanCheck(this)"></th><th>车辆</th><th>站点</th><th>当前里程(km)</th><th>上次保养时间</th><th>上次里程(km)</th><th>保养类型</th><th>计划里程(km)</th><th>预计日期</th><th>状态</th><th>关联工单</th><th>紧迫度</th><th class="col-action">操作</th></tr></thead>
                 <tbody id="maintPlanBody"></tbody>
               </table></div>
             </div>
@@ -542,6 +829,8 @@
             <div class="tab-item" onclick="switchTab(this,'tab-sla')">SLA 与升级</div>
             <div class="tab-item" onclick="switchTab(this,'tab-station')">服务站能力</div>
             <div class="tab-item" onclick="switchTab(this,'tab-verify')">验收清单</div>
+            <div class="tab-item" onclick="switchTab(this,'tab-maint-item')">保养项配置</div>
+            <div class="tab-item" onclick="switchTab(this,'tab-executor')">排班配置</div>
           </div>
           <div class="tab-content">
             <div id="tab-type">
@@ -551,7 +840,7 @@
               </div>
               <div class="table-wrap">
                 <table>
-                  <thead><tr><th>编码</th><th>类型名称</th><th>默认优先级</th><th>是否创建子单</th><th>自动受理</th><th>验收模板</th><th>流程步骤</th><th>状态</th><th>操作</th></tr></thead>
+                  <thead><tr><th>编码</th><th>类型名称</th><th>默认优先级</th><th>自动分派</th><th>流程步骤</th><th>验收模板</th><th>状态</th><th>操作</th></tr></thead>
                   <tbody id="typeBody"></tbody>
             </table>
               </div>
@@ -567,6 +856,7 @@
                       <th>工单类型</th>
                       <th>时段规则</th>
                       <th>截止时刻</th>
+                      <th>接单超时</th>
                       <th>超时升级动作</th>
                       <th>启用</th>
                       <th>操作</th>
@@ -576,14 +866,7 @@
                 </table>
               </div>
 
-              <!-- 通用升级配置 -->
-              <div class="section-title" style="margin-top:0;">通用升级阈值</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;max-width:700px;margin-bottom:20px;">
-                <div class="form-item" style="margin:0;"><label class="form-label">服务站未接单升级 (分钟)</label><input class="form-control" id="slaEscStation" value="30"></div>
-                <div class="form-item" style="margin:0;"><label class="form-label">复诊超时升级 (小时)</label><input class="form-control" id="slaEscRediag" value="4"></div>
-                <div class="form-item" style="margin:0;"><label class="form-label">P0 响应时限 (分钟)</label><input class="form-control" id="slaP0Min" value="15"></div>
-              </div>
-              <button class="btn btn-primary" onclick="saveSlaConfig()">保存配置</button>
+
             </div>
             <div id="tab-station" class="hidden">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div>服务站能力维护</div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12px;color:#666;">覆盖区域</span><div class="cascader-wrap" id="stCascaderWrap"><div class="cascader-trigger" id="stCascaderTrigger" onclick="toggleStCascader()" style="height:28px;min-width:160px;"><span id="stCascaderLabel" class="cascader-placeholder">省 / 市</span><span class="cascader-arrow">▾</span></div><div class="cascader-panel" id="stCascaderPanel"><div class="cascader-col" id="stCascaderCol1"></div><div class="cascader-col" id="stCascaderCol2"></div></div></div></div></div>
@@ -594,7 +877,7 @@
                 <div style="margin:8px 0 0 4px;">
                   <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;"><span style="color:#1890ff;font-weight:600;flex-shrink:0;">1.</span><div><b>地理围栏匹配</b><br><span style="color:#888;">服务站覆盖区域须包含工单站点所在城市/区域，不满足则剔除</span></div></div>
                   <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;"><span style="color:#1890ff;font-weight:600;flex-shrink:0;">2.</span><div><b>车型能力过滤</b><br><span style="color:#888;">服务站支持车型须包含工单车型，不满足则剔除</span></div></div>
-                  <div style="display:flex;align-items:flex-start;gap:6px;"><span style="color:#1890ff;font-weight:600;flex-shrink:0;">3.</span><div><b>负载与距离排序</b><br><span style="color:#888;">按维修中车辆数由少到多排序；负载数相同时，优先匹配与车辆所属站点距离更近的服务站</span></div></div>
+                  <div style="display:flex;align-items:flex-start;gap:6px;"><span style="color:#1890ff;font-weight:600;flex-shrink:0;">3.</span><div><b>距离优先排序</b><br><span style="color:#888;">按服务站与车辆所属站点的距离由近到远排序；距离相近（差距≤10km）时，优先推荐维修中车辆数更少（负载更低）的服务站</span></div></div>
                 </div>
                 <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #e0e0e0;color:#999;">若通过以上规则无候选服务站，工单标记"待推荐"，触发运营人工指派。</div>
               </div>
@@ -633,11 +916,18 @@
               </div>
             </div>
             <div id="tab-verify" class="hidden">
-              <!-- 模板 tab 导航 + 新增按钮 -->
-              <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding-bottom:0;">
-                <div style="display:flex;gap:0;flex-wrap:wrap;flex:1;" id="verifyTplNav"></div>
-                <button class="btn btn-primary" style="height:28px;font-size:12px;white-space:nowrap;margin-left:12px;margin-bottom:6px;align-self:center;" onclick="openAddTplModal()">+ 新增模板</button>
+              <!-- 一级分类导航：工单验收 | 保养验收 -->
+              <div style="display:flex;gap:0;border-bottom:2px solid #f0f0f0;margin-bottom:12px;">
+                <div id="verifyCatOrder" onclick="switchVerifyCat('order')" style="padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;color:#1890ff;border-bottom:2px solid #1890ff;margin-bottom:-2px;">工单验收</div>
+                <div id="verifyCatMaint" onclick="switchVerifyCat('maint')" style="padding:8px 20px;cursor:pointer;font-size:13px;font-weight:400;color:#888;border-bottom:2px solid transparent;margin-bottom:-2px;">保养验收</div>
               </div>
+              <!-- 工单验收区域 -->
+              <div id="verifyOrderArea">
+                <!-- 模板 tab 导航 + 新增按钮 -->
+                <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding-bottom:0;">
+                  <div style="display:flex;gap:0;flex-wrap:wrap;flex:1;" id="verifyTplNav"></div>
+                  <button class="btn btn-primary" style="height:28px;font-size:12px;white-space:nowrap;margin-left:12px;margin-bottom:6px;align-self:center;" onclick="openAddTplModal()">+ 新增模板</button>
+                </div>
               <div style="height:16px;"></div>
               <!-- 新增模板弹窗 -->
               <div id="addTplModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
@@ -660,6 +950,19 @@
                 <button class="btn btn-default" style="height:30px;font-size:12px;" onclick="openVerifyMobilePreview()">&#128241; 手机预览</button>
                 <button class="btn btn-primary" style="height:30px;font-size:12px;" onclick="openVerifyItemModal(-1)">+ 新增验收项</button>
               </div>
+              </div><!-- /verifyOrderArea -->
+              <!-- 保养验收区域 -->
+              <div id="verifyMaintArea" style="display:none;">
+                <div style="margin-bottom:12px;color:#666;font-size:13px;">保养验收清单根据保养类型自动关联保养项配置，支持配置是否需要拍照确认</div>
+                <!-- 保养类型 tab 导航 -->
+                <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding-bottom:0;">
+                  <div style="display:flex;gap:0;flex-wrap:wrap;flex:1;" id="verifyMaintTypeNav"></div>
+                </div>
+                <div style="height:12px;"></div>
+                <!-- 保养验收项列表 -->
+                <div style="margin-bottom:10px;"><span id="verifyMaintTypeTitle" style="font-size:13px;font-weight:600;color:#333;"></span></div>
+                <div id="verifyMaintItemList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;"></div>
+              </div><!-- /verifyMaintArea -->
               <!-- 手机预览弹窗 -->
               <!-- 手机预览弹窗 -->
               <div id="verifyMobileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(3px);" onclick="if(event.target===this)closeVerifyMobilePreview()">
@@ -763,13 +1066,106 @@
                 </div>
               </div>
             </div>
+            <div id="tab-maint-item" class="hidden">
+              <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                <div>维护保养项配置，按保养类型管理保养标题与保养项</div>
+                <button class="btn btn-primary" onclick="openMaintItemGroupAdd()">+ 新增保养类型</button>
+              </div>
+              <!-- 保养类型列表 -->
+              <div id="maintItemGroupList"></div>
+              <!-- 新增/编辑保养类型弹窗 -->
+              <div id="maintItemGroupModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:10px;padding:24px 28px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+                  <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:18px;" id="maintItemGroupModalTitle">新增保养类型</div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label required">保养类型名称</label>
+                    <input class="form-control" id="maintItemGroupName" placeholder="如：首保">
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="btn btn-default" onclick="closeMaintItemGroupModal()">取消</button>
+                    <button class="btn btn-primary" onclick="saveMaintItemGroup()">保存</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 保养项编辑弹窗 -->
+              <div id="maintItemEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:10px;padding:24px 28px;width:480px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+                  <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:18px;" id="maintItemEditModalTitle">新增保养项</div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label required">保养标题</label>
+                    <input class="form-control" id="maintItemEditTitle" placeholder="如：动力系统">
+                  </div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label required">保养项名称</label>
+                    <input class="form-control" id="maintItemEditName" placeholder="如：电机检查">
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="btn btn-default" onclick="closeMaintItemEditModal()">取消</button>
+                    <button class="btn btn-primary" onclick="saveMaintItemEdit()">保存</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 排班配置 -->
+            <div id="tab-executor" class="hidden">
+              <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                <div>配置车辆模块的排班人员，问题上报后根据日期与模块自动指派排班人员</div>
+                <button class="btn btn-primary" onclick="openExecutorModuleAdd()">+ 新增模块</button>
+              </div>
+              <div style="display:flex;gap:16px;">
+                <!-- 左侧：模块列表 -->
+                <div style="width:220px;flex-shrink:0;">
+                  <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px;">车辆模块</div>
+                  <div id="executorModuleList" style="display:flex;flex-direction:column;gap:2px;"></div>
+                </div>
+                <!-- 右侧：模块配置详情 -->
+                <div style="flex:1;min-width:0;">
+                  <div id="executorModuleDetail" style="color:#bbb;font-size:13px;padding:24px 0;">请选择左侧模块查看配置</div>
+                </div>
+              </div>
+              <!-- 新增/编辑模块弹窗 -->
+              <div id="executorModuleModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:10px;padding:24px 28px;width:400px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+                  <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:18px;" id="executorModuleModalTitle">新增车辆模块</div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label required">模块名称</label>
+                    <input class="form-control" id="executorModuleName" placeholder="如：动力系统">
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="btn btn-default" onclick="closeExecutorModuleModal()">取消</button>
+                    <button class="btn btn-primary" onclick="saveExecutorModule()">保存</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 新增/编辑负责人弹窗 -->
+              <div id="executorPersonModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:10px;padding:24px 28px;width:440px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+                  <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:18px;" id="executorPersonModalTitle">新增排班人员</div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label required">姓名</label>
+                    <input class="form-control" id="executorPersonName" placeholder="如：张工">
+                  </div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label">角色</label>
+                    <select class="form-control" id="executorPersonRole">
+                      <option value="技术支持">技术支持</option>
+                      <option value="主管">主管</option>
+                    </select>
+                  </div>
+                  <div class="form-item" style="margin-bottom:16px;">
+                    <label class="form-label">排班调度</label>
+                    <input class="form-control" id="executorPersonScheduler" placeholder="如：刘调度（模块级，保存后同步）">
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="btn btn-default" onclick="closeExecutorPersonModal()">取消</button>
+                    <button class="btn btn-primary" onclick="saveExecutorPerson()">保存</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- 新建工单页 -->
-      <!-- ======== 新建工单页 ======== -->
       <!-- ======== 新建工单页 ======== -->
       <div id="page-new-order" class="hidden">
         <div class="detail-page-header">
@@ -785,7 +1181,7 @@
               <div class="form-item" style="margin:0;grid-column:1/4;"><label class="form-label required">工单标题</label><input class="form-control" id="newTitle" placeholder="请输入工单标题，如：车辆定位漂移故障"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">车号</label><input class="form-control" id="newVehicleNo" placeholder="如 JDE6067" oninput="autoFillVehicle(this.value)"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="newType" onchange="onNewTypeChange()"><option value="">请选择</option></select></div>
-              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="newPri"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="newPri" onchange="onNewTypeChange()"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
               <div class="form-item" style="margin:0;"><label class="form-label">预计开始时间</label><input class="form-control" id="newPlanStart" type="datetime-local" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">预计结束时间</label><input class="form-control" id="newPlanEnd" type="datetime-local" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">推荐服务站</label><select class="form-control" id="newStation"><option value="">待推荐</option></select></div>
@@ -794,6 +1190,14 @@
               <div class="form-item" style="margin:0;"><label class="form-label required">所属站点</label><input class="form-control" id="newSite" placeholder="自动带出" readonly style="background:#f5f5f5;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">站点联系人</label><input class="form-control" id="newSiteContact" placeholder="自动带出" readonly style="background:#f5f5f5;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">站点联系电话</label><input class="form-control" id="newSitePhone" placeholder="自动带出" readonly style="background:#f5f5f5;"></div>
+              <div class="form-item" style="margin:0;">
+                <label class="form-label" style="margin-bottom:6px;">抄送人</label>
+                <div id="newCcTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;"></div>
+                <div style="display:flex;gap:8px;">
+                  <input class="form-control" id="newCcInput" placeholder="输入姓名后回车添加" style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();addCcTag('new');}">
+                  <button class="btn btn-default" style="height:32px;padding:0 12px;font-size:12px;" onclick="addCcTag('new')">添加</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="detail-card">
@@ -830,7 +1234,7 @@
               <div class="form-item" style="margin:0;grid-column:1/4;"><label class="form-label required">工单标题</label><input class="form-control" id="editTitle" placeholder="请输入工单标题"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">车号</label><input class="form-control" id="editVehicleNo" placeholder="如 JDE6067"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="editType" onchange="onEditTypeChange()"><option value="">请选择</option></select></div>
-              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="editPri"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="editPri" onchange="onEditTypeChange()"><option value="">请选择</option><option>P0</option><option>P1</option><option>P2</option></select></div>
               <div class="form-item" style="margin:0;"><label class="form-label">预计开始时间</label><input class="form-control" id="editPlanStart" type="datetime-local" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">预计结束时间</label><input class="form-control" id="editPlanEnd" type="datetime-local" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">推荐服务站</label><select class="form-control" id="editStation"><option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option><option>武汉外协</option><option>天津市冀津贸易有限公司</option></select></div>
@@ -839,6 +1243,14 @@
               <div class="form-item" style="margin:0;"><label class="form-label required">所属站点</label><input class="form-control" id="editSite" placeholder="所属站点"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">站点联系人</label><input class="form-control" id="editSiteContact" placeholder="自动带出" readonly style="background:#f5f5f5;"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">站点联系电话</label><input class="form-control" id="editSitePhone" placeholder="自动带出" readonly style="background:#f5f5f5;"></div>
+              <div class="form-item" style="margin:0;">
+                <label class="form-label" style="margin-bottom:6px;">抄送人</label>
+                <div id="editCcTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;"></div>
+                <div style="display:flex;gap:8px;">
+                  <input class="form-control" id="editCcInput" placeholder="输入姓名后回车添加" style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();addCcTag('edit');}">
+                  <button class="btn btn-default" style="height:32px;padding:0 12px;font-size:12px;" onclick="addCcTag('edit')">添加</button>
+                </div>
+              </div>
               <div class="form-item" style="margin:0;"><label class="form-label">来源</label><select class="form-control" id="editSrc"><option value="">请选择</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option><option>运营巡检导入</option></select></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">提报人</label><input class="form-control" id="editReporter" placeholder="姓名"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">手机号</label><input class="form-control" id="editPhone" placeholder="138****1234" maxlength="11"></div>
@@ -853,6 +1265,14 @@
               <div class="form-item" style="margin:0;"><label class="form-label">缺陷编号</label><input class="form-control" id="editOrderDefectNo" placeholder="如 DEF-2026-0033"></div>
               <div class="form-item" style="margin:0;"><label class="form-label">关联缺陷</label><input class="form-control" id="editOrderRelatedDefect" placeholder="如 DEF-2026-0031"></div>
             </div>
+          </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;display:flex;align-items:center;justify-content:space-between;">
+              <span>维修过程任务清单</span>
+              <button class="btn btn-default" style="height:26px;padding:0 10px;font-size:12px;" onclick="addEditTask()">新增任务</button>
+            </div>
+            <div style="font-size:12px;color:#888;margin-bottom:10px;">任务会同步到工单详情的 To Do List，用于服务站、技术支持、站点验收等多端状态展示。</div>
+            <div id="editTaskList" style="display:flex;flex-direction:column;gap:8px;"></div>
           </div>
         </div>
       </div>
@@ -912,7 +1332,7 @@
           <div class="detail-card">
             <div class="section-title" style="margin-top:0;">批量配置</div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 24px;">
-              <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="batchType" onchange="updateBatchPreview()"><option value="">请选择</option><option>故障维修</option><option>现场救援</option><option>周期保养</option><option>外观损伤</option><option>车辆批改</option><option>软件复诊</option><option>转站需求</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label required">工单类型</label><select class="form-control" id="batchType" onchange="updateBatchPreview()"><option value="">请选择</option><option>故障维修</option><option>现场救援</option><option>软件问题</option><option>车辆事故</option><option>周期保养</option><option>车辆批改</option><option>车辆整备</option></select></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">优先级</label><select class="form-control" id="batchPri" onchange="updateBatchPreview()"><option value="P1" selected>P1</option><option value="P0">P0</option><option value="P2">P2</option></select></div>
             </div>
           </div>
@@ -980,7 +1400,7 @@
               <div class="form-item" style="margin:0;"><label class="form-label required">类型名称</label><input class="form-control" id="teTypeName" placeholder="如 故障维修"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">编码</label><input class="form-control" id="teTypeCode" placeholder="如 REPAIR"></div>
               <div class="form-item" style="margin:0;"><label class="form-label required">默认优先级</label><select class="form-control" id="teTypePri"><option value="P0">P0</option><option value="P1" selected>P1</option><option value="P2">P2</option></select></div>
-              <div class="form-item" style="margin:0;grid-column:span 2;"><label class="form-label">验收模板</label><select class="form-control" id="teTypeTpl"><option value="">请选择验收模板</option><option>故障维修标准模板</option><option>现场救援模板</option><option>保养清单</option><option>软件复诊模板</option><option>外观验收</option><option>批改流程模板</option><option>转站流程模板</option><option>通用验收模板</option><option>暂无模板</option></select></div>
+              <div class="form-item" style="margin:0;"><label class="form-label">自动分派</label><select class="form-control" id="teTypeAutoDispatch"><option value="否">否</option><option value="是">是</option></select></div>
               <div class="form-item" style="margin:0;display:flex;align-items:center;gap:10px;">
                 <label style="font-size:12px;color:#555;font-weight:500;margin:0;">启用状态</label>
                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;margin:0;"><input type="checkbox" id="teTypeEnabled" checked style="accent-color:#1890ff;width:15px;height:15px;"> 启用</label>
@@ -1013,15 +1433,11 @@
                     <textarea id="addPhaseDescInput" placeholder="请输入任务描述" rows="3" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;resize:vertical;"></textarea>
                   </div>
                   <div style="margin-bottom:12px;">
-                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">责任人绑定</label>
+                    <label style="display:block;font-size:12px;color:#666;margin-bottom:4px;">执行方 <span style="color:#ff4d4f;">*</span></label>
                     <select id="addPhaseExecutorSelect" style="width:100%;padding:6px 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:13px;box-sizing:border-box;">
-                      <option value="">未指定</option>
-                      <option value="服务站主管">服务站主管</option>
-                      <option value="技师组长">技师组长</option>
-                      <option value="值班技师">值班技师</option>
-                      <option value="配件专员">配件专员</option>
-                      <option value="调度专员">调度专员</option>
-                      <option value="质检专员">质检专员</option>
+                      <option value="">请选择</option>
+                      <option value="服务站">服务站</option>
+                      <option value="技术支持">技术支持</option>
                     </select>
                   </div>
                   <div style="margin-bottom:16px;">
@@ -1046,26 +1462,41 @@
             </div>
           </div>
         </div>
+          <div class="detail-card">
+            <div class="section-title" style="margin-top:0;">验收模板</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;">
+              <div class="form-item" style="margin:0;"><label class="form-label">验收模板</label><select class="form-control" id="teTypeTpl"><option value="">请选择验收模板</option><option>故障维修标准模板</option><option>现场救援模板</option><option>软件问题模板</option><option>车辆事故验收</option><option>保养验收</option><option>批改流程模板</option><option>车辆整备模板</option><option>通用验收模板</option><option>暂无模板</option></select></div>
+              <div class="form-item" style="margin:0;display:flex;align-items:flex-end;"><a style="font-size:12px;color:#1890ff;cursor:pointer;text-decoration:underline;" onclick="goToVerifyTplFromEdit()">查看/编辑模板配置项 →</a></div>
+            </div>
+          </div>
       </div>
 
       <!-- ======== SLA 规则编辑弹窗 ======== -->
       <div id="slaEditModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
-        <div style="background:#fff;border-radius:10px;width:620px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 8px 30px rgba(0,0,0,0.18);">
+        <div style="background:#fff;border-radius:10px;width:660px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 8px 30px rgba(0,0,0,0.18);">
           <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:15px;font-weight:700;color:#111;" id="slaEditTitle">编辑 SLA 规则</span>
+            <span style="font-size:15px;font-weight:700;color:#111;">编辑 SLA 规则</span>
             <span style="cursor:pointer;font-size:18px;color:#999;line-height:1;" onclick="closeSlaEditModal()">×</span>
           </div>
           <div style="padding:16px 20px;overflow-y:auto;flex:1;">
             <div class="form-item" style="margin:0 0 14px;"><label class="form-label">工单类型</label><input class="form-control" id="slaEditType" readonly style="background:#f5f5f5;cursor:not-allowed;"></div>
-            <!-- 时段列表 -->
+            <div class="form-item" style="margin:0 0 14px;">
+              <label class="form-label">启用状态</label>
+              <div style="display:flex;gap:20px;height:32px;align-items:center;">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="radio" name="slaEditEnabled" value="1" style="accent-color:#1890ff;"> 启用</label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="radio" name="slaEditEnabled" value="0" style="accent-color:#1890ff;"> 禁用</label>
+              </div>
+            </div>
+            <!-- 时段/优先级规则列表 -->
             <div style="margin-bottom:14px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                <label class="form-label" style="margin:0;">时段规则</label>
-                <button class="btn btn-default" style="height:26px;padding:0 10px;font-size:11px;" onclick="addSlaSlot()">+ 添加时段</button>
+                <label class="form-label" style="margin:0;">规则时段</label>
+                <button class="btn btn-default" style="height:26px;padding:0 10px;font-size:11px;" onclick="addSlaSlotRow()">+ 添加时段</button>
               </div>
               <div id="slaSlotList" style="display:flex;flex-direction:column;gap:10px;"></div>
             </div>
-            <div class="form-item" style="margin:0 0 14px;"><label class="form-label">超时升级动作</label><input class="form-control" id="slaEditEscalation" placeholder="如：超时后自动升级为 P0，通知区域运营"></div>
+            <div class="form-item" style="margin:0 0 14px;"><label class="form-label">接单超时 (分钟)</label><input class="form-control" id="slaEditEscStation" type="number" placeholder="如：30"></div>
+            <div class="form-item" style="margin:0 0 14px;"><label class="form-label">超时升级动作</label><input class="form-control" id="slaEditEscalation" placeholder="如：电话提醒服务经理"></div>
           </div>
           <div style="padding:12px 20px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:8px;">
             <button class="btn btn-default" onclick="closeSlaEditModal()">取消</button>
@@ -1365,21 +1796,21 @@ function closeMpCascader() {
 }
 
 const orders = [
-  { id:'WO-2026060001', title:'车辆定位漂移故障', vehicle:'JXG-001234', vin:'LVGH12345678901001', oem:'长安凯程', site:'北京亦庄站点', type:'故障维修', pri:'P0', status:'维修中', sub:'服务站诊断中', station:'天津市冀津贸易有限公司', sla:'剩余 23 分钟', slaWarn:true, next:'服务站完成诊断', desc:'车辆定位漂移，无法正常配送', reporter:'李建国', reporterPhone:'138****1201', reporterRole:'站点负责人', reportTime:'2026-06-08 08:51', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6067', lastOp:'王运营', lastOpTime:'2026-06-08 09:15', affectHours:2.5, affectDays:1, accidentNo:'ACC-2026-0081', defectNo:'DEF-2026-0033', relatedDefect:'DEF-2026-0031', realtimeLoc:'北京市 经济技术开发区 荣华南路12号附近', locTime:'2026-06-08 09:18', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 08:51',endTime:'2026-06-08 09:05',executor:'王运营'},{step:'服务站诊断中',startTime:'2026-06-08 09:05',endTime:null,executor:'张师傅'}] },
-  { id:'WO-2026060002', title:'电池告警排查', vehicle:'JXG-001237', vin:'LVGH12345678901002', oem:'长安凯程', site:'北京中关村站', type:'故障维修', pri:'P1', status:'待受理', sub:'-', station:'-', sla:'剩余 38 分钟', next:'运营受理或驳回', desc:'电池告警频繁出现', reporter:'车辆云控系统', reporterPhone:'-', reporterRole:'系统自动', reportTime:'2026-06-08 09:03', reportSrc:'车辆异常', stationManager:'刘建华', stationManagerPhone:'136****0022', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6031', lastOp:'系统自动', lastOpTime:'2026-06-08 09:03', affectHours:0.8, affectDays:0, accidentNo:'-', defectNo:'DEF-2026-0041', relatedDefect:'-', realtimeLoc:'北京市 海淀区 中关村大街49号附近', locTime:'2026-06-08 09:16', locSpeed:'8 km/h', locStatus:'行驶中' },
-  { id:'WO-2026060003', title:'OTA升级后行为异常', vehicle:'JXG-001241', vin:'LVGH12345678901003', oem:'长安凯程', site:'上海浦东站', type:'软件复诊', pri:'P1', status:'维修中', sub:'已升级', station:'天津市冀津贸易有限公司', sla:'复诊预计 2小时', next:'研发回传结论', desc:'OTA 后行为异常，疑似版本问题', reporter:'王晓明', reporterPhone:'139****5523', reporterRole:'区域运营', reportTime:'2026-06-08 07:30', reportSrc:'运营手动', stationManager:'陈莉', stationManagerPhone:'137****0033', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6118', lastOp:'李研发', lastOpTime:'2026-06-08 10:44', affectHours:4.2, affectDays:1, accidentNo:'-', defectNo:'DEF-2026-0055', relatedDefect:'DEF-2026-0053', realtimeLoc:'上海市 浦东新区 张江高科技园区博霞路附近', locTime:'2026-06-08 10:50', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 07:30',endTime:'2026-06-08 08:00',executor:'王运营'},{step:'服务站诊断中',startTime:'2026-06-08 08:00',endTime:'2026-06-08 09:30',executor:'张师傅'},{step:'已升级',startTime:'2026-06-08 09:30',endTime:null,executor:'李研发'}] },
-  { id:'WO-2026060004', title:'制动异常更换刹车片', vehicle:'JXG-001255', vin:'LVGH12345678901004', oem:'长安凯程', site:'北京通州站', type:'故障维修', pri:'P1', status:'待验收', sub:'维修完成', station:'天津市冀津贸易有限公司', sla:'剩余 4 小时', next:'站点验收', desc:'制动异常，已更换刹车片', reporter:'赵磊', reporterPhone:'135****8867', reporterRole:'站点负责人', reportTime:'2026-06-07 14:22', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6055', lastOp:'张技师', lastOpTime:'2026-06-08 15:38', affectHours:26.5, affectDays:2, accidentNo:'ACC-2026-0077', defectNo:'DEF-2026-0028', relatedDefect:'DEF-2026-0025', realtimeLoc:'北京市 通州区 运河东大街9号服务站内', locTime:'2026-06-08 15:40', locSpeed:'0 km/h', locStatus:'维修中', subSteps:[{step:'待服务站接单',startTime:'2026-06-07 14:22',endTime:'2026-06-07 15:00',executor:'陈运营'},{step:'服务站诊断中',startTime:'2026-06-07 15:00',endTime:'2026-06-07 17:30',executor:'张技师'},{step:'待配件',startTime:'2026-06-07 17:30',endTime:'2026-06-08 09:00',executor:'陈运营'},{step:'待预约',startTime:'2026-06-08 09:00',endTime:'2026-06-08 10:00',executor:'陈运营'},{step:'已预约',startTime:'2026-06-08 10:00',endTime:'2026-06-08 13:00',executor:'张技师'},{step:'已到场',startTime:'2026-06-08 13:00',endTime:'2026-06-08 14:05',executor:'张技师'},{step:'维修开始',startTime:'2026-06-08 14:05',endTime:'2026-06-08 15:38',executor:'张技师'},{step:'维修完成',startTime:'2026-06-08 15:38',endTime:'2026-06-08 15:38',executor:'张技师'}] },
-  { id:'WO-2026060005', title:'10000公里定期保养', vehicle:'JXG-001260', vin:'LVGH12345678901005', oem:'长安凯程', site:'武汉光谷站', type:'周期保养', pri:'P2', status:'维修中', sub:'待配件', station:'天津市冀津贸易有限公司', sla:'备件预计明日到货', next:'等待备件齐套', desc:'10000 公里保养', reporter:'陈思远', reporterPhone:'186****4490', reporterRole:'售后运营管理员', reportTime:'2026-06-07 10:00', reportSrc:'运营巡检导入', stationManager:'周海燕', stationManagerPhone:'135****0055', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6202', lastOp:'陈运营', lastOpTime:'2026-06-07 11:20', affectHours:18, affectDays:1, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'湖北省 武汉市 东湖高新区光谷大道88号附近', locTime:'2026-06-08 11:05', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-07 10:00',endTime:'2026-06-07 11:00',executor:'陈运营'},{step:'服务站诊断中',startTime:'2026-06-07 11:00',endTime:'2026-06-07 12:30',executor:'李技师'},{step:'待配件',startTime:'2026-06-07 12:30',endTime:null,executor:'陈运营'}] },
-  { id:'WO-2026060006', title:'侧门划痕修复', vehicle:'JXG-001268', vin:'LVGH12345678901006', oem:'长安凯程', site:'北京海淀站', type:'外观损伤', pri:'P2', status:'已完成', sub:'-', station:'天津市冀津贸易有限公司', sla:'-', next:'已归档', desc:'侧门划痕修复', reporter:'刘芳', reporterPhone:'137****3312', reporterRole:'站点负责人', reportTime:'2026-06-06 16:45', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6088', lastOp:'刘运营', lastOpTime:'2026-06-07 17:00', affectHours:8, affectDays:1, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'北京市 海淀区 中关村南大街5号附近', locTime:'2026-06-08 09:22', locSpeed:'12 km/h', locStatus:'行驶中',
+  { id:'WO-2026060001', title:'车辆定位漂移故障', vehicle:'JXG-001234', vin:'LVGH12345678901001', oem:'长安凯程', site:'北京亦庄站点', type:'故障维修', pri:'P0', status:'维修中', sub:'诊断中', station:'天津市冀津贸易有限公司', sla:'剩余 23 分钟', slaWarn:true, next:'服务站完成诊断', desc:'车辆定位漂移，无法正常配送', reporter:'李建国', reporterPhone:'138****1201', reporterRole:'站点负责人', reportTime:'2026-06-08 08:51', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6067', lastOp:'王运营', lastOpTime:'2026-06-08 09:15', affectHours:2.5, affectDays:1, accidentNo:'ACC-2026-0081', defectNo:'DEF-2026-0033', relatedDefect:'DEF-2026-0031', realtimeLoc:'北京市 经济技术开发区 荣华南路12号附近', locTime:'2026-06-08 09:18', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 08:51',endTime:'2026-06-08 09:05',executor:'王运营'},{step:'诊断中',startTime:'2026-06-08 09:05',endTime:null,executor:'张师傅'}] },
+  { id:'WO-2026060002', title:'电池告警排查', vehicle:'JXG-001237', vin:'LVGH12345678901002', oem:'长安凯程', site:'北京中关村站', type:'故障维修', pri:'P1', status:'待受理', sub:'-', station:'-', sla:'剩余 38 分钟', next:'运营受理或驳回', desc:'电池告警频繁出现', reporter:'车辆云控系统', reporterPhone:'-', reporterRole:'系统自动', reportTime:'2026-06-07 22:03', reportSrc:'车辆异常', stationManager:'刘建华', stationManagerPhone:'136****0022', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6031', lastOp:'系统自动', lastOpTime:'2026-06-08 09:03', affectHours:0.8, affectDays:0, accidentNo:'-', defectNo:'DEF-2026-0041', relatedDefect:'-', realtimeLoc:'北京市 海淀区 中关村大街49号附近', locTime:'2026-06-08 09:16', locSpeed:'8 km/h', locStatus:'行驶中' },
+  { id:'WO-2026060003', title:'OTA升级后行为异常', vehicle:'JXG-001241', vin:'LVGH12345678901003', oem:'长安凯程', site:'上海浦东站', type:'软件问题', pri:'P1', status:'维修中', sub:'已升级', station:'天津市冀津贸易有限公司', sla:'处理预计 2小时', next:'研发回传结论', desc:'OTA 后行为异常，疑似版本问题', reporter:'王晓明', reporterPhone:'139****5523', reporterRole:'区域运营', reportTime:'2026-06-08 07:30', reportSrc:'运营手动', stationManager:'陈莉', stationManagerPhone:'137****0033', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6118', lastOp:'李研发', lastOpTime:'2026-06-08 10:44', affectHours:4.2, affectDays:1, accidentNo:'-', defectNo:'DEF-2026-0055', relatedDefect:'DEF-2026-0053', realtimeLoc:'上海市 浦东新区 张江高科技园区博霞路附近', locTime:'2026-06-08 10:50', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 07:30',endTime:'2026-06-08 08:00',executor:'王运营'},{step:'诊断中',startTime:'2026-06-08 08:00',endTime:'2026-06-08 09:30',executor:'张师傅'},{step:'已升级',startTime:'2026-06-08 09:30',endTime:null,executor:'李研发'}] },
+  { id:'WO-2026060004', title:'制动异常更换刹车片', vehicle:'JXG-001255', vin:'LVGH12345678901004', oem:'长安凯程', site:'北京通州站', type:'故障维修', pri:'P1', status:'待验收', sub:'维修完成', station:'天津市冀津贸易有限公司', sla:'剩余 4 小时', next:'站点验收', desc:'制动异常，已更换刹车片', reporter:'赵磊', reporterPhone:'135****8867', reporterRole:'站点负责人', reportTime:'2026-06-07 14:22', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6055', lastOp:'张技师', lastOpTime:'2026-06-08 15:38', affectHours:26.5, affectDays:2, accidentNo:'ACC-2026-0077', defectNo:'DEF-2026-0028', relatedDefect:'DEF-2026-0025', realtimeLoc:'北京市 通州区 运河东大街9号服务站内', locTime:'2026-06-08 15:40', locSpeed:'0 km/h', locStatus:'维修中', subSteps:[{step:'待服务站接单',startTime:'2026-06-07 14:22',endTime:'2026-06-07 15:00',executor:'陈运营'},{step:'诊断中',startTime:'2026-06-07 15:00',endTime:'2026-06-07 17:30',executor:'张技师'},{step:'确认配件中',startTime:'2026-06-07 17:30',endTime:'2026-06-08 09:00',executor:'陈运营'},{step:'待预约',startTime:'2026-06-08 09:00',endTime:'2026-06-08 10:00',executor:'陈运营'},{step:'待上门',startTime:'2026-06-08 10:00',endTime:'2026-06-08 13:00',executor:'张技师'},{step:'待上门',startTime:'2026-06-08 13:00',endTime:'2026-06-08 14:05',executor:'张技师'},{step:'维修开始',startTime:'2026-06-08 14:05',endTime:'2026-06-08 15:38',executor:'张技师'},{step:'维修完成',startTime:'2026-06-08 15:38',endTime:'2026-06-08 15:38',executor:'张技师'}] },
+  { id:'WO-2026060005', title:'10000公里定期保养', vehicle:'JXG-001260', vin:'LVGH12345678901005', oem:'长安凯程', site:'武汉光谷站', type:'周期保养', pri:'P2', status:'维修中', sub:'确认配件中', station:'天津市冀津贸易有限公司', sla:'备件预计明日到货', next:'等待备件齐套', desc:'10000 公里保养', reporter:'陈思远', reporterPhone:'186****4490', reporterRole:'售后运营管理员', reportTime:'2026-06-07 10:00', reportSrc:'运营巡检导入', stationManager:'周海燕', stationManagerPhone:'135****0055', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6202', lastOp:'陈运营', lastOpTime:'2026-06-07 11:20', affectHours:18, affectDays:1, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'湖北省 武汉市 东湖高新区光谷大道88号附近', locTime:'2026-06-08 11:05', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-07 10:00',endTime:'2026-06-07 11:00',executor:'陈运营'},{step:'诊断中',startTime:'2026-06-07 11:00',endTime:'2026-06-07 12:30',executor:'李技师'},{step:'确认配件中',startTime:'2026-06-07 12:30',endTime:null,executor:'陈运营'}] },
+  { id:'WO-2026060006', title:'侧门划痕修复', vehicle:'JXG-001268', vin:'LVGH12345678901006', oem:'长安凯程', site:'北京海淀站', type:'车辆事故', pri:'P2', status:'已完成', sub:'-', station:'天津市冀津贸易有限公司', sla:'-', next:'已归档', desc:'侧门划痕修复', reporter:'刘芳', reporterPhone:'137****3312', reporterRole:'站点负责人', reportTime:'2026-06-06 16:45', reportSrc:'站点上报', stationManager:'张伟', stationManagerPhone:'139****0011', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6088', lastOp:'刘运营', lastOpTime:'2026-06-07 17:00', affectHours:8, affectDays:1, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'北京市 海淀区 中关村南大街5号附近', locTime:'2026-06-08 09:22', locSpeed:'12 km/h', locStatus:'行驶中',
     acceptResult:'通过', acceptTime:'2026-06-07 17:00', acceptBy:'刘运营', acceptComment:'修复质量合格，车身漆面无色差，划痕完全消除。已完成试驾验证，车辆状态正常，同意归档。',
-    acceptPhotos:[{label:'修复前', emoji:'🚗', desc:'侧门划痕修复前'},{label:'修复后', emoji:'✅', desc:'划痕完全消除'},{label:'整体外观', emoji:'📸', desc:'整车外观验收'}]
+    acceptPhotos:[{label:'修复前', emoji:'🚗', desc:'侧门划痕修复前'},{label:'修复后', emoji:'✅', desc:'划痕完全消除'},{label:'整体外观', emoji:'📸', desc:'整车车辆事故验收'}]
   },
   { id:'WO-2026060008', title:'底盘异响疑似悬挂问题', vehicle:'JXG-001244', vin:'LVGH12345678901008', oem:'长安凯程', site:'上海嘉定站', type:'故障维修', pri:'P1', status:'受理驳回', sub:'-', station:'-', sla:'-', next:'待提报人补充信息', desc:'车辆底盘异响，疑似悬挂问题', reporter:'周磊', reporterPhone:'132****7788', reporterRole:'站点负责人', reportTime:'2026-06-07 11:20', reportSrc:'站点上报', stationManager:'陈莉', stationManagerPhone:'137****0033', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6175', lastOp:'王运营', lastOpTime:'2026-06-07 11:45', affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'上海市 嘉定区 嘉定工业区站点内', locTime:'2026-06-07 11:45', locSpeed:'0 km/h', locStatus:'停驶',
     acceptResult:'驳回', acceptTime:'2026-06-07 11:45', acceptBy:'王运营', acceptComment:'工单信息不完整：缺少车辆底盘异响的具体部位描述、异响频率及复现条件，也未上传底盘图片或视频。请补充以下信息后重新提报：①异响发生时的具体工况（转弯/直行/颠簸）；②底盘图片（至少2张）；③是否已尝试临时处理。',
     acceptPhotos:[]
   },
-  { id:'WO-2026060007', title:'传感器读数异常救援', vehicle:'JXG-001270', vin:'LVGH12345678901007', oem:'长安凯程', site:'上海徐汇站', type:'现场救援', pri:'P1', status:'维修中', sub:'已预约', station:'天津市冀津贸易有限公司', sla:'ETA 14:30', next:'技师到场维修', desc:'传感器读数异常', reporter:'车辆云控系统', reporterPhone:'-', reporterRole:'系统自动', reportTime:'2026-06-08 06:18', reportSrc:'车辆异常', stationManager:'陈莉', stationManagerPhone:'137****0033', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6143', lastOp:'系统自动', lastOpTime:'2026-06-08 06:18', affectHours:7.2, affectDays:1, accidentNo:'-', defectNo:'DEF-2026-0062', relatedDefect:'-', realtimeLoc:'上海市 徐汇区 漕溪北路200号附近', locTime:'2026-06-08 09:10', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 06:18',endTime:'2026-06-08 08:00',executor:'系统自动'},{step:'服务站诊断中',startTime:'2026-06-08 08:00',endTime:'2026-06-08 10:30',executor:'李技师'},{step:'待预约',startTime:'2026-06-08 10:30',endTime:'2026-06-08 12:00',executor:'王运营'},{step:'已预约',startTime:'2026-06-08 12:00',endTime:null,executor:'王运营'}] },
-  { id:'WO-2026060009', title:'前保险杠刮蹭修复', vehicle:'JXG-001280', vin:'LVGH12345678901009', oem:'上汽大通', site:'广州天河站', type:'外观损伤', pri:'P2', status:'验收驳回', sub:'-', station:'广州服务站', sla:'-', next:'待服务站重新处理', desc:'前保险杠刮蹭修复后色差明显', reporter:'陈明', reporterPhone:'135****9912', reporterRole:'站点负责人', reportTime:'2026-06-06 14:00', reportSrc:'站点上报', stationManager:'黄丽', stationManagerPhone:'138****0066', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6280', lastOp:'李运营', lastOpTime:'2026-06-08 10:30', affectHours:48, affectDays:2, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'广东省 广州市 天河区体育西路附近', locTime:'2026-06-08 09:00', locSpeed:'0 km/h', locStatus:'停驶',
+  { id:'WO-2026060007', title:'传感器读数异常救援', vehicle:'JXG-001270', vin:'LVGH12345678901007', oem:'长安凯程', site:'上海徐汇站', type:'现场救援', pri:'P1', status:'维修中', sub:'待上门', station:'天津市冀津贸易有限公司', sla:'ETA 14:30', next:'技师到场维修', desc:'传感器读数异常', reporter:'车辆云控系统', reporterPhone:'-', reporterRole:'系统自动', reportTime:'2026-06-08 06:18', reportSrc:'车辆异常', stationManager:'陈莉', stationManagerPhone:'137****0033', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6143', lastOp:'系统自动', lastOpTime:'2026-06-08 06:18', affectHours:7.2, affectDays:1, accidentNo:'-', defectNo:'DEF-2026-0062', relatedDefect:'-', realtimeLoc:'上海市 徐汇区 漕溪北路200号附近', locTime:'2026-06-08 09:10', locSpeed:'0 km/h', locStatus:'停驶', subSteps:[{step:'待服务站接单',startTime:'2026-06-08 06:18',endTime:'2026-06-08 08:00',executor:'系统自动'},{step:'诊断中',startTime:'2026-06-08 08:00',endTime:'2026-06-08 10:30',executor:'李技师'},{step:'待预约',startTime:'2026-06-08 10:30',endTime:'2026-06-08 12:00',executor:'王运营'},{step:'待上门',startTime:'2026-06-08 12:00',endTime:null,executor:'王运营'}] },
+  { id:'WO-2026060009', title:'前保险杠刮蹭修复', vehicle:'JXG-001280', vin:'LVGH12345678901009', oem:'上汽大通', site:'广州天河站', type:'车辆事故', pri:'P2', status:'验收驳回', sub:'-', station:'广州服务站', sla:'-', next:'待服务站重新处理', desc:'前保险杠刮蹭修复后色差明显', reporter:'陈明', reporterPhone:'135****9912', reporterRole:'站点负责人', reportTime:'2026-06-06 14:00', reportSrc:'站点上报', stationManager:'黄丽', stationManagerPhone:'138****0066', vehicleModel:'miniVan量产车型', vehicleNo:'JDE6280', lastOp:'李运营', lastOpTime:'2026-06-08 10:30', affectHours:48, affectDays:2, accidentNo:'-', defectNo:'-', relatedDefect:'-', realtimeLoc:'广东省 广州市 天河区体育西路附近', locTime:'2026-06-08 09:00', locSpeed:'0 km/h', locStatus:'停驶',
     acceptResult:'驳回', acceptTime:'2026-06-08 10:30', acceptBy:'李运营', acceptComment:'验收不通过：修复区域漆面色差明显，与原车漆面存在明显差异。且保险杠安装缝隙不均匀，需重新返工处理。请服务站重新修复后再次提交验收。',
     acceptPhotos:[]
   }
@@ -1388,101 +1819,124 @@ const orders = [
 const flowTemplates = {
   '故障维修': {
     master: ['待受理','维修中','待验收','验收驳回','已完成'],
-    sub: ['待服务站接单','服务站诊断中','待配件','待预约','已预约','已到场','维修开始','维修完成'],
+    sub: ['待服务站接单','诊断中','确认配件中','待预约','待上门','维修开始','维修自检','维修完成'],
     phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
-      {task:'故障诊断',sub:'服务站诊断中',desc:'服务站技师对故障进行诊断分析',executor:'',sla:''},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
-      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间',executor:'',sla:''},
-      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师',executor:'',sla:''},
-      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到',executor:'',sla:''},
-      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障',executor:'',sla:''},
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'服务站技师对问题进行诊断分析',executor:'',sla:''},
+      {task:'确认配件中',sub:'确认配件中',desc:'确认所需配件是否齐备',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约维修时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行维修操作修复故障',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'维修完成后由技师进行自检验证',executor:'',sla:''},
       {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果',executor:'',sla:''}
     ]}
   },
   '现场救援': {
     master: ['待受理','维修中','已完成'],
-    sub: ['已派单','技师出发','已到场','救援处理中','救援完成'],
+    sub: ['待服务站接单','诊断中','确认配件中','待预约','待上门','维修开始','维修自检','维修完成'],
     phases: {'维修中':[
-      {task:'派单调度',sub:'已派单',desc:'调度中心派单给救援技师',executor:'',sla:''},
-      {task:'技师出发',sub:'技师出发',desc:'救援技师出发前往现场',executor:'',sla:''},
-      {task:'到场救援',sub:'已到场',desc:'技师到达现场开始救援',executor:'',sla:''},
-      {task:'救援处理',sub:'救援处理中',desc:'执行现场救援处理',executor:'',sla:''},
-      {task:'救援完成',sub:'救援完成',desc:'完成救援并确认车辆状态',executor:'',sla:''}
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对救援问题进行诊断分析',executor:'',sla:''},
+      {task:'确认配件中',sub:'确认配件中',desc:'确认所需配件是否齐备',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约救援时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行救援维修操作',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'救援维修后由技师进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成救援并确认车辆状态',executor:'',sla:''}
+    ]}
+  },
+
+  '软件问题': {
+    master: ['待受理','软件处理中','待验收','验收驳回','已完成'],
+    sub: ['待服务站接单','诊断中','已升级','维修自检','维修完成'],
+    phases: {'软件处理中':[
+      {task:'待服务站接单',sub:'待服务站接单',desc:'技术支持确认接单并开始处理',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对软件问题进行诊断分析',executor:'',sla:''},
+      {task:'已升级',sub:'已升级',desc:'软件问题已升级至研发处理',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'修复后由技术支持进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成修复并验证结果',executor:'',sla:''}
+    ]}
+  },
+  '车辆事故': {
+    master: ['待受理','维修中','待验收','验收驳回','已完成'],
+    sub: ['待服务站接单','诊断中','确认配件中','待预约','待上门','维修开始','维修自检','维修完成'],
+    phases: {'维修中':[
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对事故损伤进行诊断评估',executor:'',sla:''},
+      {task:'确认配件中',sub:'确认配件中',desc:'确认所需配件是否齐备',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约维修时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行事故维修操作',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'事故维修后由技师进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果',executor:'',sla:''}
     ]}
   },
   '周期保养': {
     master: ['待受理','维修中','待验收','验收驳回','已完成'],
-    sub: ['待服务站接单','服务站诊断中','待配件','待预约','已预约','已到场','保养开始','保养完成'],
+    sub: ['待服务站接单','诊断中','待预约','待上门','维修开始','维修自检','维修完成'],
     phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
-      {task:'保养诊断',sub:'服务站诊断中',desc:'对车辆进行保养前诊断',executor:'',sla:''},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
-      {task:'上门预约',sub:'待预约',desc:'与客户预约上门维修时间',executor:'',sla:''},
-      {task:'预约确认',sub:'已预约',desc:'确认预约时间并通知技师',executor:'',sla:''},
-      {task:'到场签到',sub:'已到场',desc:'技师到达现场进行签到',executor:'',sla:''},
-      {task:'保养执行',sub:'保养开始',desc:'执行车辆保养操作',executor:'',sla:''},
-      {task:'保养完成',sub:'保养完成',desc:'完成保养并提交结果',executor:'',sla:''}
-    ]}
-  },
-  '软件复诊': {
-    master: ['待受理','复诊中','待验收','验收驳回','已完成'],
-    sub: ['待接单','日志收集中','已升级','结论已回传','完成'],
-    phases: {'复诊中':[
-      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程',executor:'',sla:''},
-      {task:'日志采集',sub:'日志收集中',desc:'采集车辆日志用于分析',executor:'',sla:''},
-      {task:'升级研发',sub:'已升级',desc:'问题升级至研发团队处理',executor:'',sla:''},
-      {task:'结论回传',sub:'结论已回传',desc:'研发结论回传并确认',executor:'',sla:''},
-      {task:'复诊完成',sub:'完成',desc:'完成复诊流程',executor:'',sla:''}
-    ]}
-  },
-  '外观损伤': {
-    master: ['待受理','维修中','待验收','验收驳回','已完成'],
-    sub: ['待服务站接单','损伤评估中','待配件','维修开始','维修完成'],
-    phases: {'维修中':[
-      {task:'服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
-      {task:'损伤评估',sub:'损伤评估中',desc:'评估车辆外观损伤情况',executor:'',sla:''},
-      {task:'配件采购',sub:'待配件',desc:'根据诊断结果采购所需配件',executor:'',sla:''},
-      {task:'维修执行',sub:'维修开始',desc:'执行维修操作修复故障',executor:'',sla:''},
-      {task:'维修完成',sub:'维修完成',desc:'完成维修并提交维修结果',executor:'',sla:''}
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对车辆进行保养前故障诊断',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约维修时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行车辆保养操作',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'保养完成后由技师进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成保养并提交结果',executor:'',sla:''}
     ]}
   },
   '车辆批改': {
     master: ['待受理','维修中','已完成'],
-    sub: ['待接单','批改执行中','批改完成'],
+    sub: ['待服务站接单','诊断中','待预约','待上门','维修开始','维修自检','维修完成'],
     phases: {'维修中':[
-      {task:'接单确认',sub:'待接单',desc:'确认接单并开始复诊流程',executor:'',sla:''},
-      {task:'批改执行',sub:'批改执行中',desc:'执行车辆批改操作',executor:'',sla:''},
-      {task:'批改完成',sub:'批改完成',desc:'完成批改并提交结果',executor:'',sla:''}
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对批改需求进行诊断分析',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约批改时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行车辆批改操作',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'批改完成后由技师进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成批改并提交结果',executor:'',sla:''}
     ]}
   },
-  '转站需求': {
-    master: ['待受理','转运中','已完成'],
-    sub: ['待调度','调度确认','车辆装载','运输中','已到达目标站','完成交接'],
-    phases: {'转运中':[
-      {task:'调度安排',sub:'待调度',desc:'安排转运调度计划',executor:'',sla:''},
-      {task:'调度确认',sub:'调度确认',desc:'确认调度方案',executor:'',sla:''},
-      {task:'车辆装载',sub:'车辆装载',desc:'车辆装载到运输车',executor:'',sla:''},
-      {task:'运输转运',sub:'运输中',desc:'运输中转至目标站',executor:'',sla:''},
-      {task:'到达目标站',sub:'已到达目标站',desc:'到达目标服务站',executor:'',sla:''},
-      {task:'交接完成',sub:'完成交接',desc:'完成车辆交接',executor:'',sla:''}
+  '车辆整备': {
+    master: ['待受理','维修中','已完成'],
+    sub: ['待服务站接单','诊断中','确认配件中','待预约','待上门','维修开始','维修自检','维修完成'],
+    phases: {'维修中':[
+      {task:'待服务站接单',sub:'待服务站接单',desc:'服务站接收工单并确认派工',executor:'',sla:''},
+      {task:'诊断中',sub:'诊断中',desc:'对整备需求进行诊断分析',executor:'',sla:''},
+      {task:'确认配件中',sub:'确认配件中',desc:'确认所需配件是否齐备',executor:'',sla:''},
+      {task:'待预约',sub:'待预约',desc:'与客户预约整备时间',executor:'',sla:''},
+      {task:'待上门',sub:'待上门',desc:'技师到达现场进行签到',executor:'',sla:''},
+      {task:'维修开始',sub:'维修开始',desc:'执行整备维修操作',executor:'',sla:''},
+      {task:'维修自检',sub:'维修自检',desc:'整备完成后由技师进行自检验证',executor:'',sla:''},
+      {task:'维修完成',sub:'维修完成',desc:'完成整备并提交结果',executor:'',sla:''}
     ]}
   }
 };
 function getFlow(type) {
-  return flowTemplates[type] || flowTemplates['故障维修'];
+  var base = flowTemplates[type] || flowTemplates['故障维修'];
+  var processNodes = (base.processTasks || PROCESS_TASKS).map(function(t){ return Object.assign({}, t); });
+  return {
+    master: ['待分派','处理中','待验收','已完成','已关闭'],
+    sub: processNodes.map(function(t){ return t.step; }),
+    phases: {'处理中': processNodes}
+  };
 }
 // 兼容旧引用
 const masterStatusList = flowTemplates['故障维修'].master;
 const subStatusList = flowTemplates['故障维修'].sub;
 
+var _typeAutoDispatchMap = {
+  '故障维修':'是','现场救援':'是','软件问题':'是','车辆事故':'是','周期保养':'否','车辆批改':'否','车辆整备':'否'
+};
 var _typeEnabledMap = {};
 
 // ===== 服务站数据 =====
 var stationList = [
-  {name:'北京自营服务站', manager:'张伟', regions:[{province:'北京市',city:'北京市辖区'}], models:'miniVan量产车型', activeVehicles:3},
-  {name:'上海服务站', manager:'陈莉', regions:[{province:'上海市',city:'上海市辖区'}], models:'miniVan量产车型', activeVehicles:2},
-  {name:'武汉外协', manager:'周海燕', regions:[{province:'湖北省',city:'武汉市'},{province:'湖北省',city:'宜昌市'}], models:'miniVan量产车型', activeVehicles:1}
+  {name:'北京自营服务站', manager:'张伟', regions:[{province:'北京市',city:'北京市辖区'}], models:'miniVan量产车型', activeVehicles:3, distance:{'北京通州站':5,'北京海淀站':8}},
+  {name:'上海服务站', manager:'陈莉', regions:[{province:'上海市',city:'上海市辖区'}], models:'miniVan量产车型', activeVehicles:2, distance:{'上海浦东站':6,'上海徐汇站':3,'上海嘉定站':12}},
+  {name:'武汉外协', manager:'周海燕', regions:[{province:'湖北省',city:'武汉市'},{province:'湖北省',city:'宜昌市'}], models:'miniVan量产车型', activeVehicles:1, distance:{'武汉光谷站':4}},
+  {name:'天津市冀津贸易有限公司', manager:'张伟', regions:[{province:'北京市',city:'北京市辖区'},{province:'天津市',city:'天津市'},{province:'湖北省',city:'武汉市'},{province:'上海市',city:'上海市辖区'},{province:'广东省',city:'广州市'}], models:'miniVan量产车型', activeVehicles:4, distance:{'北京通州站':35,'北京海淀站':30,'上海浦东站':120,'上海徐汇站':125,'武汉光谷站':110,'广州天河站':15}},
+  {name:'广州服务站', manager:'黄丽', regions:[{province:'广东省',city:'广州市'}], models:'miniVan量产车型', activeVehicles:1, distance:{'广州天河站':7}}
 ];
 var _stationEditKey = '';
 var _seRegions = []; // 编辑中的区域列表
@@ -1738,8 +2192,8 @@ function acceptBlock(o) {
 }
 
 function syncBlock(o) {
-  const diagnosedStates = ['已升级','待配件','待预约','已预约','已到场','维修开始','维修完成','-'];
-  const repairedStates = ['维修完成'];
+  const diagnosedStates = ['已升级','待配件','待预约','已预约','已到场','维修开始','维修自检','维修完成','-'];
+  const repairedStates = ['维修自检','维修完成'];
   const subIdx = subStatusList.indexOf(o.sub);
   const diagnosed = (subIdx >= subStatusList.indexOf('服务站诊断中') && subIdx > 0) || diagnosedStates.includes(o.sub);
   const showDiag = diagnosed || o.status === '已完成' || o.status === '待验收';
@@ -1771,7 +2225,7 @@ var costRows = {
 };
 var bearerOptions = ['整车厂责任','运营责任','服务站责任','用户责任'];
 function costBlock(o) {
-  var showRepair = ['维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
+  var showRepair = ['维修自检','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
   if(!showRepair) return '';
   var rows = costRows[o.id] || [
     {type:'工时费',  required:true,  item:'', fee:0, bearer:'', note:''},
@@ -1817,7 +2271,7 @@ var partsRows = {};
 var partsBeforeOptions = ['GPS天线','刹车片','传感器','电池模块','制动系统','激光雷达','摄像头模块','车门锁体','轮毂轴承','转向电机'];
 var partsAfterOptions  = ['GPS天线(新)','刹车片(新)','传感器(新)','电池模块(新)','制动总成(新)','激光雷达(新)','摄像头模块(新)','车门锁体(新)','轮毂轴承(新)','转向电机(新)'];
 function partsBlock(o) {
-  var showRepair = ['维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
+  var showRepair = ['维修自检','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
   if(!showRepair) return '';
   var rows = partsRows[o.id] || [{before:'',after:'',serial:'',qty:1,fee:'',bearer:'',note:''}];
   var beforeSel = function(v){ return '<select class="cost-select">' +
@@ -1916,55 +2370,157 @@ function recalcCost(btn){
 
 function priTag(p){ return '<span class="tag tag-'+p.toLowerCase()+'">'+p+'</span>'; }
 // ===== 统一主状态映射 =====
-var _unifiedStatusMap = {'待受理':'待受理','维修中':'维修中','处理中':'维修中','复诊中':'维修中','转运中':'维修中','待验收':'待验收','已完成':'已完成','验收驳回':'验收驳回'};
-var _unifiedStatusList = ['待受理','维修中','待验收','验收驳回','已完成'];
+var _unifiedStatusMap = {
+  '待分派':'待分派',
+  '待受理':'待分派',
+  '维修中':'处理中',
+  '处理中':'处理中',
+  '软件处理中':'处理中',
+  '整备中':'处理中',
+  '待验收':'待验收',
+  '已完成':'已完成',
+  '验收驳回':'处理中',
+  '受理驳回':'已关闭',
+  '已关闭':'已关闭'
+};
+var _unifiedStatusList = ['待分派','处理中','待验收','已完成','已关闭'];
 function toUnifiedStatus(s){ return _unifiedStatusMap[s] || s; }
 
 function statusTag(s){
-  var m={'待受理':'pending','维修中':'doing','待验收':'verify','已完成':'done','验收驳回':'rejected'};
+  var m={'待分派':'pending','处理中':'doing','待验收':'verify','已完成':'done','已关闭':'rejected'};
   var u = toUnifiedStatus(s);
   var tip = u !== s ? ' title="'+s+'"' : '';
   return '<span class="tag tag-'+(m[u]||'status')+'"'+tip+'>'+u+'</span>';
 }
 
+var PROCESS_TASKS = [
+  {step:'待服务站受理', task:'服务站受理', owner:'服务站', desc:'服务站收到维修任务后确认是否受理'},
+  {step:'远程诊断中', task:'远程诊断', owner:'服务站', desc:'远程排查问题原因，判断是否需要备件、上门或技术支持'},
+  {step:'备件确认中', task:'备件确认', owner:'服务站', desc:'确认备件型号、库存、费用承担方和是否需要调拨'},
+  {step:'待备件', task:'等待备件', owner:'服务站', desc:'备件未齐套，等待采购、调拨或供应商确认'},
+  {step:'备件已齐套', task:'备件齐套', owner:'服务站', desc:'备件已确认可用，可以进入预约或维修'},
+  {step:'技术支持中', task:'技术支持', owner:'售后工程师', desc:'服务站升级至售后工程师或研发团队协助处理'},
+  {step:'待预约上门', task:'预约上门', owner:'服务站', desc:'与站点确认上门维修时间'},
+  {step:'已预约', task:'预约确认', owner:'服务站', desc:'上门时间已确认，等待出发'},
+  {step:'待到场', task:'技师出发', owner:'服务站', desc:'技师准备前往或正在前往现场'},
+  {step:'已到场', task:'到场签到', owner:'服务站', desc:'技师到达现场并完成签到'},
+  {step:'维修中', task:'现场维修', owner:'服务站', desc:'执行现场维修或更换备件'},
+  {step:'维修自检中', task:'维修自检', owner:'服务站', desc:'维修完成后进行自检和试跑验证'},
+  {step:'待提交维修结果', task:'提交维修结果', owner:'服务站', desc:'上传维修结论、费用、图片、换件信息'},
+  {step:'验收驳回', task:'验收驳回处理', owner:'服务站', desc:'站点验收不通过，查看原因并重新处理'},
+  {step:'重新处理中', task:'重新处理', owner:'服务站', desc:'根据驳回原因重新诊断、维修或升级技术支持'}
+];
+var PROCESS_TASK_INDEX = {};
+PROCESS_TASKS.forEach(function(t, i){ PROCESS_TASK_INDEX[t.step] = i; });
+var _subAlias = {
+  '-':'待分派',
+  '待服务站接单':'待服务站受理',
+  '诊断中':'远程诊断中',
+  '服务站诊断中':'远程诊断中',
+  '确认配件中':'备件确认中',
+  '待配件':'待备件',
+  '已升级':'技术支持中',
+  '待预约':'待预约上门',
+  '待上门':'待到场',
+  '维修开始':'维修中',
+  '维修自检':'维修自检中',
+  '维修完成':'待提交维修结果',
+  '待验收':'待站点验收'
+};
+function normalizeSubStatus(s){ return _subAlias[s] || s || '待分派'; }
+function buildProcessTaskList(currentSub, completedSteps){
+  var cur = PROCESS_TASK_INDEX[normalizeSubStatus(currentSub)];
+  if(cur == null) cur = 0;
+  var doneMap = {};
+  (completedSteps || []).forEach(function(s){ doneMap[normalizeSubStatus(s)] = true; });
+  return PROCESS_TASKS.map(function(t, i){
+    var status = doneMap[t.step] || i < cur ? 'done' : (i === cur ? 'current' : 'todo');
+    return {step:t.step, task:t.task, owner:t.owner, desc:t.desc, status:status, executor:null, startTime:null, endTime:null};
+  });
+}
+function ensureOrderTasks(o){
+  if(!o) return;
+  o.status = toUnifiedStatus(o.status);
+  o.sub = normalizeSubStatus(o.sub);
+  if(o.status === '待分派') o.sub = '待分派';
+  if(o.status === '已完成' && (!o.sub || o.sub === '待分派')) o.sub = '已归档';
+  if(o.status === '已关闭' && (!o.sub || o.sub === '待分派')) o.sub = '服务站拒绝关闭';
+  if(o.status === '处理中' && o.sub === '待站点验收') o.sub = '待提交维修结果';
+  var oldDone = (o.subSteps || []).filter(function(s){ return s.endTime; }).map(function(s){ return s.step; });
+  if(!o.tasks || !o.tasks.length) o.tasks = buildProcessTaskList(o.sub, oldDone);
+  o.subSteps = o.tasks.map(function(t){ return {step:t.step, executor:t.executor || t.owner, startTime:t.startTime, endTime:t.endTime}; });
+}
+function normalizeMockOrders(){
+  orders.forEach(function(o){ ensureOrderTasks(o); });
+  var overrides = {
+    'WO-2026060001': {status:'处理中', sub:'远程诊断中', station:'天津市冀津贸易有限公司', next:'完成远程诊断并进入备件确认'},
+    'WO-2026060002': {status:'待分派', sub:'待分派', station:'待分配', next:'售后工单师分派服务站'},
+    'WO-2026060003': {status:'处理中', sub:'技术支持中', next:'售后工程师回传技术结论'},
+    'WO-2026060004': {status:'待验收', sub:'待站点验收', next:'站点负责人验收'},
+    'WO-2026060005': {status:'处理中', sub:'待备件', next:'等待备件齐套后预约上门'},
+    'WO-2026060006': {status:'已完成', sub:'已归档', next:'已归档'},
+    'WO-2026060007': {status:'处理中', sub:'待到场', next:'技师到场签到'},
+    'WO-2026060008': {status:'已关闭', sub:'服务站拒绝关闭', next:'已关闭'},
+    'WO-2026060009': {status:'处理中', sub:'验收驳回', next:'根据验收意见重新处理'}
+  };
+  orders.forEach(function(o){
+    if(overrides[o.id]){
+      Object.assign(o, overrides[o.id]);
+      o.tasks = buildProcessTaskList(o.sub);
+      ensureOrderTasks(o);
+    }
+  });
+}
+function normalizeFlowTemplates(){
+  Object.keys(flowTemplates).forEach(function(type){
+    flowTemplates[type].master = ['待分派','处理中','待验收','已完成','已关闭'];
+    flowTemplates[type].sub = PROCESS_TASKS.map(function(t){ return t.step; });
+    flowTemplates[type].phases = {
+      '处理中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })
+    };
+  });
+}
+
 /* ===== SLA 核心计算（提前定义供 renderTable 使用）===== */
 var _slaRules = [
-  { type:'故障维修', enabled:true,
+  { type:'故障维修', enabled:true, escStationMin:30,
     slots:[
       {label:'上午上报（00:00–12:00）', cutoffHour:12, deadlineDesc:'当日 24:00', deadlineHour:24, deadlineDay:0},
       {label:'下午上报（12:00–24:00）', cutoffHour:24, deadlineDesc:'次日 12:00', deadlineHour:12, deadlineDay:1}
-    ], escalation:'超时后自动升级为 P0，通知区域运营'},
-  { type:'现场救援', enabled:true,
-    slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 4 小时内', offsetHours:4}],
-    escalation:'超时后自动通知主管升级'},
-  { type:'周期保养', enabled:true,
+    ], escalation:'电话提醒服务经理'},
+  { type:'现场救援', enabled:true, escStationMin:15,
+    slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 45 分钟内', offsetHours:0.75}],
+    escalation:'电话提醒服务经理'},
+  { type:'周期保养', enabled:true, escStationMin:60,
     slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 48 小时内', offsetHours:48}],
-    escalation:'超时发送提醒通知'},
-  { type:'外观损伤', enabled:true,
-    slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 72 小时内', offsetHours:72}],
-    escalation:'超时发送提醒通知'},
-  { type:'软件复诊', enabled:true,
-    slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 24 小时内', offsetHours:24}],
-    escalation:'超时后自动通知研发团队升级'},
-  { type:'车辆批改', enabled:true,
+    escalation:'电话提醒服务经理'},
+  { type:'车辆事故', enabled:true, escStationMin:30,
     slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 48 小时内', offsetHours:48}],
-    escalation:'超时发送提醒通知'},
-  { type:'转站需求', enabled:true,
+    escalation:'电话提醒服务经理'},
+  { type:'软件问题', enabled:true, escStationMin:60,
+    slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 2 小时内', offsetHours:2}],
+    escalation:'电话提醒服务经理'},
+  { type:'车辆批改', enabled:true, escStationMin:60,
+    slots:[
+      {label:'P0 优先级', cutoffPri:'P0', deadlineDesc:'同故障维修工单', refType:'故障维修'},
+      {label:'P1 优先级', cutoffPri:'P1', deadlineDesc:'上报后 48 小时内', offsetHours:48},
+      {label:'P2 优先级', cutoffPri:'P2', deadlineDesc:'上报后 1 周内', offsetHours:168}
+    ], escalation:'电话提醒服务经理'},
+  { type:'车辆整备', enabled:true, escStationMin:30,
     slots:[{label:'全天', cutoffHour:24, deadlineDesc:'上报后 24 小时内', offsetHours:24}],
-    escalation:'超时后自动通知调度主管升级'}
+    escalation:'电话提醒服务经理'}
 ];
 function calcSlaDeadline(order){
   var rule = _slaRules.find(function(r){return r.type===order.type && r.enabled;});
   if(!rule || !order.reportTime) return null;
   var rt = new Date(order.reportTime.replace(' ','T'));
   if(isNaN(rt)) return null;
-  var reportHour = rt.getHours() + rt.getMinutes()/60;
-  var slot = null;
-  for(var i=0;i<rule.slots.length;i++){
-    var prevCut = i===0 ? 0 : rule.slots[i-1].cutoffHour;
-    if(reportHour >= prevCut && reportHour < rule.slots[i].cutoffHour){slot=rule.slots[i];break;}
+  var slot = _matchSlaSlot(rule, rt, order.pri);
+  if(slot.refType) {
+    var refRule = _slaRules.find(function(r){return r.type===slot.refType;});
+    if(refRule) return calcSlaDeadline({type:refRule.type, reportTime:order.reportTime, pri:order.pri});
+    return null;
   }
-  if(!slot) slot = rule.slots[rule.slots.length-1];
   if(slot.offsetHours != null) return new Date(rt.getTime() + slot.offsetHours*3600000);
   var deadline = new Date(rt);
   deadline.setDate(deadline.getDate() + (slot.deadlineDay||0));
@@ -1974,19 +2530,37 @@ function calcSlaDeadline(order){
   deadline.setDate(deadline.getDate() + addDay);
   return deadline;
 }
+function _matchSlaSlot(rule, rt, pri) {
+  var slot = null;
+  // 优先按优先级匹配
+  if(pri) {
+    for(var i=0;i<rule.slots.length;i++){
+      if(rule.slots[i].cutoffPri === pri) { slot = rule.slots[i]; break; }
+    }
+  }
+  // 没有按优先级匹配到，按时段匹配
+  if(!slot) {
+    var reportHour = rt.getHours() + rt.getMinutes()/60;
+    for(var i=0;i<rule.slots.length;i++){
+      var prevCut = i===0 ? 0 : rule.slots[i-1].cutoffHour;
+      if(reportHour >= prevCut && reportHour < rule.slots[i].cutoffHour){slot=rule.slots[i];break;}
+    }
+  }
+  if(!slot) slot = rule.slots[rule.slots.length-1];
+  return slot;
+}
 /* 根据工单类型和上报时间计算预计结束时间 */
-function calcPlanEnd(type, reportTime) {
+function calcPlanEnd(type, reportTime, pri) {
   var rule = _slaRules.find(function(r){ return r.type === type && r.enabled; });
   if (!rule) return null;
   var rt = reportTime ? new Date(reportTime.replace(' ','T')) : new Date();
   if (isNaN(rt)) rt = new Date();
-  var reportHour = rt.getHours() + rt.getMinutes()/60;
-  var slot = null;
-  for (var i = 0; i < rule.slots.length; i++) {
-    var prevCut = i === 0 ? 0 : rule.slots[i-1].cutoffHour;
-    if (reportHour >= prevCut && reportHour < rule.slots[i].cutoffHour) { slot = rule.slots[i]; break; }
+  var slot = _matchSlaSlot(rule, rt, pri);
+  if(slot.refType) {
+    var refRule = _slaRules.find(function(r){return r.type===slot.refType;});
+    if(refRule) return calcPlanEnd(refRule.type, reportTime, pri);
+    return null;
   }
-  if (!slot) slot = rule.slots[rule.slots.length-1];
   if (slot.offsetHours != null) return new Date(rt.getTime() + slot.offsetHours * 3600000);
   var deadline = new Date(rt);
   deadline.setDate(deadline.getDate() + (slot.deadlineDay || 0));
@@ -2005,21 +2579,23 @@ function toDatetimeLocal(d) {
 /* 新建工单 - 类型变化时更新预计时间 */
 function onNewTypeChange() {
   var type = document.getElementById('newType').value;
+  var pri = document.getElementById('newPri').value;
   var now = new Date();
   document.getElementById('newPlanStart').value = toDatetimeLocal(now);
-  var planEnd = calcPlanEnd(type, now);
+  var planEnd = calcPlanEnd(type, now, pri);
   document.getElementById('newPlanEnd').value = planEnd ? toDatetimeLocal(planEnd) : '';
 }
 /* 编辑工单 - 类型变化时更新预计结束时间 */
 function onEditTypeChange() {
   var type = document.getElementById('editType').value;
+  var pri = document.getElementById('editPri').value;
   var startVal = document.getElementById('editPlanStart').value;
   var rt = startVal ? new Date(startVal) : new Date();
-  var planEnd = calcPlanEnd(type, rt);
+  var planEnd = calcPlanEnd(type, rt, pri);
   document.getElementById('editPlanEnd').value = planEnd ? toDatetimeLocal(planEnd) : '';
 }
 function getSlaText(order){
-  if(toUnifiedStatus(order.status)==='已完成'||order.status==='受理驳回') return '-';
+  if(toUnifiedStatus(order.status)==='已完成'||toUnifiedStatus(order.status)==='已关闭') return '-';
   var deadline = calcSlaDeadline(order);
   if(!deadline) return order.sla||'-';
   var now = new Date();
@@ -2070,9 +2646,23 @@ function updateStatCards(){
     var el = document.getElementById('cnt-'+k);
     if(el) el.innerText = orders.filter(function(o){ return toUnifiedStatus(o.status)===k; }).length;
   });
+  // 受理超时 = 已进入处理中但仍处于待服务站受理，且上报时间距今超过30分钟
+  var elTimeout = document.getElementById('cnt-受理超时');
+  if(elTimeout){
+    var now = new Date();
+    elTimeout.innerText = orders.filter(function(o){
+      if(toUnifiedStatus(o.status) !== '处理中' || o.sub !== '待服务站受理') return false;
+      if(!o.reportTime) return false;
+      var rt = new Date(o.reportTime.replace(' ','T'));
+      if(isNaN(rt)) return false;
+      return (now - rt) > 30*60*1000; // 超过30分钟
+    }).length;
+  }
   var elUpg = document.getElementById('cnt-已升级');
-  if(elUpg) elUpg.innerText = orders.filter(function(o){ return o.sub==='已升级'; }).length;
+  if(elUpg) elUpg.innerText = orders.filter(function(o){ return o.sub==='技术支持中'; }).length;
 }
+normalizeFlowTemplates();
+normalizeMockOrders();
 renderTable(orders);
 initCascader();
 updateStatCards();
@@ -2116,7 +2706,7 @@ var bills = [
     submitTime:'2026-06-07 17:30', auditor:'李财务', auditTime:'2026-06-08 09:00',
     laborItems:[{name:'车身漆面修复工时',qty:1,unit:'次',price:160}],
     partsItems:[{partNo:'JXG-PAINT-003',name:'原厂漆料套装',qty:1,unit:'套',price:560,warranty:'否'}],
-    remark:'外观损伤非质保，全额向车主收费，发票已邮寄。',
+    remark:'车辆事故非质保，全额向车主收费，发票已邮寄。',
     payMethod:'车主线上支付', invoice:'已开票' },
 ];
 
@@ -2153,7 +2743,7 @@ function renderBillTable(){
     if(tp&&b.type!==tp) return false;
     return true;
   });
-  var statusColor={'待审核':'#fa8c16','审核中':'#1890ff','已结算':'#52c41a','驳回':'#ff4d4f'};
+  var statusColor={'待审核':'#94a3b8','审核中':'#2f6bed','已结算':'#64748b','驳回':'#d93025'};
   var html=list.map(function(b){
     return '<tr style="cursor:pointer;" onclick="openBillDrawer(\''+b.id+'\')">'+
       '<td><b>'+b.id+'</b></td>'+
@@ -2176,7 +2766,7 @@ function openBillDrawer(id){
   var b=bills.find(function(x){return x.id===id;});
   if(!b) return;
   var o=orders.find(function(x){return x.id===b.orderId;})||{};
-  var statusColor={'待审核':'#fa8c16','审核中':'#1890ff','已结算':'#52c41a','驳回':'#ff4d4f'};
+  var statusColor={'待审核':'#94a3b8','审核中':'#2f6bed','已结算':'#64748b','驳回':'#d93025'};
   var sc=statusColor[b.status]||'#999';
 
   var laborRows=b.laborItems.map(function(i){
@@ -2299,7 +2889,16 @@ function filterByCard(el, status){
   el.classList.add('active');
   var list;
   if(status === '已升级'){
-    list = orders.filter(function(o){ return o.sub === '已升级'; });
+    list = orders.filter(function(o){ return o.sub === '技术支持中'; });
+  } else if(status === '受理超时'){
+    var now = new Date();
+    list = orders.filter(function(o){
+      if(toUnifiedStatus(o.status) !== '处理中' || o.sub !== '待服务站受理') return false;
+      if(!o.reportTime) return false;
+      var rt = new Date(o.reportTime.replace(' ','T'));
+      if(isNaN(rt)) return false;
+      return (now - rt) > 30*60*1000;
+    });
   } else {
     list = orders.filter(function(o){ return toUnifiedStatus(o.status) === status; });
   }
@@ -2437,7 +3036,7 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
   if (!phaseNodes || phaseNodes.length === 0) {
     return '<div style="color:#bbb;font-size:12px;padding:8px 0;">该阶段暂无子节点配置</div>';
   }
-  // phaseNodes: [{task:'故障诊断', sub:'服务站诊断中'}, ...]
+  // phaseNodes: [{task:'故障诊断', sub:'诊断中'}, ...]
   var curIdx = -1;
   for (var i = 0; i < phaseNodes.length; i++) {
     var subName = phaseNodes[i].sub || phaseNodes[i];
@@ -2462,12 +3061,12 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
       if(step.endTime && step.endTime !== step.startTime) timeStr += ' → ' + step.endTime.slice(5);
       else if(isCur) timeStr += ' → 进行中';
       metaHtml = '<span style="display:flex;gap:10px;margin-top:2px;font-size:11px;color:#aaa;flex-wrap:wrap;">' +
-        '<span>负责人：<b style="color:#666;">'+step.executor+'</b></span>' +
+        '<span>执行方：<b style="color:#666;">'+step.executor+'</b></span>' +
         (timeStr ? '<span>'+timeStr+'</span>' : '') +
         '</span>';
     } else if(!step) {
       metaHtml = '<span style="display:flex;gap:10px;margin-top:2px;font-size:11px;color:#ccc;flex-wrap:wrap;">' +
-        '<span>负责人：待分配</span>' +
+        '<span>执行方：待分配</span>' +
         '</span>';
     }
     var detailHtml = '';
@@ -2480,7 +3079,7 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
         '<span class="'+textCls+'">'+taskName+'</span>'+
       '</div>'+
       (descText ? '<div style="font-size:11px;color:#888;margin-top:1px;">'+descText+'</div>' : '')+
-      (executorText ? '<span style="display:inline-block;font-size:10px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:0 4px;margin-top:2px;margin-right:4px;">负责人: '+executorText+'</span>' : '')+
+      (executorText ? '<span style="display:inline-block;font-size:10px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:0 4px;margin-top:2px;margin-right:4px;">执行方: '+executorText+'</span>' : '')+
       (slaText ? '<span style="display:inline-block;font-size:10px;color:#fa8c16;background:#fff7e6;border-radius:3px;padding:0 4px;margin-top:2px;">SLA: '+slaText+'</span>' : '')+
       metaHtml+
       detailHtml+
@@ -2488,10 +3087,74 @@ function renderPhaseTimeline(phaseNodes, subStepsMap, o) {
   }).join('');
 }
 
+function renderTaskChecklist(o, editable) {
+  ensureOrderTasks(o);
+  if(!o.tasks || !o.tasks.length) return '<div style="color:#bbb;font-size:12px;padding:8px 0;">暂无任务清单</div>';
+  return '<div style="display:flex;flex-direction:column;gap:8px;">' + o.tasks.map(function(t, idx){
+    var checked = t.status === 'done';
+    var current = t.status === 'current';
+    var border = current ? '#1890ff' : (checked ? '#52c41a' : '#e8e8e8');
+    var bg = current ? '#f0f7ff' : (checked ? '#f6ffed' : '#fff');
+    var label = checked ? '已完成' : (current ? '进行中' : '待执行');
+    var color = checked ? '#52c41a' : (current ? '#1890ff' : '#999');
+    return '<div style="display:flex;gap:10px;align-items:flex-start;border:1px solid '+border+';background:'+bg+';border-radius:8px;padding:10px 12px;">' +
+      '<input type="checkbox" '+(checked?'checked':'')+' onclick="event.stopPropagation();toggleOrderTask(\''+o.id+'\','+idx+',this.checked)" style="margin-top:3px;accent-color:#1890ff;">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+          '<span style="font-weight:600;color:#333;">'+(t.task || t.step)+'</span>' +
+          '<span class="tag tag-status">'+t.step+'</span>' +
+          '<span style="font-size:11px;color:'+color+';">'+label+'</span>' +
+        '</div>' +
+        '<div style="font-size:12px;color:#666;line-height:1.6;margin-top:3px;">'+(t.desc || '-')+'</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#999;margin-top:4px;">' +
+          '<span>处理方：'+(t.owner || '-')+'</span>' +
+          (t.executor ? '<span>执行人：'+t.executor+'</span>' : '') +
+          (t.startTime ? '<span>'+t.startTime+(t.endTime?' → '+t.endTime:' → 进行中')+'</span>' : '') +
+        '</div>' +
+      '</div>' +
+      (editable ? '<button class="btn btn-default" style="height:24px;padding:0 8px;font-size:11px;" onclick="openEditModal(\''+o.id+'\')">编辑</button>' : '') +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function syncOrderFromTasks(o){
+  if(!o || !o.tasks || !o.tasks.length) return;
+  var cur = o.tasks.find(function(t){ return t.status === 'current'; });
+  if(!cur) cur = o.tasks.find(function(t){ return t.status !== 'done'; });
+  if(o.status === '处理中' && cur) o.sub = cur.step;
+  o.subSteps = o.tasks.map(function(t){ return {step:t.step, executor:t.executor || t.owner, startTime:t.startTime, endTime:t.endTime}; });
+}
+
+function toggleOrderTask(orderId, idx, checked){
+  var o = orders.find(function(x){ return x.id === orderId; });
+  if(!o || !o.tasks || !o.tasks[idx]) return;
+  var now = formatDate(new Date());
+  if(checked){
+    o.tasks[idx].status = 'done';
+    o.tasks[idx].endTime = o.tasks[idx].endTime || now;
+    if(idx < o.tasks.length - 1 && o.tasks[idx+1].status === 'todo'){
+      o.tasks[idx+1].status = 'current';
+      o.tasks[idx+1].startTime = o.tasks[idx+1].startTime || now;
+    }
+  } else {
+    o.tasks[idx].status = 'current';
+    o.tasks[idx].endTime = null;
+    for(var i=idx+1;i<o.tasks.length;i++){
+      if(o.tasks[i].status === 'done') o.tasks[i].status = 'todo';
+    }
+  }
+  o.status = '处理中';
+  syncOrderFromTasks(o);
+  o.lastOp = '运营';
+  o.lastOpTime = now;
+  renderTable(orders);
+  openDrawer(orderId);
+}
+
 function renderSubNodeDetail(nodeName, o, isDone) {
   var html = '';
   // 诊断任务 → 诊断结果
-  if(nodeName === '服务站诊断中' || nodeName === '损伤评估中' || nodeName === '日志收集中') {
+  if(nodeName === '服务站诊断中' || nodeName === '事故评估中' || nodeName === '日志收集中') {
     if(isDone || o.sub === nodeName) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#1890ff;margin-bottom:4px;">诊断结果</div>';
@@ -2532,7 +3195,7 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 维修任务 → 维修结果
-  if(nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
+  if(nodeName === '维修自检' || nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#52c41a;margin-bottom:4px;">维修结果</div>';
@@ -2557,18 +3220,9 @@ html += '<div style="margin-top:4px;color:#888;">维修图片（维修前 / 维�
 
 var _currentPhaseTab = '';
 function switchPhaseTab(orderId, phase) {
-  var o = orders.find(function(x){ return x.id === orderId; });
-  if(!o) return;
+  // 点击主状态步骤时重新打开drawer以高亮对应阶段
   _currentPhaseTab = phase;
-  var flow = getFlow(o.type);
-  var phases = flow.phases || {};
-  var phaseNodes = phases[phase] || [];
-  var subStepsMap = {};
-  if(o.subSteps) o.subSteps.forEach(function(s){ subStepsMap[s.step] = s; });
-  var tl = document.getElementById('phaseTimeline');
-  if(tl) tl.innerHTML = renderPhaseTimeline(phaseNodes, subStepsMap, o);
-  var title = document.getElementById('phaseTimelineTitle');
-  if(title) title.textContent = phase + ' · 任务进度';
+  openDrawer(orderId);
 }
 
 function openDrawer(id){
@@ -2661,18 +3315,21 @@ function openDrawer(id){
           '<div class="info-item"><span class="info-label">关联缺陷</span><span class="info-value" style="color:#722ed1;">'+((o.relatedDefect&&o.relatedDefect!=='-')?o.relatedDefect:'-')+'</span></div>'
         : '') +
         '<div class="info-item span3"><span class="info-label">故障描述</span><span class="info-value" style="line-height:1.7;">'+o.desc+'</span></div>' +
+        '<div class="info-item span3" style="margin-top:-4px;"><span class="info-label">现场图片</span><div class="photo-row" style="margin-top:6px;">' +
+          '<div class="photo-thumb" style="width:80px;height:80px;background:url(https://picsum.photos/seed/'+o.id+'-1/160/160) center/cover;border:none;"></div>' +
+          '<div class="photo-thumb" style="width:80px;height:80px;background:url(https://picsum.photos/seed/'+o.id+'-2/160/160) center/cover;border:none;"></div>' +
+          '<div class="photo-thumb" style="width:80px;height:80px;background:url(https://picsum.photos/seed/'+o.id+'-3/160/160) center/cover;border:none;"></div>' +
+        '</div></div>' +
       '</div>' +
     '</div>' +
     '<div class="detail-card">' +
       '<div class="section-title" style="margin-top:0;">主状态流转</div>' +
       '<div class="status-flow" style="flex-wrap:wrap;padding:8px 0;">'+masterFlow+'</div>' +
-      '<div class="section-title" style="display:flex;align-items:center;justify-content:space-between;">' +
-        '<span id="phaseTimelineTitle">子单进度</span>' +
-        '<button class="btn btn-primary" style="height:26px;padding:0 12px;font-size:12px;border-radius:4px;" onclick="openAdvanceSubModal(\''+id+'\')">' +
-          '推进子单' +
-        '</button>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 4px;">' +
+        '<span style="font-size:13px;font-weight:600;color:#333;">子任务进度</span>' +
+        '<button class="btn btn-primary" style="height:26px;padding:0 12px;font-size:12px;border-radius:4px;" onclick="openAdvanceSubModal(\''+id+'\')">推进子单</button>' +
       '</div>' +
-      '<div id="phaseTimeline" class="timeline">'+subTL+'</div>' +
+      (o.status==='处理中' ? renderTaskChecklist(o, true) : (function(){ var _allPhases = Object.keys(phases); var _allHtml = ''; _allPhases.forEach(function(ph){ var _pn = phases[ph]||[]; if(_pn.length===0) return; var _phaseColor = ph==='处理中'?'#1890ff':ph==='待验收'?'#52c41a':'#1890ff'; var _isCurrentPhase = (ph === currentPhase); _allHtml += '<div style="margin-bottom:12px;' + (_isCurrentPhase?'':'opacity:0.6;') + '">'; _allHtml += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="width:3px;height:14px;border-radius:2px;background:'+_phaseColor+';display:inline-block;"></span><span style="font-size:12px;font-weight:600;color:'+_phaseColor+';">'+ph+'</span></div>'; _allHtml += '<div class="timeline">'+renderPhaseTimeline(_pn, subStepsMap, o)+'</div>'; _allHtml += '</div>'; }); return _allHtml; })()) +
     '</div>' +
     '<div class="detail-card">' + costBlock(o) + partsBlock(o) + '</div>' +
     (acceptBlock(o) ? '<div class="detail-card">' + acceptBlock(o) + '</div>' : '') +
@@ -2681,16 +3338,15 @@ function openDrawer(id){
   if(cl) setTimeout(function(){ cl.scrollTop = cl.scrollHeight; }, 50);
   var actions = '';
   var us = toUnifiedStatus(o.status);
-  if(us==='待受理') actions = '<button class="btn btn-danger" onclick="opAct(\''+o.id+'\',\'驳回\')">受理驳回</button><button class="btn btn-primary" onclick="opAct(\''+o.id+'\',\'受理\')">受理</button><button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
-  else if(us==='维修中'||us==='复诊中'||us==='转运中') {
-    // 维修中/复诊中/转运中 → 显示推进子单按钮 + 升级复诊(诊断中)
+  if(us==='待分派') actions = '<button class="btn btn-danger" onclick="opAct(\''+o.id+'\',\'关闭\')">关闭工单</button><button class="btn btn-primary" onclick="opAct(\''+o.id+'\',\'分派\')">分派服务站</button><button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
+  else if(us==='处理中') {
     actions = '<button class="btn btn-primary" onclick="openAdvanceSubModal(\''+o.id+'\')">推进子单</button>';
-    if(o.sub==='服务站诊断中') actions += '<button class="btn btn-default" onclick="opAct(\''+o.id+'\',\'升级复诊\')">升级售后/研发复诊</button>';
+    if(o.sub==='远程诊断中'||o.sub==='备件确认中'||o.sub==='维修中'||o.sub==='维修自检中'||o.sub==='验收驳回') actions += '<button class="btn btn-default" onclick="opAct(\''+o.id+'\',\'技术支持\')">升级技术支持</button>';
     actions += '<button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
   }
   else if(us==='待验收') actions = '<button class="btn btn-danger" onclick="opAct(\''+o.id+'\',\'验收驳回\')">验收驳回</button><button class="btn btn-success" onclick="opAct(\''+o.id+'\',\'验收通过\')">验收通过</button><button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
   else if(us==='已完成') actions = '';
-  else if(us==='验收驳回' || o.status==='受理驳回') actions = '<button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
+  else if(us==='已关闭') actions = '<button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
   else actions = '<button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
   document.getElementById('detailPageActions').innerHTML = actions;
   document.getElementById('page-workorder').classList.add('hidden');
@@ -2706,10 +3362,10 @@ function closeDrawer(){ closeOrderDetail(); }
 function opAct(id, act){
   var o = orders.find(function(x){ return x.id === id; });
   if(!o) return;
-  if(act === '受理'){
+  if(act === '分派' || act === '受理'){
     // 按流程模板自动生成子单
     var flow = getFlow(o.type);
-    o.status = flow.master[1]; // 推进主状态到第二个（维修中/复诊中/转运中）
+    o.status = '处理中';
     // 按当前主状态阶段的 phases 生成子单
     var phaseKey = o.status;
     var phaseNodes = (flow.phases && flow.phases[phaseKey]) ? flow.phases[phaseKey] : [];
@@ -2720,52 +3376,49 @@ function opAct(id, act){
     }
     var now = new Date();
     var nowStr = now.getFullYear()+'-'+pad2(now.getMonth()+1)+'-'+pad2(now.getDate())+' '+pad2(now.getHours())+':'+pad2(now.getMinutes());
-    // 生成所有阶段的子步骤（用于时间线匹配）
-    o.subSteps = flow.sub.map(function(s){
-      return { step: s, executor: null, startTime: null, endTime: null };
-    });
+    o.tasks = buildProcessTaskList(o.sub);
+    o.subSteps = o.tasks.map(function(t){ return { step: t.step, executor: null, startTime: null, endTime: null }; });
     // 第一个子步骤自动激活
-    o.subSteps[0].executor = '运营';
+    o.tasks[0].executor = '服务站';
+    o.tasks[0].startTime = nowStr;
+    o.subSteps[0].executor = '服务站';
     o.subSteps[0].startTime = nowStr;
     o.lastOp = '运营';
     o.lastOpTime = nowStr;
-    showToast('工单 ' + id + ' 已受理，子单已自动生成', 'success');
-  } else if(act === '驳回'){
-    o.status = '受理驳回';
-    o.sub = '-';
+    o.next = '服务站确认受理';
+    showToast('工单 ' + id + ' 已分派服务站，进入待服务站受理', 'success');
+  } else if(act === '驳回' || act === '关闭'){
+    o.status = '已关闭';
+    o.sub = act === '驳回' ? '服务站拒绝关闭' : '取消关闭';
     o.lastOp = '运营';
     o.lastOpTime = formatDate(new Date());
-    showToast('工单 ' + id + ' 已受理驳回', 'success');
+    showToast('工单 ' + id + ' 已关闭', 'success');
   } else if(act === '验收通过'){
     o.status = '已完成';
-    o.sub = '-';
+    o.sub = '已归档';
     o.lastOp = '运营';
     o.lastOpTime = formatDate(new Date());
     showToast('工单 ' + id + ' 验收通过，工单已完成', 'success');
   } else if(act === '验收驳回'){
-    o.status = '验收驳回';
-    o.sub = '-';
+    o.status = '处理中';
+    o.sub = '验收驳回';
+    o.tasks = buildProcessTaskList('验收驳回');
     o.lastOp = '运营';
     o.lastOpTime = formatDate(new Date());
     showToast('工单 ' + id + ' 验收驳回', 'success');
-  } else if(act === '升级复诊'){
-    // 升级到研发复诊
-    var nextSubIdx = -1;
-    if(o.subSteps){
-      for(var i=0;i<o.subSteps.length;i++){
-        if(o.subSteps[i].step === o.sub) { nextSubIdx = i+1; break; }
-      }
-    }
-    if(nextSubIdx >= 0 && nextSubIdx < o.subSteps.length){
-      var prevStep = o.subSteps[nextSubIdx-1];
-      prevStep.endTime = formatDate(new Date());
-      o.sub = o.subSteps[nextSubIdx].step;
-      o.subSteps[nextSubIdx].executor = '李研发';
-      o.subSteps[nextSubIdx].startTime = formatDate(new Date());
-      o.lastOp = '李研发';
-      o.lastOpTime = formatDate(new Date());
-    }
-    showToast('工单 ' + id + ' 已升级至研发复诊', 'success');
+  } else if(act === '技术支持' || act === '升级复诊'){
+    ensureOrderTasks(o);
+    var now2 = formatDate(new Date());
+    o.status = '处理中';
+    o.sub = '技术支持中';
+    o.tasks.forEach(function(t){
+      if(t.status === 'current') { t.status = 'todo'; t.endTime = t.endTime || now2; }
+      if(t.step === '技术支持中') { t.status = 'current'; t.executor = '售后工程师'; t.startTime = t.startTime || now2; t.endTime = null; }
+    });
+    o.lastOp = '售后工程师';
+    o.lastOpTime = now2;
+    syncOrderFromTasks(o);
+    showToast('工单 ' + id + ' 已升级至技术支持', 'success');
   } else {
     showToast('已对工单 ' + id + ' 执行：' + act, 'success');
   }
@@ -2784,6 +3437,42 @@ function refreshOrderRow(id){
 
 /* ===== 编辑工单 ===== */
 var editingId = null;
+var _editTasks = [];
+function renderEditTasks(){
+  var wrap = document.getElementById('editTaskList');
+  if(!wrap) return;
+  wrap.innerHTML = _editTasks.map(function(t, idx){
+    return '<div style="display:grid;grid-template-columns:24px 120px 130px 1fr 92px 28px;gap:8px;align-items:center;border:1px solid #e8e8e8;border-radius:8px;padding:8px;background:#fff;">' +
+      '<input type="checkbox" '+(t.status==='done'?'checked':'')+' onchange="updateEditTaskField('+idx+',\'status\',this.checked?\'done\':\'todo\')" style="accent-color:#1890ff;">' +
+      '<input class="form-control" value="'+(t.task||'')+'" placeholder="任务名称" onchange="updateEditTaskField('+idx+',\'task\',this.value)" style="height:30px;font-size:12px;">' +
+      '<select class="form-control" onchange="updateEditTaskField('+idx+',\'step\',this.value)" style="height:30px;font-size:12px;">' + PROCESS_TASKS.map(function(p){ return '<option value="'+p.step+'"'+(p.step===t.step?' selected':'')+'>'+p.step+'</option>'; }).join('') + '</select>' +
+      '<input class="form-control" value="'+(t.desc||'')+'" placeholder="任务说明" onchange="updateEditTaskField('+idx+',\'desc\',this.value)" style="height:30px;font-size:12px;">' +
+      '<input class="form-control" value="'+(t.owner||'')+'" placeholder="处理方" onchange="updateEditTaskField('+idx+',\'owner\',this.value)" style="height:30px;font-size:12px;">' +
+      '<button class="btn btn-default" style="height:26px;padding:0;font-size:13px;" onclick="removeEditTask('+idx+')">×</button>' +
+    '</div>';
+  }).join('');
+}
+function updateEditTaskField(idx, field, value){
+  if(!_editTasks[idx]) return;
+  _editTasks[idx][field] = value;
+  if(field === 'step'){
+    var preset = PROCESS_TASKS.find(function(t){ return t.step === value; });
+    if(preset){
+      _editTasks[idx].task = _editTasks[idx].task || preset.task;
+      _editTasks[idx].desc = _editTasks[idx].desc || preset.desc;
+      _editTasks[idx].owner = _editTasks[idx].owner || preset.owner;
+    }
+  }
+}
+function addEditTask(){
+  var preset = PROCESS_TASKS[0];
+  _editTasks.push({step:preset.step, task:preset.task, owner:preset.owner, desc:preset.desc, status:'todo', executor:null, startTime:null, endTime:null});
+  renderEditTasks();
+}
+function removeEditTask(idx){
+  _editTasks.splice(idx, 1);
+  renderEditTasks();
+}
 function openEditModal(id){
   editingId = id;
   var o = orders.find(function(x){ return x.id === id; });
@@ -2808,12 +3497,18 @@ function openEditModal(id){
   document.getElementById('editOrderDefectNo').value = (o.defectNo && o.defectNo!=='-') ? o.defectNo : '';
   document.getElementById('editOrderRelatedDefect').value = (o.relatedDefect && o.relatedDefect!=='-') ? o.relatedDefect : '';
   document.getElementById('editOrderPageTitle').textContent = '编辑工单 · ' + id;
+  ensureOrderTasks(o);
+  _editTasks = (o.tasks || []).map(function(t){ return Object.assign({}, t); });
+  renderEditTasks();
   // 预计开始时间=上报时间
   var rtStr = o.reportTime ? o.reportTime.replace(' ','T') : '';
   document.getElementById('editPlanStart').value = rtStr;
   // 预计结束时间按SLA计算
-  var planEnd = calcPlanEnd(o.type, o.reportTime);
+  var planEnd = calcPlanEnd(o.type, o.reportTime, o.pri);
   document.getElementById('editPlanEnd').value = planEnd ? toDatetimeLocal(planEnd) : '';
+  // 回填抄送人
+  _editCcList = (o.ccList && o.ccList.length > 0) ? o.ccList.slice() : [];
+  renderCcTags('edit');
   showFormPage('page-edit-order');
 }
 /* ===== 缺陷提报 ===== */
@@ -2873,6 +3568,21 @@ function submitEdit(){
   o.relatedDefect = document.getElementById('editOrderRelatedDefect').value.trim() || '-';
   o.planStart = document.getElementById('editPlanStart').value || o.planStart || '';
   o.planEnd = document.getElementById('editPlanEnd').value || o.planEnd || '';
+  o.ccList = _editCcList.slice();
+  o.tasks = _editTasks.map(function(t, idx){
+    var preset = PROCESS_TASKS.find(function(p){ return p.step === t.step; }) || {};
+    return {
+      step: t.step || preset.step || ('自定义任务'+(idx+1)),
+      task: t.task || preset.task || t.step || ('自定义任务'+(idx+1)),
+      owner: t.owner || preset.owner || '服务站',
+      desc: t.desc || preset.desc || '',
+      status: t.status || 'todo',
+      executor: t.executor || null,
+      startTime: t.startTime || null,
+      endTime: t.endTime || null
+    };
+  });
+  if(o.status === '处理中') syncOrderFromTasks(o);
   renderTable(orders);
   closeFormPage('edit-back');
   if(!document.getElementById('page-order-detail').classList.contains('hidden')){
@@ -2952,19 +3662,70 @@ var _vehicleDB = {
   'JDE6280': {vehicle:'JXG-001280',model:'miniVan量产车型',site:'广州天河站',siteContact:'陈明',sitePhone:'135****9912',station:'广州服务站',stationManager:'黄丽',stationPhone:'138****0066'}
 };
 var _newPhotos = [];
+var _newCcList = [];
+var _editCcList = [];
+function addCcTag(prefix) {
+  var input = document.getElementById(prefix + 'CcInput');
+  var name = input.value.trim();
+  if (!name) return;
+  var list = prefix === 'new' ? _newCcList : _editCcList;
+  if (list.indexOf(name) >= 0) { showToast('该抄送人已添加', 'warning'); return; }
+  list.push(name);
+  input.value = '';
+  renderCcTags(prefix);
+}
+function removeCcTag(prefix, idx) {
+  var list = prefix === 'new' ? _newCcList : _editCcList;
+  list.splice(idx, 1);
+  renderCcTags(prefix);
+}
+function renderCcTags(prefix) {
+  var container = document.getElementById(prefix + 'CcTags');
+  var list = prefix === 'new' ? _newCcList : _editCcList;
+  container.innerHTML = list.map(function(name, idx) {
+    return '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:#e6f7ff;border:1px solid #91d5ff;border-radius:4px;font-size:12px;color:#1890ff;">'
+      + name
+      + '<span style="cursor:pointer;color:#999;font-size:14px;line-height:1;" onclick="removeCcTag(\'' + prefix + '\',' + idx + ')">&times;</span>'
+      + '</span>';
+  }).join('');
+}
 function autoFillVehicle(no){
   var info = _vehicleDB[no];
   if(info){
     document.getElementById('newSite').value = info.site;
     document.getElementById('newSiteContact').value = info.siteContact;
     document.getElementById('newSitePhone').value = info.sitePhone;
-    // 自动推荐服务站
+    // 自动推荐服务站：距离优先，距离相近时负载更低优先
     var sel = document.getElementById('newStation');
     sel.innerHTML = '<option value="">请选择</option>';
-    var stations = ['北京自营服务站','上海服务站','武汉外协','天津市冀津贸易有限公司','广州服务站'];
-    stations.forEach(function(s){ var o=document.createElement('option'); o.value=s; o.textContent=s; if(s===info.station) o.selected=true; sel.appendChild(o); });
-    document.getElementById('newStationManager').value = info.stationManager;
-    document.getElementById('newStationPhone').value = info.stationPhone;
+    var site = info.site;
+    // 计算每个服务站到该站点的距离
+    var candidates = stationList.map(function(s){
+      var dist = (s.distance && s.distance[site]) ? s.distance[site] : 9999;
+      return {name:s.name, distance:dist, load:s.activeVehicles};
+    });
+    // 按距离优先排序；距离差≤10km时按负载排序
+    candidates.sort(function(a,b){
+      if(Math.abs(a.distance - b.distance) <= 10) return a.load - b.load;
+      return a.distance - b.distance;
+    });
+    candidates.forEach(function(c){
+      var o = document.createElement('option');
+      o.value = c.name;
+      o.textContent = c.name + (c.distance < 9999 ? ' ('+c.distance+'km, '+c.load+'辆在修)' : '');
+      sel.appendChild(o);
+    });
+    // 默认选中第一个
+    if(candidates.length > 0 && candidates[0].distance < 9999) sel.value = candidates[0].name;
+    // 填充联系人
+    var selStation = stationList.find(function(s){ return s.name === sel.value; });
+    if(selStation){
+      document.getElementById('newStationManager').value = selStation.manager;
+      document.getElementById('newStationPhone').value = '139****00' + (stationList.indexOf(selStation)+1);
+    } else {
+      document.getElementById('newStationManager').value = info.stationManager || '';
+      document.getElementById('newStationPhone').value = info.stationPhone || '';
+    }
   } else {
     document.getElementById('newSite').value = '';
     document.getElementById('newSiteContact').value = '';
@@ -2972,7 +3733,8 @@ function autoFillVehicle(no){
     document.getElementById('newStationManager').value = '';
     document.getElementById('newStationPhone').value = '';
     var sel = document.getElementById('newStation');
-    sel.innerHTML = '<option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option><option>武汉外协</option><option>天津市冀津贸易有限公司</option><option>广州服务站</option>';
+    sel.innerHTML = '<option value="">待推荐</option>';
+    stationList.forEach(function(s){ var o=document.createElement('option'); o.value=s.name; o.textContent=s.name; sel.appendChild(o); });
   }
 }
 function addNewPhotos(input){
@@ -3008,15 +3770,14 @@ function submitNew(){
   var vInfo = _vehicleDB[vno] || {};
   var id='WO-2026060' + String(Math.floor(Math.random()*900)+100);
   var now = new Date().toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-');
-  // 自动受理判断
-  var flow = flowTemplates[t] || flowTemplates['故障维修'];
-  var initStatus = '待受理';
-  var initSub = '-';
+  var autoDispatch = _typeAutoDispatchMap[t] === '是';
+  var initStatus = autoDispatch ? '处理中' : '待分派';
+  var initSub = autoDispatch ? '待服务站受理' : '待分派';
   var selectedStation = document.getElementById('newStation').value || '待推荐';
-  var initStation = selectedStation;
-  var initNext = '运营受理';
-  var initLastOp = document.getElementById('newReporter').value || '运营手动';
-  orders.unshift({id:id, title:title, vehicle:vInfo.vehicle||vno, site:s, type:t, pri:p, status:initStatus, sub:initSub, station:initStation, sla:'剩余 60 分钟', next:initNext, desc:document.getElementById('newDesc').value,
+  var initStation = autoDispatch ? (selectedStation !== '待推荐' ? selectedStation : '天津市冀津贸易有限公司') : selectedStation;
+  var initNext = autoDispatch ? '服务站确认受理' : '售后工单师分派服务站';
+  var initLastOp = autoDispatch ? '系统自动分派' : document.getElementById('newReporter').value || '运营手动';
+  var newOrder = {id:id, title:title, vehicle:vInfo.vehicle||vno, site:s, type:t, pri:p, status:initStatus, sub:initSub, station:initStation, sla:'剩余 60 分钟', next:initNext, desc:document.getElementById('newDesc').value,
     reporter: document.getElementById('newSiteContact').value || '运营手动',
     reporterPhone: document.getElementById('newSitePhone').value || '-',
     reporterRole: '站点负责人',
@@ -3026,14 +3787,17 @@ function submitNew(){
     stationManager: document.getElementById('newStationManager').value || '-',
     defectNo: document.getElementById('newDefectNo').value.trim() || '-',
     relatedDefect: document.getElementById('newRelatedDefect').value.trim() || '-',
-    acceptResult: undefined,
-    acceptTime: undefined,
-    acceptBy: undefined,
-    acceptComment: undefined,
+    acceptResult: autoDispatch ? '通过' : undefined,
+    acceptTime: autoDispatch ? now : undefined,
+    acceptBy: autoDispatch ? '系统自动' : undefined,
+    acceptComment: autoDispatch ? '自动分派' : undefined,
     photos: _newPhotos.length > 0 ? _newPhotos.slice() : undefined,
     planStart: document.getElementById('newPlanStart').value || now,
-    planEnd: document.getElementById('newPlanEnd').value || ''
-  });
+    planEnd: document.getElementById('newPlanEnd').value || '',
+    ccList: _newCcList.length > 0 ? _newCcList.slice() : []
+  };
+  ensureOrderTasks(newOrder);
+  orders.unshift(newOrder);
   renderTable(orders);
   closeFormPage('workorder');
   ['newTitle','newType','newPri','newVehicleNo','newSite','newDesc','newDefectNo','newRelatedDefect','newSiteContact','newSitePhone','newStationManager','newStationPhone'].forEach(function(i){var el=document.getElementById(i);if(el)el.value='';});
@@ -3042,7 +3806,9 @@ function submitNew(){
   document.getElementById('newStation').innerHTML='<option value="">待推荐</option><option>北京自营服务站</option><option>上海服务站</option><option>武汉外协</option><option>天津市冀津贸易有限公司</option><option>广州服务站</option>';
   _newPhotos=[];
   renderNewPhotos();
-  showToast('已创建主工单 ' + id, 'success');
+  _newCcList=[];
+  renderCcTags('new');
+  showToast(autoDispatch ? '已创建工单 ' + id + '（自动分派至服务站待受理）' : '已创建待分派工单 ' + id, 'success');
 }
 function updateBatchPreview(){
   var text=document.getElementById('batchText').value.trim();
@@ -3060,32 +3826,33 @@ function submitBatch(){
   var text=document.getElementById('batchText').value.trim();
   if(!text){ showToast('请输入批量文本', 'error'); return; }
   var lines=text.split('\n').filter(function(l){return l.trim();});
-  showToast('已批量创建 ' + lines.length + ' 条待受理主工单', 'success');
+  showToast('已批量创建 ' + lines.length + ' 条待分派主工单', 'success');
   closeFormPage('workorder');
 }
 
 var maintHistory = [
-  {id:'MH-2026050001',vehicle:'JXG-001234',model:'miniVan量产',vehicleNo:'JDE6067',site:'北京亦庄站点',type:'小保',mileage:5000,items:'机油/机滤/轮胎检查',station:'北京自营服务站',time:'2026-05-10',result:'正常完成',nextMileage:10000,operator:'张师傅'},
+  {id:'MH-2026050001',vehicle:'JXG-001234',model:'miniVan量产',vehicleNo:'JDE6067',site:'北京亦庄站点',type:'小保养',mileage:5000,items:'机油/机滤/轮胎检查',station:'北京自营服务站',time:'2026-05-10',result:'正常完成',nextMileage:10000,operator:'张师傅'},
   {id:'MH-2026050002',vehicle:'JXG-001237',model:'miniVan量产',vehicleNo:'JDE6031',site:'北京中关村站',type:'首保',mileage:3000,items:'全车检查/轮胎调整',station:'北京自营服务站',time:'2026-05-12',result:'发现问题',nextMileage:8000,operator:'李技师'},
-  {id:'MH-2026040003',vehicle:'JXG-001241',model:'miniVan量产',vehicleNo:'JDE6118',site:'上海浦东站',type:'大保',mileage:20000,items:'机油/机滤/空滤/刹车液/冷��液',station:'上海服务站',time:'2026-04-20',result:'正常完成',nextMileage:25000,operator:'王师傅'},
-  {id:'MH-2026050004',vehicle:'JXG-001255',model:'miniVan量产',vehicleNo:'JDE6055',site:'北京通州站',type:'季度点检',mileage:12000,items:'灯光/制动/传感器检查',station:'北京自营服务站',time:'2026-05-22',result:'发现问题',nextMileage:15000,operator:'张师傅'},
-  {id:'MH-2026050005',vehicle:'JXG-001260',model:'miniVan量产',vehicleNo:'JDE6202',site:'武汉光谷站',type:'小保',mileage:8000,items:'机油/机滤',station:'武汉外协',time:'2026-05-28',result:'正常完成',nextMileage:13000,operator:'周师傅'},
-  {id:'MH-2026040006',vehicle:'JXG-001268',model:'miniVan量产',vehicleNo:'JDE6088',site:'北京海淀站',type:'小保',mileage:6000,items:'机油/机滤/雨刮',station:'北京自营服务站',time:'2026-04-15',result:'正常完成',nextMileage:11000,operator:'张师傅'},
+  {id:'MH-2026040003',vehicle:'JXG-001241',model:'miniVan量产',vehicleNo:'JDE6118',site:'上海浦东站',type:'大保养',mileage:20000,items:'机油/机滤/空滤/刹车液/冷��液',station:'上海服务站',time:'2026-04-20',result:'正常完成',nextMileage:25000,operator:'王师傅'},
+  {id:'MH-2026050004',vehicle:'JXG-001255',model:'miniVan量产',vehicleNo:'JDE6055',site:'北京通州站',type:'小保养',mileage:12000,items:'灯光/制动/传感器检查',station:'北京自营服务站',time:'2026-05-22',result:'发现问题',nextMileage:15000,operator:'张师傅'},
+  {id:'MH-2026050005',vehicle:'JXG-001260',model:'miniVan量产',vehicleNo:'JDE6202',site:'武汉光谷站',type:'小保养',mileage:8000,items:'机油/机滤',station:'武汉外协',time:'2026-05-28',result:'正常完成',nextMileage:13000,operator:'周师傅'},
+  {id:'MH-2026040006',vehicle:'JXG-001268',model:'miniVan量产',vehicleNo:'JDE6088',site:'北京海淀站',type:'小保养',mileage:6000,items:'机油/机滤/雨刮',station:'北京自营服务站',time:'2026-04-15',result:'正常完成',nextMileage:11000,operator:'张师傅'},
   {id:'MH-2026050007',vehicle:'JXG-001270',model:'miniVan量产',vehicleNo:'JDE6143',site:'上海徐汇站',type:'首保',mileage:2800,items:'全车检查',station:'上海服务站',time:'2026-05-05',result:'正常完成',nextMileage:8000,operator:'陈师傅'},
-  {id:'MH-2026050008',vehicle:'JXG-001275',model:'miniVan量产',vehicleNo:'JDE6177',site:'北京顺义站',type:'季度点检',mileage:9500,items:'电气系统/底盘检查',station:'北京自营服务站',time:'2026-05-30',result:'发现问题',nextMileage:12000,operator:'李技师'}
+  {id:'MH-2026050008',vehicle:'JXG-001275',model:'miniVan量产',vehicleNo:'JDE6177',site:'北京顺义站',type:'小保养',mileage:9500,items:'电气系统/底盘检查',station:'北京自营服务站',time:'2026-05-30',result:'发现问题',nextMileage:12000,operator:'李技师'}
 ];
 var maintPlan = [
-  {vehicle:'JXG-001234',site:'北京亦庄站点',currentMileage:9200,lastTime:'2026-05-10',lastMileage:5000,planType:'小保',planMileage:10000,hasOrder:true,orderId:'WO-2026060001',dueDate:'2026-06-12',urgency:'7天内'},
-  {vehicle:'JXG-001237',site:'北京中关村站',currentMileage:7800,lastTime:'2026-05-12',lastMileage:3000,planType:'小保',planMileage:8000,hasOrder:true,orderId:'WO-2026060002',dueDate:'2026-06-05',urgency:'已逾期'},
-  {vehicle:'JXG-001241',site:'上海浦东站',currentMileage:24100,lastTime:'2026-04-20',lastMileage:20000,planType:'大保',planMileage:25000,hasOrder:true,orderId:'WO-2026060003',dueDate:'2026-06-25',urgency:'30天内'},
-  {vehicle:'JXG-001255',site:'北京通州站',currentMileage:14200,lastTime:'2026-05-22',lastMileage:12000,planType:'小保',planMileage:15000,dueDate:'2026-07-10',urgency:'30天以上'},
-  {vehicle:'JXG-001260',site:'武汉光谷站',currentMileage:12800,lastTime:'2026-05-28',lastMileage:8000,planType:'季度点检',planMileage:13000,dueDate:'2026-06-08',urgency:'已逾期'},
-  {vehicle:'JXG-001268',site:'北京海淀站',currentMileage:10500,lastTime:'2026-04-15',lastMileage:6000,planType:'小保',planMileage:11000,dueDate:'2026-06-15',urgency:'7天内'},
-  {vehicle:'JXG-001270',site:'上海徐汇站',currentMileage:7600,lastTime:'2026-05-05',lastMileage:2800,planType:'小保',planMileage:8000,dueDate:'2026-06-20',urgency:'30天内'},
-  {vehicle:'JXG-001275',site:'北京顺义站',currentMileage:11800,lastTime:'2026-05-30',lastMileage:9500,planType:'大保',planMileage:20000,dueDate:'2026-09-01',urgency:'30天以上'}
+  {vehicle:'JXG-001234',site:'北京亦庄站点',currentMileage:9200,lastTime:'2026-05-10',lastMileage:5000,planType:'小保养',planMileage:10000,hasOrder:true,orderId:'WO-2026060001',dueDate:'2026-06-12',urgency:'7天内',status:'已提单'},
+  {vehicle:'JXG-001237',site:'北京中关村站',currentMileage:7800,lastTime:'2026-05-12',lastMileage:3000,planType:'小保养',planMileage:8000,hasOrder:true,orderId:'WO-2026060002',dueDate:'2026-06-05',urgency:'已逾期',status:'已提单'},
+  {vehicle:'JXG-001241',site:'上海浦东站',currentMileage:24100,lastTime:'2026-04-20',lastMileage:20000,planType:'大保养',planMileage:25000,hasOrder:true,orderId:'WO-2026060003',dueDate:'2026-06-25',urgency:'30天内',status:'已提单'},
+  {vehicle:'JXG-001255',site:'北京通州站',currentMileage:14200,lastTime:'2026-05-22',lastMileage:12000,planType:'小保养',planMileage:15000,dueDate:'2026-07-10',urgency:'30天以上',status:'待提醒'},
+  {vehicle:'JXG-001260',site:'武汉光谷站',currentMileage:12800,lastTime:'2026-05-28',lastMileage:8000,planType:'小保养',planMileage:13000,dueDate:'2026-06-08',urgency:'已逾期',status:'待客户确认'},
+  {vehicle:'JXG-001268',site:'北京海淀站',currentMileage:10500,lastTime:'2026-04-15',lastMileage:6000,planType:'小保养',planMileage:11000,dueDate:'2026-06-15',urgency:'7天内',status:'待客户确认'},
+  {vehicle:'JXG-001270',site:'上海徐汇站',currentMileage:7600,lastTime:'2026-05-05',lastMileage:2800,planType:'小保养',planMileage:8000,dueDate:'2026-06-20',urgency:'30天内',status:'待客户确认'},
+  {vehicle:'JXG-001275',site:'北京顺义站',currentMileage:11800,lastTime:'2026-05-30',lastMileage:9500,planType:'大保养',planMileage:20000,dueDate:'2026-09-01',urgency:'30天以上',status:'待提醒'}
 ];
 function resultTag(r){ return r==='正常完成'?'<span class="tag tag-done">正常完成</span>':'<span class="tag tag-pending">发现问题</span>'; }
 function urgencyTag(u){ var m={'已逾期':'danger','7天内':'p1','30天内':'p2','30天以上':'done','已提单':'prog'}; return '<span class="tag tag-'+(m[u]||'status')+'">'+u+'</span>'; }
+function maintStatusTag(s){ var m={'待提醒':'tag-status','待客户确认':'tag-p1','已提单':'tag-done'}; return '<span class="tag '+(m[s]||'tag-status')+'">'+s+'</span>'; }
 function renderMaintHist(list){
   document.getElementById('maintHistBody').innerHTML = (list||maintHistory).map(function(r){
     return '<tr><td><strong style="color:#1890ff;">'+r.id+'</strong></td><td>'+r.vehicle+'</td><td><span style="color:#999;font-size:11px;">'+r.model+' / '+r.vehicleNo+'</span></td><td>'+r.site+'</td><td>'+r.type+'</td><td>'+r.mileage+'</td><td>'+r.items+'</td><td>'+r.station+'</td><td>'+r.time+'</td><td>'+resultTag(r.result)+'</td><td>'+r.nextMileage+'</td><td>'+r.operator+'</td></tr>';
@@ -3101,12 +3868,25 @@ function renderMaintPlan(list){
   var urgencyRowCls = {'已逾期':'color:#ff4d4f;background:#fff1f0;','7天内':'','30天内':'','30天以上':''};
   document.getElementById('maintPlanBody').innerHTML = currentPlanList.map(function(r,i){
     var rowStyle = r.hasOrder ? '' : (urgencyRowCls[r.urgency] || '');
+    var status = r.status || (r.hasOrder ? '已提单' : '待提醒');
+    var actionHtml = '';
+    if(r.hasOrder) {
+      actionHtml = '<span style="color:#aaa;font-size:12px;">已提单</span>';
+    } else if(status === '待提醒') {
+      actionHtml = '<button class="btn btn-default" style="height:26px;padding:0 10px;font-size:11px;" onclick="triggerMaintReminder('+i+')">发送提醒</button>';
+    } else if(status === '待客户确认') {
+      actionHtml = '<button class="btn btn-primary" style="height:26px;padding:0 10px;font-size:11px;" onclick="confirmMaintByCustomer('+i+')">客户确认</button>';
+    }
     return '<tr style="'+rowStyle+'">'
       +'<td><input type="checkbox" class="plan-check" data-idx="'+i+'"></td>'
       +'<td>'+r.vehicle+'</td><td>'+r.site+'</td><td>'+r.currentMileage+'</td>'
       +'<td>'+r.lastTime+'</td><td>'+r.lastMileage+'</td>'
-      +'<td>'+r.planMileage+'</td><td>'+r.dueDate+'</td>'+'<td>'+(r.orderId?'<a href="javascript:void(0)" onclick="jumpToOrder(\''+r.orderId+'\')" style="color:#1890ff;text-decoration:none;">'+r.orderId+'</a>':'—')+'</td>'+'<td>'+urgencyTag(r.hasOrder?'已提单':r.urgency)+'</td>'
-      +'<td class="col-action" onclick="event.stopPropagation()">'+(r.hasOrder?'<span style="color:#aaa;font-size:12px;">已提单</span>':('<button class="btn btn-default" style="height:26px;padding:0 10px;font-size:11px;" onclick="alert(\'已为 '+r.vehicle+' 生成保养工单（演示）\')">生成工单</button>'))+'</td></tr>';
+      +'<td>'+r.planType+'</td>'
+      +'<td>'+r.planMileage+'</td><td>'+r.dueDate+'</td>'
+      +'<td>'+maintStatusTag(status)+'</td>'
+      +'<td>'+(r.orderId?'<a href="javascript:void(0)" onclick="jumpToOrder(\''+r.orderId+'\')" style="color:#1890ff;text-decoration:none;">'+r.orderId+'</a>':'—')+'</td>'
+      +'<td>'+urgencyTag(r.hasOrder?'已提单':r.urgency)+'</td>'
+      +'<td class="col-action" onclick="event.stopPropagation()">'+actionHtml+'</td></tr>';
   }).join('');
 }
 function renderMaint(){ renderMaintHist(); renderMaintPlan(); updateMaintStatCards(); }
@@ -3117,6 +3897,7 @@ function updateMaintStatCards(){
   var monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
   document.getElementById('mcnt-week').innerText     = maintPlan.filter(function(p){ return p.urgency==='7天内' && !p.hasOrder; }).length;
   document.getElementById('mcnt-overdue').innerText  = maintPlan.filter(function(p){ return p.urgency==='已逾期' && !p.hasOrder; }).length;
+  document.getElementById('mcnt-待客户确认').innerText = maintPlan.filter(function(p){ return p.status==='待客户确认'; }).length;
   document.getElementById('mcnt-已提单').innerText = maintPlan.filter(function(p){ return !!p.hasOrder; }).length;
   // 本月已完成：maintHistory 中完成日期在本月的记录
   document.getElementById('mcnt-done').innerText     = maintHistory.filter(function(h){
@@ -3142,10 +3923,11 @@ function filterMaintByCard(el, key){
     renderMaintHist(maintHistory);
   } else {
     switchMaintTab(planTab, 'maint-plan');
-    if(key==='week')           renderMaintPlan(maintPlan.filter(function(p){ return p.urgency==='7天内' && !p.hasOrder; }));
-    else if(key==='overdue')   renderMaintPlan(maintPlan.filter(function(p){ return p.urgency==='已逾期' && !p.hasOrder; }));
-    else if(key==='已提单') renderMaintPlan(maintPlan.filter(function(p){ return !!p.hasOrder; }));
-    else                         renderMaintPlan(maintPlan);
+    if(key==='week')              renderMaintPlan(maintPlan.filter(function(p){ return p.urgency==='7天内' && !p.hasOrder; }));
+    else if(key==='overdue')      renderMaintPlan(maintPlan.filter(function(p){ return p.urgency==='已逾期' && !p.hasOrder; }));
+    else if(key==='待客户确认')   renderMaintPlan(maintPlan.filter(function(p){ return p.status==='待客户确认'; }));
+    else if(key==='已提单')       renderMaintPlan(maintPlan.filter(function(p){ return !!p.hasOrder; }));
+    else                          renderMaintPlan(maintPlan);
   }
 }
 function switchMaintTab(el,id){
@@ -3162,10 +3944,68 @@ function applyMaintFilter(){
 function resetMaintFilter(){ ['mhKw','mhType','mhResult'].forEach(function(i){document.getElementById(i).value='';}); activeMaintCard=null; document.querySelectorAll('#maintStatCards .stat-card').forEach(function(c){c.classList.remove('active');}); renderMaintHist(); }
 function applyPlanFilter(){
   var kw=document.getElementById('mpKw').value.toLowerCase();
+  var t=document.getElementById('mpType').value;
+  var s=document.getElementById('mpStatus').value;
   var u=document.getElementById('mpUrgency').value;
-  renderMaintPlan(maintPlan.filter(function(p){ return (!kw||p.vehicle.includes(kw)||p.site.includes(kw))&&(!u||(u==='已提单'?!!p.hasOrder:p.urgency===u)); }));
+  renderMaintPlan(maintPlan.filter(function(p){
+    var status = p.status || (p.hasOrder ? '已提单' : '待提醒');
+    return (!kw||p.vehicle.includes(kw)||p.site.includes(kw))
+      && (!t||p.planType===t)
+      && (!s||status===s)
+      && (!u||(u==='已提单'?!!p.hasOrder:p.urgency===u));
+  }));
 }
-function resetPlanFilter(){ ['mpKw','mpUrgency'].forEach(function(i){document.getElementById(i).value='';}); activeMaintCard=null; document.querySelectorAll('#maintStatCards .stat-card').forEach(function(c){c.classList.remove('active');}); renderMaintPlan(); }
+function resetPlanFilter(){ ['mpKw','mpType','mpStatus','mpUrgency'].forEach(function(i){document.getElementById(i).value='';}); activeMaintCard=null; document.querySelectorAll('#maintStatCards .stat-card').forEach(function(c){c.classList.remove('active');}); renderMaintPlan(); }
+
+function triggerMaintReminder(idx){
+  var r = currentPlanList[idx];
+  if(!r) return;
+  var orig = maintPlan.find(function(p){ return p.vehicle===r.vehicle && p.site===r.site; });
+  if(orig){ orig.status = '待客户确认'; }
+  renderMaintPlan();
+  updateMaintStatCards();
+  showToast('已向 '+r.vehicle+' 客户发送保养提醒','success');
+}
+function confirmMaintByCustomer(idx){
+  var r = currentPlanList[idx];
+  if(!r) return;
+  var orig = maintPlan.find(function(p){ return p.vehicle===r.vehicle && p.site===r.site; });
+  if(orig){
+    orig.status = '已提单';
+    orig.hasOrder = true;
+    orig.orderId = 'WO-202606' + String(10 + maintPlan.indexOf(orig)).padStart(4,'0');
+  }
+  // 同步在工单列表中创建保养工单
+  var now = new Date();
+  var nowStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var maintOrder = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'处理中', sub:'待服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
+  ensureOrderTasks(maintOrder);
+  orders.unshift(maintOrder);
+  renderMaintPlan();
+  updateMaintStatCards();
+  renderTable(orders);
+  showToast(r.vehicle+' 客户已确认，已生成保养工单 '+orig.orderId,'success');
+}
+function generateMaintOrder(idx){
+  var r = currentPlanList[idx];
+  if(!r) return;
+  var orig = maintPlan.find(function(p){ return p.vehicle===r.vehicle && p.site===r.site; });
+  if(orig){
+    orig.status = '已提单';
+    orig.hasOrder = true;
+    orig.orderId = 'WO-202606' + String(10 + maintPlan.indexOf(orig)).padStart(4,'0');
+  }
+  // 同步在工单列表中创建保养工单
+  var now = new Date();
+  var nowStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var maintOrder2 = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'处理中', sub:'待服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
+  ensureOrderTasks(maintOrder2);
+  orders.unshift(maintOrder2);
+  renderMaintPlan();
+  updateMaintStatCards();
+  renderTable(orders);
+  showToast('已为 '+r.vehicle+' 生成保养工单 '+orig.orderId,'success');
+}
 
 function showPage(p){
   var allPages = ['page-workorder','page-config','page-maint','page-bill',
@@ -3214,8 +4054,436 @@ function showPage(p){
 function switchTab(el, id){
   el.parentNode.querySelectorAll('.tab-item').forEach(function(t){t.classList.remove('active');});
   el.classList.add('active');
-  ['tab-type','tab-sla','tab-station','tab-verify'].forEach(function(t){document.getElementById(t).classList.toggle('hidden', t!==id);});
+  ['tab-type','tab-sla','tab-station','tab-verify','tab-maint-item','tab-executor'].forEach(function(t){document.getElementById(t).classList.toggle('hidden', t!==id);});
   if(id==='tab-verify') initVerifyTab();
+  if(id==='tab-maint-item') renderMaintItemGroups();
+  if(id==='tab-executor') renderExecutorModules();
+}
+
+// ===== 保养项配置数据 =====
+var _maintItemGroups = [
+  { name:'首保', items:[
+    {title:'动力系统', name:'电机检查'},
+    {title:'动力系统', name:'电池包外观检查'},
+    {title:'动力系统', name:'控制器线束检查'},
+    {title:'底盘系统', name:'转向系统检查'},
+    {title:'底盘系统', name:'制动系统检查'},
+    {title:'底盘系统', name:'轮胎检查'},
+    {title:'电气系统', name:'灯光信号检查'},
+    {title:'电气系统', name:'仪表显示检查'},
+    {title:'车身外观', name:'车身漆面检查'},
+    {title:'车身外观', name:'车门开闭检查'},
+    {title:'软件系统', name:'整车软件版本确认'},
+    {title:'软件系统', name:'故障码读取与清除'}
+  ]},
+  { name:'大保养', items:[
+    {title:'动力系统', name:'电机绝缘检测'},
+    {title:'动力系统', name:'电池包容量测试'},
+    {title:'动力系统', name:'冷却液更换'},
+    {title:'动力系统', name:'高压线束检测'},
+    {title:'底盘系统', name:'转向拉杆球头检查'},
+    {title:'底盘系统', name:'制动片厚度测量'},
+    {title:'底盘系统', name:'制动液更换'},
+    {title:'底盘系统', name:'悬挂系统检测'},
+    {title:'底盘系统', name:'轮胎换位与动平衡'},
+    {title:'电气系统', name:'全车灯光功能测试'},
+    {title:'电气系统', name:'空调滤芯更换'},
+    {title:'电气系统', name:'低压蓄电池检测'},
+    {title:'车身外观', name:'全车密封条检查'},
+    {title:'车身外观', name:'天窗/车门异响排查'},
+    {title:'软件系统', name:'整车软件升级'},
+    {title:'软件系统', name:'BMS固件更新'},
+    {title:'安全检查', name:'安全带功能检查'},
+    {title:'安全检查', name:'倒车雷达/影像校验'}
+  ]},
+  { name:'小保养', items:[
+    {title:'动力系统', name:'电机运行状态检查'},
+    {title:'动力系统', name:'电池SOC校准'},
+    {title:'底盘系统', name:'轮胎磨损检查'},
+    {title:'底盘系统', name:'制动片目视检查'},
+    {title:'电气系统', name:'灯光功能检查'},
+    {title:'电气系统', name:'空调滤芯清洁'},
+    {title:'车身外观', name:'车身外观目视检查'},
+    {title:'软件系统', name:'故障码读取'}
+  ]}
+];
+var _maintItemGroupEditIdx = -1; // -1=新增, >=0=编辑保养类型索引
+var _maintItemEditGroupIdx = -1; // 保养项所属保养类型索引
+var _maintItemEditIdx = -1; // -1=新增, >=0=编辑保养项索引
+
+function renderMaintItemGroups(){
+  var html = '';
+  _maintItemGroups.forEach(function(g, gi){
+    // 按标题分组
+    var groupByTitle = {};
+    g.items.forEach(function(it){
+      if(!groupByTitle[it.title]) groupByTitle[it.title] = [];
+      groupByTitle[it.title].push(it.name);
+    });
+    html += '<div class="detail-card" style="margin-bottom:12px;">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
+    html += '<div style="font-size:14px;font-weight:700;color:#111;">'+g.name+' <span style="font-weight:400;color:#999;font-size:12px;">('+g.items.length+'项)</span></div>';
+    html += '<div style="display:flex;gap:6px;">';
+    html += '<button class="btn btn-primary" style="height:28px;font-size:12px;" onclick="openMaintItemEditModal('+gi+',-1)">+ 新增保养项</button>';
+    html += '<button class="btn btn-default" style="height:28px;font-size:12px;" onclick="openMaintItemGroupEditModal('+gi+')">编辑</button>';
+    html += '<button class="btn btn-default" style="height:28px;font-size:12px;color:#ff4d4f;" onclick="deleteMaintItemGroup('+gi+')">删除</button>';
+    html += '</div></div>';
+    // 按标题分组展示
+    var titles = Object.keys(groupByTitle);
+    titles.forEach(function(title){
+      html += '<div style="margin-bottom:8px;">';
+      html += '<div style="font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">'+title+'</div>';
+      html += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+      groupByTitle[title].forEach(function(name, ni){
+        // 找到该name在g.items中的真实索引
+        var realIdx = -1;
+        for(var k=0;k<g.items.length;k++){
+          if(g.items[k].title===title && g.items[k].name===name){ realIdx=k; break; }
+        }
+        html += '<span style="display:inline-flex;align-items:center;gap:4px;background:#f0f5ff;border:1px solid #d6e4ff;border-radius:4px;padding:2px 8px;font-size:12px;color:#1890ff;">';
+        html += name;
+        html += '<span style="cursor:pointer;color:#ff4d4f;font-size:14px;line-height:1;" onclick="deleteMaintItem('+gi+','+realIdx+')" title="删除">×</span>';
+        html += '</span>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('maintItemGroupList').innerHTML = html;
+}
+
+function openMaintItemGroupAdd(){
+  _maintItemGroupEditIdx = -1;
+  document.getElementById('maintItemGroupModalTitle').textContent = '新增保养类型';
+  document.getElementById('maintItemGroupName').value = '';
+  document.getElementById('maintItemGroupModal').style.display = 'flex';
+}
+function openMaintItemGroupEditModal(gi){
+  _maintItemGroupEditIdx = gi;
+  document.getElementById('maintItemGroupModalTitle').textContent = '编辑保养类型';
+  document.getElementById('maintItemGroupName').value = _maintItemGroups[gi].name;
+  document.getElementById('maintItemGroupModal').style.display = 'flex';
+}
+function closeMaintItemGroupModal(){
+  document.getElementById('maintItemGroupModal').style.display = 'none';
+}
+function _syncVerifyMaintData(){
+  // 同步_maintItemGroups到_verifyMaintData，保留已有的photo配置
+  _maintItemGroups.forEach(function(g){
+    var existing = _verifyMaintData[g.name] || [];
+    var newItems = g.items.map(function(it){
+      // 查找已有的photo配置
+      var found = existing.find(function(e){ return e.title===it.title && e.name===it.name; });
+      return {title:it.title, name:it.name, photo: found ? found.photo : false};
+    });
+    _verifyMaintData[g.name] = newItems;
+  });
+  // 清理已删除的保养类型
+  var validNames = _maintItemGroups.map(function(g){ return g.name; });
+  Object.keys(_verifyMaintData).forEach(function(k){
+    if(validNames.indexOf(k)===-1) delete _verifyMaintData[k];
+  });
+  // 如果当前选中的保养类型被删除了，重置
+  if(_verifyMaintType && !_verifyMaintData[_verifyMaintType]) _verifyMaintType = null;
+}
+
+function saveMaintItemGroup(){
+  var name = document.getElementById('maintItemGroupName').value.trim();
+  if(!name){ alert('请输入保养类型名称'); return; }
+  var oldName = _maintItemGroupEditIdx>=0 ? _maintItemGroups[_maintItemGroupEditIdx].name : null;
+  if(_maintItemGroupEditIdx===-1){
+    _maintItemGroups.push({name:name, items:[]});
+  } else {
+    // 名称变了需要同步_verifyMaintData的key
+    if(oldName && oldName !== name && _verifyMaintData[oldName]){
+      _verifyMaintData[name] = _verifyMaintData[oldName];
+      delete _verifyMaintData[oldName];
+    }
+    _maintItemGroups[_maintItemGroupEditIdx].name = name;
+  }
+  closeMaintItemGroupModal();
+  renderMaintItemGroups();
+  _syncVerifyMaintData();
+}
+function deleteMaintItemGroup(gi){
+  if(!confirm('确定删除保养类型「'+_maintItemGroups[gi].name+'」及其所有保养项？')) return;
+  _maintItemGroups.splice(gi,1);
+  renderMaintItemGroups();
+  _syncVerifyMaintData();
+}
+
+function openMaintItemEditModal(gi, ii){
+  _maintItemEditGroupIdx = gi;
+  _maintItemEditIdx = ii;
+  if(ii===-1){
+    document.getElementById('maintItemEditModalTitle').textContent = '新增保养项';
+    document.getElementById('maintItemEditTitle').value = '';
+    document.getElementById('maintItemEditName').value = '';
+  } else {
+    document.getElementById('maintItemEditModalTitle').textContent = '编辑保养项';
+    var it = _maintItemGroups[gi].items[ii];
+    document.getElementById('maintItemEditTitle').value = it.title;
+    document.getElementById('maintItemEditName').value = it.name;
+  }
+  document.getElementById('maintItemEditModal').style.display = 'flex';
+}
+function closeMaintItemEditModal(){
+  document.getElementById('maintItemEditModal').style.display = 'none';
+}
+function saveMaintItemEdit(){
+  var title = document.getElementById('maintItemEditTitle').value.trim();
+  var name = document.getElementById('maintItemEditName').value.trim();
+  if(!title){ alert('请输入保养标题'); return; }
+  if(!name){ alert('请输入保养项名称'); return; }
+  if(_maintItemEditIdx===-1){
+    _maintItemGroups[_maintItemEditGroupIdx].items.push({title:title, name:name});
+  } else {
+    _maintItemGroups[_maintItemEditGroupIdx].items[_maintItemEditIdx] = {title:title, name:name};
+  }
+  closeMaintItemEditModal();
+  renderMaintItemGroups();
+  _syncVerifyMaintData();
+}
+function deleteMaintItem(gi, ii){
+  if(!confirm('确定删除保养项「'+_maintItemGroups[gi].items[ii].name+'」？')) return;
+  _maintItemGroups[gi].items.splice(ii,1);
+  renderMaintItemGroups();
+  _syncVerifyMaintData();
+}
+
+// ===== 排班配置数据 =====
+var _executorModules = [
+  { name:'感知', scheduler:'刘调度', rotation:[
+    {name:'张工',role:'技术支持'},
+    {name:'李工',role:'技术支持'},
+    {name:'王主管',role:'主管'}
+  ], curWorkday:0, curWeekend:1},
+  { name:'定位', scheduler:'陈调度', rotation:[
+    {name:'赵工',role:'技术支持'},
+    {name:'钱工',role:'技术支持'},
+    {name:'孙主管',role:'主管'}
+  ], curWorkday:0, curWeekend:1},
+  { name:'云控', scheduler:'刘调度', rotation:[
+    {name:'周工',role:'技术支持'},
+    {name:'吴工',role:'技术支持'}
+  ], curWorkday:0, curWeekend:1},
+  { name:'PNC', scheduler:'陈调度', rotation:[
+    {name:'郑工',role:'技术支持'},
+    {name:'冯工',role:'技术支持'},
+    {name:'陈主管',role:'主管'}
+  ], curWorkday:0, curWeekend:1},
+  { name:'架构', scheduler:'刘调度', rotation:[
+    {name:'韩工',role:'技术支持'},
+    {name:'林主管',role:'主管'}
+  ], curWorkday:0, curWeekend:1},
+  { name:'嵌入式软件', scheduler:'陈调度', rotation:[
+    {name:'吴工',role:'技术支持'},
+    {name:'李工',role:'技术支持'},
+    {name:'冯主管',role:'主管'}
+  ], curWorkday:0, curWeekend:1}
+];
+var _executorSelectedModule = null;
+var _executorModuleEditIdx = -1;
+var _executorPersonEditIdx = -1;
+
+function renderExecutorModules(){
+  var list = document.getElementById('executorModuleList');
+  var html = '';
+  _executorModules.forEach(function(m, i){
+    var isActive = _executorSelectedModule === m.name;
+    html += '<div onclick="selectExecutorModule(\''+m.name+'\')" style="padding:10px 12px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:13px;'+(isActive?'background:#e6f7ff;color:#1890ff;font-weight:600;':'color:#333;background:transparent;')+'transition:background 0.15s;" onmouseover="if(\''+m.name+'\'!==_executorSelectedModule)this.style.background=\'#f5f5f5\'" onmouseout="if(\''+m.name+'\'!==_executorSelectedModule)this.style.background=\'transparent\'">';
+    html += '<span>'+m.name+'</span>';
+    html += '<span style="font-size:11px;color:#bbb;">'+m.rotation.length+'人轮值</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+  if(_executorSelectedModule) renderExecutorModuleDetail();
+}
+
+function selectExecutorModule(name){
+  _executorSelectedModule = name;
+  renderExecutorModules();
+}
+
+function renderExecutorModuleDetail(){
+  var detail = document.getElementById('executorModuleDetail');
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod){ detail.innerHTML = '<div style="color:#bbb;font-size:13px;padding:24px 0;">请选择左侧模块查看配置</div>'; return; }
+  var html = '<div class="detail-card" style="margin-bottom:12px;">';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
+  html += '<div><span style="font-size:14px;font-weight:700;color:#111;">'+mod.name+'</span>';
+  html += ' <span style="font-size:12px;color:#999;">- 轮班排班与自动指派</span></div>';
+  html += '<div style="display:flex;gap:6px;">';
+  html += '<button class="btn btn-primary" style="height:28px;font-size:12px;" onclick="openExecutorPersonAdd()">+ 新增人员</button>';
+  html += '<button class="btn btn-default" style="height:28px;font-size:12px;" onclick="openExecutorModuleEditModal()">编辑模块</button>';
+  html += '<button class="btn btn-default" style="height:28px;font-size:12px;color:#ff4d4f;" onclick="deleteExecutorModule()">删除模块</button>';
+  html += '</div></div>';
+
+  // 排班调度员
+  html += '<div style="margin-bottom:12px;padding:8px 12px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;display:flex;align-items:center;gap:8px;">';
+  html += '<span style="font-size:12px;color:#888;">排班调度：</span>';
+  html += '<span style="font-size:13px;font-weight:500;color:#333;">'+(mod.scheduler||'-')+'</span>';
+  html += '</div>';
+
+  // 当前值班状态
+  if(mod.rotation.length > 0){
+    var wdPerson = mod.rotation[mod.curWorkday % mod.rotation.length];
+    var wePerson = mod.rotation[mod.curWeekend % mod.rotation.length];
+    html += '<div style="margin-bottom:12px;display:flex;gap:12px;">';
+    html += '<div style="flex:1;padding:10px 14px;background:#e6f7ff;border:1px solid #91d5ff;border-radius:6px;">';
+    html += '<div style="font-size:11px;color:#1890ff;margin-bottom:4px;">今日值班（工作日）</div>';
+    html += '<div style="font-size:14px;font-weight:600;color:#111;">'+wdPerson.name+'</div>';
+    html += '<div style="font-size:11px;color:#888;">'+wdPerson.role+'</div>';
+    html += '</div>';
+    html += '<div style="flex:1;padding:10px 14px;background:#fff7e6;border:1px solid #ffd591;border-radius:6px;">';
+    html += '<div style="font-size:11px;color:#fa8c16;margin-bottom:4px;">本周末值班</div>';
+    html += '<div style="font-size:14px;font-weight:600;color:#111;">'+wePerson.name+'</div>';
+    html += '<div style="font-size:11px;color:#888;">'+wePerson.role+'</div>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // 轮班人员列表
+  if(mod.rotation.length === 0){
+    html += '<div style="color:#bbb;font-size:12px;padding:12px 0;">暂无排班人员，点击「+ 新增人员」添加</div>';
+  } else {
+    html += '<div style="font-size:12px;font-weight:600;color:#333;margin-bottom:6px;">轮班顺序（拖动可调整）</div>';
+    mod.rotation.forEach(function(p, i){
+      var isCurWorkday = (i === mod.curWorkday % mod.rotation.length);
+      var isCurWeekend = (i === mod.curWeekend % mod.rotation.length);
+      var badges = '';
+      if(isCurWorkday) badges += '<span style="font-size:10px;background:#e6f7ff;color:#1890ff;border:1px solid #91d5ff;border-radius:3px;padding:1px 5px;">当前工作日</span>';
+      if(isCurWeekend) badges += '<span style="font-size:10px;background:#fff7e6;color:#fa8c16;border:1px solid #ffd591;border-radius:3px;padding:1px 5px;margin-left:4px;">当前周末</span>';
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;margin-bottom:4px;">';
+      html += '<span style="color:#bbb;font-size:14px;cursor:grab;">☰</span>';
+      html += '<span style="font-size:12px;color:#bbb;min-width:20px;">'+(i+1)+'</span>';
+      html += '<span style="flex:1;font-size:13px;font-weight:500;color:#333;">'+p.name+'</span>';
+      html += '<span style="font-size:11px;background:'+(p.role==='技术支持'?'#fff7e6;color:#fa8c16;border:1px solid #ffd591':p.role==='主管'?'#f6ffed;color:#52c41a;border:1px solid #b7eb8f':'#e6f7ff;color:#1890ff;border:1px solid #91d5ff')+';border-radius:3px;padding:1px 6px;">'+p.role+'</span>';
+      html += badges;
+      html += '<div style="display:flex;gap:4px;margin-left:8px;">';
+      if(i > 0) html += '<button onclick="moveExecutorPerson('+i+',-1)" style="border:none;background:none;color:#1890ff;font-size:12px;cursor:pointer;padding:2px 4px;" title="上移">↑</button>';
+      if(i < mod.rotation.length-1) html += '<button onclick="moveExecutorPerson('+i+',1)" style="border:none;background:none;color:#1890ff;font-size:12px;cursor:pointer;padding:2px 4px;" title="下移">↓</button>';
+      html += '<button onclick="openExecutorPersonEditModal('+i+')" style="border:none;background:none;color:#1890ff;font-size:12px;cursor:pointer;padding:2px 4px;">编辑</button>';
+      html += '<button onclick="deleteExecutorPerson('+i+')" style="border:none;background:none;color:#ff4d4f;font-size:12px;cursor:pointer;padding:2px 4px;">删除</button>';
+      html += '</div></div>';
+    });
+  }
+  html += '</div>';
+
+  // 自动指派规则说明
+  html += '<div class="detail-card">';
+  html += '<div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px;">轮班规则</div>';
+  html += '<div style="font-size:12px;color:#888;line-height:1.8;">';
+  html += '<div>1. 问题上报后，根据问题所属<b style="color:#333;">车辆模块</b>匹配轮班列表</div>';
+  html += '<div>2. 根据上报日期判断<b style="color:#333;">工作日/周末</b>，指派当前轮值人员</div>';
+  html += '<div>3. 每次指派后，轮值指针自动后移一位，确保<b style="color:#333;">所有人轮流值班</b></div>';
+  html += '<div>4. 人员变动时轮值指针自动适配，保证排班连续</div>';
+  html += '</div></div>';
+  detail.innerHTML = html;
+}
+
+function moveExecutorPerson(idx, dir){
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  var newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= mod.rotation.length) return;
+  var tmp = mod.rotation[idx];
+  mod.rotation[idx] = mod.rotation[newIdx];
+  mod.rotation[newIdx] = tmp;
+  // 修正指针
+  if(mod.curWorkday % mod.rotation.length === idx) mod.curWorkday = newIdx;
+  else if(mod.curWorkday % mod.rotation.length === newIdx) mod.curWorkday = idx;
+  if(mod.curWeekend % mod.rotation.length === idx) mod.curWeekend = newIdx;
+  else if(mod.curWeekend % mod.rotation.length === newIdx) mod.curWeekend = idx;
+  renderExecutorModules();
+}
+
+function openExecutorModuleAdd(){
+  _executorModuleEditIdx = -1;
+  document.getElementById('executorModuleModalTitle').textContent = '新增车辆模块';
+  document.getElementById('executorModuleName').value = '';
+  document.getElementById('executorModuleModal').style.display = 'flex';
+}
+function openExecutorModuleEditModal(){
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  _executorModuleEditIdx = _executorModules.indexOf(mod);
+  document.getElementById('executorModuleModalTitle').textContent = '编辑车辆模块';
+  document.getElementById('executorModuleName').value = mod.name;
+  document.getElementById('executorModuleModal').style.display = 'flex';
+}
+function closeExecutorModuleModal(){
+  document.getElementById('executorModuleModal').style.display = 'none';
+}
+function saveExecutorModule(){
+  var name = document.getElementById('executorModuleName').value.trim();
+  if(!name){ alert('请输入模块名称'); return; }
+  if(_executorModuleEditIdx===-1){
+    _executorModules.push({name:name, scheduler:'', rotation:[], curWorkday:0, curWeekend:0});
+    _executorSelectedModule = name;
+  } else {
+    _executorModules[_executorModuleEditIdx].name = name;
+    _executorSelectedModule = name;
+  }
+  closeExecutorModuleModal();
+  renderExecutorModules();
+}
+function deleteExecutorModule(){
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  if(!confirm('确定删除模块「'+mod.name+'」及其所有排班配置？')) return;
+  _executorModules.splice(_executorModules.indexOf(mod),1);
+  _executorSelectedModule = null;
+  renderExecutorModules();
+}
+
+function openExecutorPersonAdd(){
+  _executorPersonEditIdx = -1;
+  document.getElementById('executorPersonModalTitle').textContent = '新增排班人员';
+  document.getElementById('executorPersonName').value = '';
+  document.getElementById('executorPersonRole').value = '技术支持';
+  document.getElementById('executorPersonScheduler').value = '';
+  document.getElementById('executorPersonModal').style.display = 'flex';
+}
+function openExecutorPersonEditModal(idx){
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  _executorPersonEditIdx = idx;
+  var p = mod.rotation[idx];
+  document.getElementById('executorPersonModalTitle').textContent = '编辑排班人员';
+  document.getElementById('executorPersonName').value = p.name;
+  document.getElementById('executorPersonRole').value = p.role;
+  document.getElementById('executorPersonScheduler').value = mod.scheduler || '';
+  document.getElementById('executorPersonModal').style.display = 'flex';
+}
+function closeExecutorPersonModal(){
+  document.getElementById('executorPersonModal').style.display = 'none';
+}
+function saveExecutorPerson(){
+  var name = document.getElementById('executorPersonName').value.trim();
+  var role = document.getElementById('executorPersonRole').value;
+  var scheduler = document.getElementById('executorPersonScheduler').value.trim();
+  if(!name){ alert('请输入姓名'); return; }
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  if(scheduler) mod.scheduler = scheduler;
+  if(_executorPersonEditIdx===-1){
+    mod.rotation.push({name:name, role:role});
+  } else {
+    mod.rotation[_executorPersonEditIdx] = {name:name, role:role};
+  }
+  closeExecutorPersonModal();
+  renderExecutorModules();
+}
+function deleteExecutorPerson(idx){
+  var mod = _executorModules.find(function(m){ return m.name === _executorSelectedModule; });
+  if(!mod) return;
+  if(!confirm('确定删除排班人员「'+mod.rotation[idx].name+'」？')) return;
+  mod.rotation.splice(idx,1);
+  // 修正指针
+  if(mod.curWorkday >= mod.rotation.length) mod.curWorkday = 0;
+  if(mod.curWeekend >= mod.rotation.length) mod.curWeekend = 0;
+  renderExecutorModules();
 }
 
 // ===== 验收清单数据 =====
@@ -3235,22 +4503,14 @@ var _verifyTplData = {
     {name:'联系客户确认',  photo:false},
     {name:'救援报告填写',  photo:false}
   ],
-  '保养清单': [
-    {name:'机油更换确认',  photo:false},
-    {name:'滤芯更换确认',  photo:false},
-    {name:'轮胎气压检查',  photo:false},
-    {name:'灯光功能检查',  photo:false},
-    {name:'刹车系统检查',  photo:false},
-    {name:'保养里程/日期记录',  photo:false}
-  ],
-  '软件复诊模板': [
+  '软件问题模板': [
     {name:'OTA 版本确认',  photo:false},
     {name:'故障码清除',  photo:false},
     {name:'软件功能回归测试',  photo:false},
     {name:'最小闭环任务试跑',  photo:true},
     {name:'复诊报告提交',  photo:false}
   ],
-  '外观验收': [
+  '车辆事故验收': [
     {name:'划痕/损伤修复确认',  photo:true},
     {name:'修复前/后照片比',  photo:true},
     {name:'整车外观拍照',  photo:true},
@@ -3262,7 +4522,7 @@ var _verifyTplData = {
     {name:'车辆功能验证',  photo:false},
     {name:'备件/耗材费用登记',  photo:false}
   ],
-  '转站流程模板': [
+  '车辆整备模板': [
     {name:'发运前车辆状态确认',  photo:true},
     {name:'发运照片上传',  photo:true},
     {name:'目标站接收确认',  photo:false},
@@ -3277,6 +4537,105 @@ var _verifyTplData = {
 };
 var _verifyCurrentTpl = null;
 var _verifyEditIdx    = -1;
+var _verifyMaintType  = null; // 当前选中的保养类型
+// 保养验收项配置：{ '首保': [{title:'动力系统', name:'电机检查', photo:true}, ...], ... }
+var _verifyMaintData = {};
+
+function _initVerifyMaintData(){
+  // 从_maintItemGroups初始化，如果_verifyMaintData为空
+  if(Object.keys(_verifyMaintData).length > 0) return;
+  _maintItemGroups.forEach(function(g){
+    _verifyMaintData[g.name] = g.items.map(function(it){
+      return {title:it.title, name:it.name, photo:false};
+    });
+  });
+}
+
+function switchVerifyCat(cat){
+  document.getElementById('verifyCatOrder').style.color = cat==='order'?'#1890ff':'#888';
+  document.getElementById('verifyCatOrder').style.fontWeight = cat==='order'?'600':'400';
+  document.getElementById('verifyCatOrder').style.borderBottomColor = cat==='order'?'#1890ff':'transparent';
+  document.getElementById('verifyCatMaint').style.color = cat==='maint'?'#1890ff':'#888';
+  document.getElementById('verifyCatMaint').style.fontWeight = cat==='maint'?'600':'400';
+  document.getElementById('verifyCatMaint').style.borderBottomColor = cat==='maint'?'#1890ff':'transparent';
+  document.getElementById('verifyOrderArea').style.display = cat==='order'?'':'none';
+  document.getElementById('verifyMaintArea').style.display = cat==='maint'?'':'none';
+  if(cat==='maint'){
+    _initVerifyMaintData();
+    renderVerifyMaintTypeNav();
+  }
+}
+
+function renderVerifyMaintTypeNav(){
+  var nav = document.getElementById('verifyMaintTypeNav');
+  nav.innerHTML = '';
+  _initVerifyMaintData();
+  var types = Object.keys(_verifyMaintData);
+  types.forEach(function(name){
+    var wrap = document.createElement('div');
+    wrap.setAttribute('data-mtype', name);
+    wrap.style.cssText = 'display:flex;align-items:center;gap:2px;border-bottom:2px solid transparent;padding:6px 14px;cursor:pointer;font-size:13px;color:#888;white-space:nowrap;';
+    if(_verifyMaintType === name){
+      wrap.style.borderBottomColor = '#1890ff';
+      wrap.style.color = '#1890ff';
+      wrap.style.fontWeight = '600';
+    }
+    wrap.innerHTML = '<span>'+name+'</span><span style="font-size:11px;color:#bbb;margin-left:2px;">('+_verifyMaintData[name].length+'项)</span>';
+    wrap.onclick = function(){ switchVerifyMaintType(name); };
+    nav.appendChild(wrap);
+  });
+  if(!_verifyMaintType && types.length > 0) switchVerifyMaintType(types[0]);
+  else if(_verifyMaintType) renderVerifyMaintItems();
+}
+
+function switchVerifyMaintType(name){
+  _verifyMaintType = name;
+  renderVerifyMaintTypeNav();
+  renderVerifyMaintItems();
+}
+
+function renderVerifyMaintItems(){
+  var list = document.getElementById('verifyMaintItemList');
+  var title = document.getElementById('verifyMaintTypeTitle');
+  var items = _verifyMaintData[_verifyMaintType] || [];
+  title.textContent = _verifyMaintType ? _verifyMaintType + ' 保养验收清单' : '';
+  if(items.length === 0){
+    list.innerHTML = '<div style="color:#bbb;font-size:12px;padding:12px 0;">暂无验收项，请在「保养项配置」中添加保养项</div>';
+    return;
+  }
+  // 按标题分组
+  var groupByTitle = {};
+  items.forEach(function(it, idx){
+    if(!groupByTitle[it.title]) groupByTitle[it.title] = [];
+    groupByTitle[it.title].push({name:it.name, photo:it.photo, idx:idx});
+  });
+  var html = '';
+  var num = 0;
+  Object.keys(groupByTitle).forEach(function(title){
+    html += '<div style="margin-bottom:6px;">';
+    html += '<div style="font-size:12px;font-weight:600;color:#666;margin-bottom:4px;padding-left:2px;">'+title+'</div>';
+    groupByTitle[title].forEach(function(it){
+      num++;
+      var photoTag = it.photo
+        ? '<span style="font-size:11px;background:#fff7e6;color:#fa8c16;border:1px solid #ffd591;border-radius:3px;padding:1px 6px;">图片 ✓</span>'
+        : '<span style="font-size:11px;background:#f5f5f5;color:#bbb;border:1px solid #e8e8e8;border-radius:3px;padding:1px 6px;">图片 ✕</span>';
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;">';
+      html += '<span style="color:#bbb;font-size:12px;min-width:20px;">'+num+'.</span>';
+      html += '<span style="flex:1;font-size:13px;color:#333;">'+it.name+'</span>';
+      html += '<span style="display:flex;gap:4px;align-items:center;">'+photoTag+'</span>';
+      html += '<button onclick="toggleVerifyMaintPhoto('+it.idx+')" style="border:none;background:none;color:#1890ff;font-size:12px;cursor:pointer;padding:2px 6px;">'+(it.photo?'取消拍照':'需拍照')+'</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function toggleVerifyMaintPhoto(idx){
+  if(!_verifyMaintData[_verifyMaintType]) return;
+  _verifyMaintData[_verifyMaintType][idx].photo = !_verifyMaintData[_verifyMaintType][idx].photo;
+  renderVerifyMaintItems();
+}
 
 function initVerifyTab(){
   var nav = document.getElementById('verifyTplNav');
@@ -3519,10 +4878,11 @@ function openTypeAddModal(){
   document.getElementById('teTypeName').value = '';
   document.getElementById('teTypeCode').value = '';
   document.getElementById('teTypePri').value = 'P2';
+  document.getElementById('teTypeAutoDispatch').value = '否';
   document.getElementById('teTypeTpl').value = '';
   document.getElementById('teTypeEnabled').checked = true;
-  _teMasterSteps = ['待受理','维修中','已完成'];
-  _tePhases = {'维修中':[{task:'待接单',sub:'待接单',desc:'',executor:'',sla:''},{task:'处理中',sub:'处理中',desc:'',executor:'',sla:''},{task:'处理完成',sub:'处理完成',desc:'',executor:'',sla:''}]};
+  _teMasterSteps = ['待分派','处理中','待验收','已完成','已关闭'];
+  _tePhases = {'处理中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })};
   renderTePhases();
   document.getElementById('typeEditPageTitle').textContent = '新增工单类型';
   showFormPage('page-type-edit');
@@ -3545,22 +4905,29 @@ function initTypeSelects() {
 }
 
 // ===== 动态渲染 tab-type 表格 =====
+function goToVerifyTplFromEdit() {
+  var tplName = document.getElementById('teTypeTpl').value;
+  goToVerifyTpl(tplName || '通用验收模板');
+}
+
+function goToVerifyTpl(tplName) {
+  // 切换到验收清单tab并选中对应模板
+  switchTab(document.querySelector('[onclick*="tab-verify"]'), 'tab-verify');
+  setTimeout(function(){ switchVerifyTpl(tplName); }, 100);
+}
+
 function initTypeTable() {
   var typeCodeMap = {
-    '故障维修':'REPAIR','现场救援':'RESCUE','周期保养':'MAINT',
-    '软件复诊':'SOFTWARE','外观损伤':'DAMAGE','车辆批改':'MODIFY','转站需求':'TRANSFER'
+    '故障维修':'REPAIR','现场救援':'RESCUE','软件问题':'SOFTWARE','车辆事故':'DAMAGE','周期保养':'MAINT','车辆批改':'MODIFY','车辆整备':'TRANSFER'
   };
   var typePriMap = {
-    '故障维修':'P1','现场救援':'P0','周期保养':'P2',
-    '软件复诊':'P1','外观损伤':'P2','车辆批改':'P2','转站需求':'P1'
+    '故障维修':'P1','现场救援':'P0','软件问题':'P1','车辆事故':'P2','周期保养':'P2','车辆批改':'P2','车辆整备':'P1'
   };
   var typeSubMap = {
-    '故障维修':'是','现场救援':'按需','周期保养':'是',
-    '软件复诊':'按需','外观损伤':'是','车辆批改':'否','转站需求':'否'
+    '故障维修':'是','现场救援':'按需','软件问题':'按需','车辆事故':'是','周期保养':'是','车辆批改':'否','车辆整备':'否'
   };
   var typeTplMap = {
-    '故障维修':'故障维修标准模板','现场救援':'现场救援模板','周期保养':'保养清单',
-    '软件复诊':'软件复诊模板','外观损伤':'外观验收','车辆批改':'批改流程模板','转站需求':'转站流程模板'
+    '故障维修':'故障维修标准模板','现场救援':'现场救援模板','软件问题':'软件问题模板','车辆事故':'车辆事故验收','周期保养':'保养验收','车辆批改':'批改流程模板','车辆整备':'车辆整备模板'
   };
   var tbody = document.getElementById('typeBody');
   if (!tbody) return;
@@ -3569,7 +4936,6 @@ function initTypeTable() {
     var code = typeCodeMap[t] || t.toUpperCase();
     var pri  = typePriMap[t] || 'P2';
     var priCls = pri==='P0'?'tag-p0':pri==='P1'?'tag-p1':'tag-p2';
-    var sub  = typeSubMap[t] || '是';
     var tpl  = typeTplMap[t] || '—';
     var steps = '';
     var phases = flowTemplates[t].phases;
@@ -3586,8 +4952,9 @@ function initTypeTable() {
     var tr = document.createElement('tr');
     tr.innerHTML = '<td>'+code+'</td><td>'+t+'</td>'
       +'<td><span class="tag '+priCls+'">'+pri+'</span></td>'
-      +'<td>'+sub+'</td><td>'+autoTag+'</td><td>'+tpl+'</td>'
+      +'<td>'+(_typeAutoDispatchMap[t]==='是'?'<span class="tag tag-done">是</span>':'<span class="tag tag-rejected">否</span>')+'</td>'
       +'<td style="max-width:300px;white-space:normal;color:#666;font-size:11px;">'+steps+'</td>'
+      +'<td><a style="color:#1890ff;cursor:pointer;text-decoration:underline;" onclick="goToVerifyTpl(\''+tpl+'\')">'+tpl+'</a></td>'
       +'<td><span class="tag '+( _typeEnabledMap[t]===false?'tag-rejected':'tag-done')+'" id="typeStatus-'+code+'">'+(_typeEnabledMap[t]===false?'已禁用':'启用')+'</span></td>'
       +'<td><a style="color:#1890ff;cursor:pointer;margin-right:10px;" onclick="toggleTypeEnabled(\''+t+'\')">'+(_typeEnabledMap[t]===false?'启用':'禁用')+'</a><a style="color:#1890ff;cursor:pointer;" onclick="openTypeEditModal(\''+t+'\')">编辑</a></td>';
     tbody.appendChild(tr);
@@ -3608,23 +4975,24 @@ var _advanceSubNextIdx = -1;
 
 function openAdvanceSubModal(orderId) {
   var o = orders.find(function(x){ return x.id === orderId; });
-  if (!o || !o.subSteps || o.subSteps.length === 0) {
+  ensureOrderTasks(o);
+  if (!o || !o.tasks || o.tasks.length === 0) {
     showToast('当前工单没有可推进的子单', 'error');
     return;
   }
   // 找当前子状态的索引
   var curIdx = -1;
-  for (var i = 0; i < o.subSteps.length; i++) {
-    if (o.subSteps[i].step === o.sub) { curIdx = i; break; }
+  for (var i = 0; i < o.tasks.length; i++) {
+    if (o.tasks[i].step === o.sub || o.tasks[i].status === 'current') { curIdx = i; break; }
   }
-  if (curIdx < 0 || curIdx >= o.subSteps.length - 1) {
+  if (curIdx < 0 || curIdx >= o.tasks.length - 1) {
     showToast('当前已是最后一个子状态，无法继续推进', 'error');
     return;
   }
   _advanceSubOrderId = orderId;
   _advanceSubNextIdx = curIdx + 1;
   document.getElementById('advanceCurSub').textContent = o.sub;
-  document.getElementById('advanceNextSub').textContent = o.subSteps[_advanceSubNextIdx].step;
+  document.getElementById('advanceNextSub').textContent = o.tasks[_advanceSubNextIdx].step;
   document.getElementById('advanceExecutor').value = '';
   document.getElementById('advanceNote').value = '';
   document.getElementById('modal-advance-sub').classList.remove('hidden');
@@ -3641,29 +5009,30 @@ function confirmAdvanceSub() {
   if (!executor) { showToast('请填写执行人', 'error'); return; }
   var o = orders.find(function(x){ return x.id === _advanceSubOrderId; });
   if (!o) return;
+  ensureOrderTasks(o);
   var now = formatDate(new Date());
   // 结束当前子状态
-  for (var i = 0; i < o.subSteps.length; i++) {
-    if (o.subSteps[i].step === o.sub) {
-      o.subSteps[i].endTime = now;
+  for (var i = 0; i < o.tasks.length; i++) {
+    if (o.tasks[i].step === o.sub || o.tasks[i].status === 'current') {
+      o.tasks[i].status = 'done';
+      o.tasks[i].endTime = now;
       break;
     }
   }
   // 激活下一子状态
-  o.sub = o.subSteps[_advanceSubNextIdx].step;
-  o.subSteps[_advanceSubNextIdx].executor = executor;
-  o.subSteps[_advanceSubNextIdx].startTime = now;
+  o.status = '处理中';
+  o.sub = o.tasks[_advanceSubNextIdx].step;
+  o.tasks[_advanceSubNextIdx].status = 'current';
+  o.tasks[_advanceSubNextIdx].executor = executor;
+  o.tasks[_advanceSubNextIdx].startTime = now;
   o.lastOp = executor;
   o.lastOpTime = now;
-  // 检查是否推进到最后一个子状态（如"维修完成"），自动推进主状态到"待验收"
-  var flow = getFlow(o.type);
-  if (o.sub === flow.sub[flow.sub.length - 1]) {
-    // 最后一个子状态完成 → 主状态推进到待验收
-    var verifyIdx = flow.master.indexOf('待验收');
-    if (verifyIdx >= 0) {
-      o.status = flow.master[verifyIdx];
-      o.subSteps[_advanceSubNextIdx].endTime = now;
-    }
+  syncOrderFromTasks(o);
+  if (o.sub === '待提交维修结果') {
+    o.status = '待验收';
+    o.sub = '待站点验收';
+    o.tasks[_advanceSubNextIdx].status = 'done';
+    o.tasks[_advanceSubNextIdx].endTime = now;
   }
   closeAdvanceSubModal();
   showToast('子单已推进至「' + o.sub + '」，执行人：' + executor, 'success');
@@ -3686,19 +5055,14 @@ function openAddSubOrderModal(orderId) {
 var _typeEditKey = ''; // 当前编辑的类型名（原始key，用于更新）
 var _teMasterSteps = [];
 var _tePhases = {}; // 按主状态阶段分组的子节点配置，如 {'维修中':['待服务站接单','服务站诊断中',...], '待验收':['站点验收']}
-var _slaEditIdx = -1;
-var _slaEditSlots = [];
 var _typeCodeMap = {
-  '故障维修':'REPAIR','现场救援':'RESCUE','周期保养':'MAINT',
-  '软件复诊':'SOFTWARE','外观损伤':'DAMAGE','车辆批改':'MODIFY','转站需求':'TRANSFER'
+  '故障维修':'REPAIR','现场救援':'RESCUE','软件问题':'SOFTWARE','车辆事故':'DAMAGE','周期保养':'MAINT','车辆批改':'MODIFY','车辆整备':'TRANSFER'
 };
 var _typePriMap = {
-  '故障维修':'P1','现场救援':'P0','周期保养':'P2',
-  '软件复诊':'P1','外观损伤':'P2','车辆批改':'P2','转站需求':'P1'
+  '故障维修':'P1','现场救援':'P0','软件问题':'P1','车辆事故':'P2','周期保养':'P2','车辆批改':'P2','车辆整备':'P1'
 };
 var _typeTplMap = {
-  '故障维修':'故障维修标准模板','现场救援':'现场救援模板','周期保养':'保养清单',
-  '软件复诊':'软件复诊模板','外观损伤':'外观验收','车辆批改':'批改流程模板','转站需求':'转站流程模板'
+  '故障维修':'故障维修标准模板','现场救援':'现场救援模板','软件问题':'软件问题模板','车辆事故':'车辆事故验收','周期保养':'保养验收','车辆批改':'批改流程模板','车辆整备':'车辆整备模板'
 };
 
 function openTypeEditModal(typeName) {
@@ -3707,6 +5071,7 @@ function openTypeEditModal(typeName) {
   document.getElementById('teTypeName').value = typeName;
   document.getElementById('teTypeCode').value = _typeCodeMap[typeName] || typeName.toUpperCase();
   document.getElementById('teTypePri').value = _typePriMap[typeName] || 'P2';
+  document.getElementById('teTypeAutoDispatch').value = _typeAutoDispatchMap[typeName] || '否';
   document.getElementById('teTypeTpl').value = _typeTplMap[typeName] || '';
   document.getElementById('teTypeEnabled').checked = _typeEnabledMap[typeName] !== false;
   _teMasterSteps = flow.master.slice();
@@ -3735,7 +5100,7 @@ function renderTePhases() {
   var html = '';
   actionablePhases.forEach(function(phase) {
     var nodes = _tePhases[phase] || [];
-    var phaseColor = phase === '维修中' ? '#1890ff' : phase === '复诊中' ? '#722ed1' : phase === '转运中' ? '#fa8c16' : phase === '待验收' ? '#52c41a' : '#1890ff';
+    var phaseColor = phase === '维修中' ? '#1890ff' : phase === '软件处理中' ? '#722ed1' : phase === '整备中' ? '#fa8c16' : phase === '待验收' ? '#52c41a' : '#1890ff';
     html += '<div style="border:1px solid #e8e8e8;border-radius:8px;margin-bottom:12px;overflow:hidden;">';
     // 阶段标题栏
     html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,'+phaseColor+'11,'+phaseColor+'22);border-bottom:1px solid #e8e8e8;">';
@@ -3765,7 +5130,7 @@ function renderTePhases() {
         html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">';
         html += '<span style="font-size:13px;font-weight:600;color:#333;">'+taskName+'</span>';
         html += '<span style="font-size:11px;color:#fff;background:#52c41a;border-radius:3px;padding:1px 6px;">'+subName+'</span>';
-        if (executor) html += '<span style="font-size:11px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:1px 6px;">负责人: '+executor+'</span>';
+        if (executor) html += '<span style="font-size:11px;color:#1890ff;background:#e6f7ff;border-radius:3px;padding:1px 6px;">执行方: '+executor+'</span>';
         if (sla) html += '<span style="font-size:11px;color:#fa8c16;background:#fff7e6;border-radius:3px;padding:1px 6px;">SLA: '+sla+'</span>';
         html += '</div>';
         if (descText) html += '<div style="font-size:12px;color:#666;line-height:1.5;">'+descText+'</div>';
@@ -3836,6 +5201,7 @@ function saveTypeEdit() {
     _typeEditKey = typeName;
   }
   var flow = flowTemplates[typeName];
+  _typeAutoDispatchMap[typeName] = document.getElementById('teTypeAutoDispatch').value;
   flow.master = _teMasterSteps.slice();
   // 从 phases 的 sub 字段合并生成 sub 数组
   flow.sub = [];
@@ -3860,69 +5226,109 @@ function saveTypeEdit() {
 }
 
 // ===== SLA 编辑弹窗逻辑 =====
+var _slaEditRule = null;
+var _slaEditSlots = [];
+
 function openSlaEditModal(typeName) {
-  var rule = _slaRules[typeName];
+  var rule = _slaRules.find(function(r){ return r.type === typeName; });
   if (!rule) { showToast('该类型暂无SLA配置','warning'); return; }
-  var modal = document.getElementById('slaEditModal');
-  if (!modal) return;
-  document.getElementById('slaEditType').textContent = typeName;
-  var mode = rule.mode || 'duration';
-  document.getElementById('slaModeDuration').checked = mode === 'duration';
-  document.getElementById('slaModePoint').checked = mode === 'point';
-  // 时长模式
-  var durVal = rule.duration || 24;
-  document.getElementById('slaDuration').value = durVal;
-  // 时刻模式
-  var periods = rule.periods || [];
-  document.getElementById('slaPeriodsContainer').innerHTML = periods.map(function(p, i) {
-    return '<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">'
-      + '<input class="form-control" id="slaPeriodStart-'+i+'" value="'+(p.start||'')+'" placeholder="开始时刻（如09:00）" style="height:28px;width:100px;font-size:12px;">'
-      + '<input class="form-control" id="slaPeriodEnd-'+i+'" value="'+(p.end||'')+'" placeholder="结束时刻（如18:00）" style="height:28px;width:100px;font-size:12px;">'
-      + '<span onclick="removeSlaPeriod('+i+')" style="cursor:pointer;color:#bbb;font-size:14px;">×</span>'
-      + '</div>';
-  }).join('');
+  _slaEditRule = rule;
+  document.getElementById('slaEditType').value = typeName;
+  // 启用状态
+  var radios = document.getElementsByName('slaEditEnabled');
+  for(var i=0;i<radios.length;i++) radios[i].checked = (radios[i].value==='1') === rule.enabled;
+  // 超时升级
+  document.getElementById('slaEditEscalation').value = rule.escalation || '';
+  document.getElementById('slaEditEscStation').value = rule.escStationMin || '';
+  // 深拷贝slots
+  _slaEditSlots = rule.slots ? rule.slots.map(function(s){
+    var copy = {};
+    Object.keys(s).forEach(function(k){ copy[k] = s[k]; });
+    return copy;
+  }) : [];
+  renderSlaSlotList();
   document.getElementById('slaEditModal').style.display = 'flex';
 }
 
-function addSlaPeriod() {
-  var container = document.getElementById('slaPeriodsContainer');
-  var idx = container.children.length;
-  var div = document.createElement('div');
-  div.style.cssText = 'display:flex;gap:6px;align-items:center;margin-bottom:4px;';
-  div.innerHTML = '<input class="form-control" id="slaPeriodStart-'+idx+'" placeholder="开始时刻（如09:00）" style="height:28px;width:100px;font-size:12px;">'
-    + '<input class="form-control" id="slaPeriodEnd-'+idx+'" placeholder="结束时刻（如18:00）" style="height:28px;width:100px;font-size:12px;">'
-    + '<span onclick="removeSlaPeriod('+idx+')" style="cursor:pointer;color:#bbb;font-size:14px;">×</span>';
-  container.appendChild(div);
+function renderSlaSlotList() {
+  var container = document.getElementById('slaSlotList');
+  var html = '';
+  _slaEditSlots.forEach(function(slot, idx) {
+    var isPriMode = !!slot.cutoffPri;
+    html += '<div style="border:1px solid #e8e8e8;border-radius:6px;padding:10px 12px;background:#fafafa;">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
+    html += '<span style="font-size:12px;font-weight:600;color:#333;">规则 '+(idx+1)+'</span>';
+    html += '<span onclick="removeSlaSlotRow('+idx+')" style="cursor:pointer;color:#bbb;font-size:14px;" title="删除">×</span>';
+    html += '</div>';
+    // 标签
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
+    html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">标签名称</label><input class="form-control" data-field="label" data-idx="'+idx+'" value="'+(slot.label||'')+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)"></div>';
+    // 匹配方式：优先级或时段
+    if(isPriMode) {
+      html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">匹配优先级</label><select class="form-control" data-field="cutoffPri" data-idx="'+idx+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)"><option value="">请选择</option><option value="P0"'+(slot.cutoffPri==='P0'?' selected':'')+'>P0</option><option value="P1"'+(slot.cutoffPri==='P1'?' selected':'')+'>P1</option><option value="P2"'+(slot.cutoffPri==='P2'?' selected':'')+'>P2</option></select></div>';
+    } else {
+      html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">截止时刻(点)</label><input class="form-control" type="number" data-field="cutoffHour" data-idx="'+idx+'" value="'+(slot.cutoffHour||'')+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)"></div>';
+    }
+    html += '</div>';
+    // 截止描述
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">';
+    html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">截止描述</label><input class="form-control" data-field="deadlineDesc" data-idx="'+idx+'" value="'+(slot.deadlineDesc||'')+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)"></div>';
+    // offsetHours 或 refType
+    if(slot.refType) {
+      html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">引用类型</label><select class="form-control" data-field="refType" data-idx="'+idx+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)">';
+      _slaRules.forEach(function(r){
+        html += '<option value="'+r.type+'"'+(slot.refType===r.type?' selected':'')+'>'+r.type+'</option>';
+      });
+      html += '</select></div>';
+    } else {
+      html += '<div class="form-item" style="margin:0;"><label class="form-label" style="font-size:11px;">时限(小时)</label><input class="form-control" type="number" step="0.25" data-field="offsetHours" data-idx="'+idx+'" value="'+(slot.offsetHours!=null?slot.offsetHours:'')+'" style="height:28px;font-size:12px;" onchange="updateSlaSlotField(this)"></div>';
+    }
+    html += '</div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
 }
 
-function removeSlaPeriod(idx) {
-  var container = document.getElementById('slaPeriodsContainer');
-  if (container.children[idx]) container.removeChild(container.children[idx]);
+function updateSlaSlotField(el) {
+  var idx = parseInt(el.getAttribute('data-idx'));
+  var field = el.getAttribute('data-field');
+  var val = el.value;
+  if(field === 'cutoffHour' || field === 'offsetHours') val = parseFloat(val);
+  if(_slaEditSlots[idx]) _slaEditSlots[idx][field] = val;
+}
+
+function addSlaSlotRow() {
+  _slaEditSlots.push({label:'', cutoffHour:24, deadlineDesc:'', offsetHours:24});
+  renderSlaSlotList();
+}
+
+function removeSlaSlotRow(idx) {
+  _slaEditSlots.splice(idx, 1);
+  renderSlaSlotList();
 }
 
 function saveSlaEdit() {
-  var typeName = document.getElementById('slaEditType').textContent;
-  var rule = _slaRules[typeName];
+  if(!_slaEditRule) return;
+  var typeName = document.getElementById('slaEditType').value;
+  var rule = _slaRules.find(function(r){ return r.type === typeName; });
   if (!rule) return;
-  var modeDuration = document.getElementById('slaModeDuration').checked;
-  rule.mode = modeDuration ? 'duration' : 'point';
-  if (modeDuration) {
-    rule.duration = parseInt(document.getElementById('slaDuration').value) || 24;
-    rule.periods = [];
-  } else {
-    rule.duration = 0;
-    var periods = [];
-    var container = document.getElementById('slaPeriodsContainer');
-    for (var i = 0; i < container.children.length; i++) {
-      var startEl = document.getElementById('slaPeriodStart-' + i);
-      var endEl = document.getElementById('slaPeriodEnd-' + i);
-      if (startEl && endEl && (startEl.value || endEl.value)) {
-        periods.push({start: startEl.value, end: endEl.value});
-      }
-    }
-    rule.periods = periods;
-  }
+  // 启用状态
+  var radios = document.getElementsByName('slaEditEnabled');
+  var enabledVal = true;
+  for(var i=0;i<radios.length;i++) { if(radios[i].checked) enabledVal = radios[i].value==='1'; }
+  rule.enabled = enabledVal;
+  // 超时升级
+  rule.escalation = document.getElementById('slaEditEscalation').value.trim();
+  var escStationVal = parseInt(document.getElementById('slaEditEscStation').value);
+  rule.escStationMin = isNaN(escStationVal) ? 0 : escStationVal;
+  // slots
+  rule.slots = _slaEditSlots.map(function(s){
+    var copy = {};
+    Object.keys(s).forEach(function(k){ if(s[k] !== '' && s[k] != null) copy[k] = s[k]; });
+    return copy;
+  });
   document.getElementById('slaEditModal').style.display = 'none';
+  initSlaTable();
   showToast(typeName + ' SLA配置已保存', 'success');
 }
 
@@ -3930,8 +5336,41 @@ function closeSlaEditModal() {
   document.getElementById('slaEditModal').style.display = 'none';
 }
 
+function initSlaTable() {
+  var tbody = document.getElementById('slaRuleBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  _slaRules.forEach(function(rule) {
+    var slotsHtml = rule.slots ? rule.slots.map(function(s){
+      return '<div style="font-size:11px;color:#666;">'+s.label+'</div>';
+    }).join('') : '<div style="font-size:11px;color:#999;">—</div>';
+    var deadlineHtml = rule.slots ? rule.slots.map(function(s){
+      var desc = s.deadlineDesc;
+      if(s.refType) desc += ' <span style="color:#1890ff;">(引用'+s.refType+')</span>';
+      return '<div style="font-size:11px;color:#666;">'+desc+'</div>';
+    }).join('') : '<div style="font-size:11px;color:#999;">—</div>';
+    var escalation = rule.escalation || '—';
+    var escStation = rule.escStationMin ? rule.escStationMin + ' 分钟' : '—';
+    var enabledTag = rule.enabled ? '<span class="tag tag-done">启用</span>' : '<span class="tag tag-rejected">禁用</span>';
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td style="font-weight:500;">'+rule.type+'</td>'
+      + '<td>'+slotsHtml+'</td>'
+      + '<td>'+deadlineHtml+'</td>'
+      + '<td style="font-size:12px;color:#fa8c16;">'+escStation+'</td>'
+      + '<td style="font-size:12px;color:#888;">'+escalation+'</td>'
+      + '<td>'+enabledTag+'</td>'
+      + '<td><button class="btn btn-default" style="height:24px;padding:0 8px;font-size:11px;" onclick="openSlaEditModal(\''+rule.type+'\')">编辑</button></td>';
+    tbody.appendChild(tr);
+  });
+}
+initSlaTable();
+
 
 </script>
 
+  </main>
+</div>
+
 </body>
+</html>
 </html>
