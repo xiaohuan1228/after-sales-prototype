@@ -612,19 +612,11 @@
               </div>
               <div class="profile-field">
                 <label>服务能力</label>
-                <div style="position:relative;" id="serviceSelectWrap">
-                  <div id="serviceSelectDisplay" onclick="toggleServiceSelect()" style="width:100%;border:1px solid #eeeeee;background:#fafafa;border-radius:7px;padding:8px 9px;font-size:12px;color:#222;min-height:36px;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
-                    <span class="service-tag" data-val="拖车救援">拖车救援</span>
-                    <span class="service-tag" data-val="故障维修">故障维修</span>
-                    <span class="service-tag" data-val="周期保养">周期保养</span>
-                    <span class="service-tag" data-val="事故维修（钣喷）">事故维修（钣喷）</span>
-                  </div>
-                  <div id="serviceSelectDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:50;margin-top:2px;overflow:hidden;">
-                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="拖车救援" onchange="updateServiceSelect()" checked> 拖车救援</label>
-                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="故障维修" onchange="updateServiceSelect()" checked> 故障维修</label>
-                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="周期保养" onchange="updateServiceSelect()" checked> 周期保养</label>
-                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;" onclick="event.stopPropagation()"><input type="checkbox" value="事故维修（钣喷）" onchange="updateServiceSelect()" checked> 事故维修（钣喷）</label>
-                  </div>
+                <div id="serviceSelectDisplay" onclick="openServiceSheet()" style="width:100%;border:1px solid #eeeeee;background:#fafafa;border-radius:7px;padding:8px 9px;font-size:12px;color:#222;min-height:36px;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+                  <span class="service-tag" data-val="拖车救援">拖车救援</span>
+                  <span class="service-tag" data-val="故障维修">故障维修</span>
+                  <span class="service-tag" data-val="周期保养">周期保养</span>
+                  <span class="service-tag" data-val="事故维修（钣喷）">事故维修（钣喷）</span>
                 </div>
               </div>
               <div class="profile-field">
@@ -1868,34 +1860,58 @@ function saveStationProfile(){
   alert('服务站信息已保存，并同步到服务站资料');
 }
 
-// ===== 服务能力多选下拉 =====
-function toggleServiceSelect(){
-  var dd = document.getElementById('serviceSelectDropdown');
-  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+// ===== 服务能力多选底部弹出 =====
+var _serviceOptions = ['拖车救援','故障维修','周期保养','事故维修（钣喷）'];
+var _serviceSelected = ['拖车救援','故障维修','周期保养','事故维修（钣喷）'];
+function openServiceSheet(){
+  var phone = document.getElementById('phone');
+  var mask = phone.querySelector('.sheet-mask');
+  // 移除已有的服务能力sheet
+  phone.querySelectorAll('.sheet.temp-service-sheet').forEach(function(s){ s.remove(); });
+  // 构建sheet
+  var html = '<div class="sheet-title">选择服务能力</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:0;">';
+  _serviceOptions.forEach(function(opt){
+    var checked = _serviceSelected.indexOf(opt) >= 0;
+    html += '<label style="display:flex;align-items:center;padding:13px 0;gap:10px;font-size:14px;color:#222;cursor:pointer;border-bottom:1px solid #f5f5f5;">';
+    html += '<input type="checkbox" value="'+opt+'" '+(checked?'checked':'')+' style="width:18px;height:18px;accent-color:var(--brand,#ff3b36);">';
+    html += '<span>'+opt+'</span>';
+    html += '</label>';
+  });
+  html += '</div>';
+  html += '<button class="btn btn-primary" onclick="confirmServiceSelect()" style="width:100%;margin-top:16px;border-radius:8px;">确定</button>';
+  var sheet = document.createElement('div');
+  sheet.className = 'sheet temp-service-sheet';
+  sheet.innerHTML = html;
+  phone.appendChild(sheet);
+  mask.classList.add('show');
+  setTimeout(function(){ sheet.classList.add('show'); }, 10);
+  mask.onclick = function(){ closeServiceSheet(); };
 }
-function updateServiceSelect(){
-  var checks = document.querySelectorAll('#serviceSelectDropdown input[type=checkbox]');
+function closeServiceSheet(){
+  var phone = document.getElementById('phone');
+  var mask = phone.querySelector('.sheet-mask');
+  var sheet = phone.querySelector('.sheet.temp-service-sheet');
+  if(sheet) sheet.classList.remove('show');
+  mask.classList.remove('show');
+  setTimeout(function(){ phone.querySelectorAll('.sheet.temp-service-sheet').forEach(function(s){ s.remove(); }); }, 300);
+}
+function confirmServiceSelect(){
+  var sheet = document.getElementById('phone').querySelector('.sheet.temp-service-sheet');
+  var checks = sheet.querySelectorAll('input[type=checkbox]');
+  _serviceSelected = [];
+  checks.forEach(function(cb){ if(cb.checked) _serviceSelected.push(cb.value); });
+  // 更新显示
   var display = document.getElementById('serviceSelectDisplay');
   var html = '';
-  checks.forEach(function(cb){
-    if(cb.checked){
-      html += '<span class="service-tag" data-val="'+cb.value+'">'+cb.value+'</span>';
-    }
+  _serviceSelected.forEach(function(v){
+    html += '<span class="service-tag" data-val="'+v+'">'+v+'</span>';
   });
   if(!html) html = '<span style="color:#999;font-size:12px;">请选择服务能力</span>';
   display.innerHTML = html;
+  closeServiceSheet();
 }
-function getSelectedServices(){
-  var checks = document.querySelectorAll('#serviceSelectDropdown input[type=checkbox]:checked');
-  return Array.from(checks).map(function(cb){return cb.value;});
-}
-// 点击外部关闭下拉
-document.addEventListener('click', function(e){
-  var wrap = document.getElementById('serviceSelectWrap');
-  if(wrap && !wrap.contains(e.target)){
-    document.getElementById('serviceSelectDropdown').style.display = 'none';
-  }
-});
+function getSelectedServices(){ return _serviceSelected; }
 
 function renderStationStaffList(){
   const list = document.getElementById('stationStaffList');
