@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>车辆异常追踪管控 - 运营管理平台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #333; font-size: 13px; }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ===== 侧边栏 ===== */
+  .sidebar { width: 220px; background: #232732; color: #fff; padding: 16px 0; position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; overflow-y: auto; }
+  .logo { padding: 0 20px 16px; font-size: 15px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 8px; }
+  .logo-icon { width: 28px; height: 28px; background: #3c7eff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .nav-group { padding: 12px 0; }
+  .nav-title { padding: 8px 20px; color: rgba(255,255,255,0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+  .nav-item { padding: 10px 20px 10px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin: 2px 8px; border-radius: 4px; transition: all 0.2s; color: rgba(255,255,255,0.65); font-size: 13px; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-item.active { background: #3c7eff; color: #fff; }
+  .nav-badge { background: #e54d42; color: #fff; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 600; }
+
+  .main { flex: 1; margin-left: 220px; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .header { height: 52px; background: #fff; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 0 #f0f0f0; }
+  .breadcrumb { color: #999; font-size: 13px; }
+  .breadcrumb span { color: #333; font-weight: 500; }
+  .user-info { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 32px; height: 32px; border-radius: 4px; background: #3c7eff; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+  .content { padding: 20px; flex: 1; overflow-y: auto; overflow-x: hidden; min-width: 0; }
+  .page-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #111; }
+
+  /* ===== 统计卡片 ===== */
+  .stat-cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { background: #fff; padding: 16px 16px 14px; border-radius: 6px; cursor: pointer; border: 1px solid #e8e8e8; transition: all 0.2s; }
+  .stat-card:hover { border-color: #3c7eff; }
+  .stat-card.active { border-color: #3c7eff; background: #f0f5ff; }
+  .stat-label { color: #999; font-size: 11px; font-weight: 500; }
+  .stat-value { font-size: 28px; font-weight: 700; margin-top: 6px; color: #1a1a1a; line-height: 1; }
+
+  /* ===== 筛选栏 ===== */
+  .filter-bar { background: #fff; padding: 14px 16px; border-radius: 8px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .filter-bar input, .filter-bar select { height: 30px; padding: 0 10px; border: 1px solid #e8e8e8; border-radius: 6px; font-size: 12px; transition: all 0.2s; background: #fafafa; }
+  .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: #3c7eff; background: #fff; box-shadow: 0 0 0 2px rgba(60,126,255,0.1); }
+  .filter-bar input { width: 200px; }
+
+  /* ===== 按钮 ===== */
+  .btn { height: 30px; padding: 0 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+  .btn-primary { background: #3c7eff; color: #fff; }
+  .btn-primary:hover { background: #5a93ff; }
+  .btn-default { background: #fff; border: 1px solid #d9d9d9; color: #555; }
+  .btn-default:hover { border-color: #3c7eff; color: #3c7eff; }
+  .btn-danger { background: #e54d42; color: #fff; }
+  .btn-danger:hover { background: #f06860; }
+  .btn-success { background: #3c7eff; color: #fff; }
+  .btn-success:hover { background: #5a93ff; }
+  .btn-warning { background: #e54d42; color: #fff; }
+  .btn-warning:hover { background: #f06860; }
+  .btn-sm { height: 26px; padding: 0 10px; font-size: 11px; }
+  .btn-text { background: transparent; border: none; color: #3c7eff; padding: 0 6px; height: auto; }
+  .btn-text:hover { color: #5a93ff; }
+
+  .list-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .list-toolbar-left { color: #999; font-size: 12px; }
+  .list-toolbar-left strong { color: #333; }
+  .view-btn { background: #fff; border: none; padding: 0 16px; height: 28px; font-size: 12px; color: #666; cursor: pointer; transition: all 0.2s; }
+  .view-btn.active { background: #3c7eff; color: #fff; }
+
+  /* ===== 表格 ===== */
+  .table-wrap { background: #fff; border-radius: 8px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  table { width: max-content; min-width: 100%; border-collapse: collapse; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #f5f5f5; font-size: 12px; white-space: nowrap; }
+  th { background: #fafafa; font-weight: 600; color: #666; position: sticky; top: 0; z-index: 1; border-bottom: 2px solid #f0f0f0; }
+  th.col-action { position: sticky; right: 0; z-index: 2; background: #fafafa; box-shadow: -2px 0 6px rgba(0,0,0,0.06); }
+  td.col-action { position: sticky; right: 0; background: #fff; box-shadow: -2px 0 6px rgba(0,0,0,0.06); white-space: nowrap; }
+  tbody tr { cursor: pointer; transition: background 0.15s; }
+  tbody tr:hover { background: #f0f5ff; }
+  tbody tr:hover td.col-action { background: #f0f5ff; }
+  tbody tr.row-selected { background: #e6f0ff; }
+
+  /* ===== Tag ===== */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; line-height: 18px; font-weight: 500; }
+  .tag-self { background: #e6f0ff; color: #3c7eff; }
+  .tag-lease { background: #fff7e6; color: #d48806; }
+  .tag-pending { background: #fff7e6; color: #d48806; }
+  .tag-approved { background: #f0f5ff; color: #3c7eff; }
+  .tag-rejected { background: #fff1f0; color: #e54d42; }
+  .tag-abnormal { background: #fff1f0; color: #e54d42; }
+  .tag-wait-recover { background: #f0f5ff; color: #3c7eff; }
+  .tag-recovered { background: #f6ffed; color: #52c41a; }
+  .tag-closed { background: #fafafa; color: #999; }
+  .tag-cancelled { background: #fafafa; color: #999; }
+  .tag-vs-offline { background: #f5f5f5; color: #8c8c8c; }
+  .tag-vs-normal { background: #f5f5f5; color: #333; }
+  .tag-vs-pending { background: #f5f5f5; color: #bbb; }
+
+  /* ===== 抽屉 ===== */
+  .drawer-mask { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 99; transition: background 0.3s; }
+  .drawer-mask.show { display: block; background: rgba(0,0,0,0.45); }
+  .drawer { position: fixed; top: 0; right: -800px; width: 800px; height: 100%; background: #fff; z-index: 100; transition: right 0.35s cubic-bezier(0.23,1,0.32,1); overflow-y: auto; box-shadow: -4px 0 24px rgba(0,0,0,0.12); }  .drawer.show { right: 0; }
+  .drawer-header { padding: 0 20px; height: 56px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 10; }
+  .drawer-header-left { display: flex; align-items: center; gap: 10px; }
+  .drawer-title { font-size: 15px; font-weight: 700; color: #111; }
+  .close-btn { cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #999; transition: all 0.2s; background: transparent; }
+  .close-btn:hover { background: #f5f5f5; color: #333; transform: rotate(90deg); }
+  .drawer-body { padding: 20px; }
+
+  /* ===== 详情卡片 ===== */
+  .detail-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 16px 20px; margin-bottom: 12px; border: 1px solid #f0f0f0; }
+  .section-title { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 6px; }
+  .section-title .icon { color: #3c7eff; }
+  .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 24px; margin-bottom: 4px; }
+  .info-grid .span2 { grid-column: span 2; }
+  .info-grid .span3 { grid-column: span 3; }
+  .info-item { display: flex; font-size: 12px; line-height: 1.8; }
+  .info-label { color: #aaa; min-width: 80px; flex-shrink: 0; }
+  .info-value { color: #333; flex: 1; }
+
+  /* ===== 车效影响高亮卡片 ===== */
+  .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .impact-item { background: #f7f9fc; border-radius: 8px; padding: 14px 16px; text-align: center; border: 1px solid #eef1f6; }
+  .impact-label { font-size: 11px; color: #999; margin-bottom: 6px; }
+  .impact-value { font-size: 16px; font-weight: 700; color: #333; }
+  .impact-value.red { color: #e54d42; }
+  .impact-value.orange { color: #d48806; }
+  .impact-value.green { color: #52c41a; }
+  .impact-value.blue { color: #3c7eff; }
+  .impact-value.tag-recovered-text { color: #52c41a; }
+  .impact-value.tag-unrecovered-text { color: #e54d42; }
+
+  /* ===== 审批流程 ===== */
+  .approval-flow { padding: 0; }
+  .approval-node { display: flex; gap: 12px; padding: 10px 0; position: relative; }
+  .approval-node:not(:last-child)::after { content: ''; position: absolute; left: 11px; top: 32px; bottom: -2px; width: 1px; background: #e8e8e8; }
+  .approval-node.done:not(:last-child)::after { background: #b7eb8f; }
+  .approval-node.rejected:not(:last-child)::after { background: #ffa39e; }
+  .approval-node.cancelled::after { background: #e8e8e8 !important; }
+  .node-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; border: 2px solid #e8e8e8; color: #bbb; background: #fafafa; z-index: 1; }
+  .node-icon.done { background: #f6ffed; border-color: #b7eb8f; color: #52c41a; }
+  .node-icon.current { background: #f0f5ff; border-color: #3c7eff; color: #3c7eff; }
+  .node-icon.rejected { background: #fff1f0; border-color: #ffa39e; color: #e54d42; }
+  .node-icon.cancelled { background: #fafafa; border-color: #e8e8e8; color: #d9d9d9; }
+  @keyframes nodePulse { 0%,100%{box-shadow:0 0 0 0 rgba(60,126,255,0.3)} 50%{box-shadow:0 0 0 6px rgba(60,126,255,0)} }
+  .node-content { flex: 1; }
+  .node-title { font-size: 13px; font-weight: 600; color: #333; }
+  .node-title.cancelled { color: #999; text-decoration: line-through; }
+  .node-info { font-size: 11px; color: #999; margin-top: 2px; }
+  .node-info .name { color: #555; font-weight: 500; }
+  .node-opinion { font-size: 11px; color: #666; background: #f7f8fa; padding: 6px 10px; border-radius: 4px; margin-top: 4px; border-left: 2px solid #d9d9d9; }
+  .node-opinion.approved { border-left-color: #52c41a; }
+  .node-opinion.rejected-op { border-left-color: #e54d42; }
+
+  /* ===== 工单进度 ===== */
+  .status-flow { display: flex; align-items: center; padding: 12px 0; margin-bottom: 4px; overflow-x: auto; }
+  .status-step { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+  .step-circle { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; color: #bbb; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid #e8e8e8; }
+  .step-circle.done { background: #f6ffed; color: #52c41a; border-color: #b7eb8f; }
+  .step-circle.current { background: #3c7eff; color: #fff; border-color: #3c7eff; }
+  .step-label { font-size: 11px; margin-top: 4px; color: #999; }
+  .step-label.current-label { color: #3c7eff; font-weight: 600; }
+  .step-line { flex: 1; height: 1px; background: #e8e8e8; margin: 0 4px; min-width: 20px; }
+  .step-line.done { background: #b7eb8f; }
+  .timeline { padding: 0; margin-top: 8px; }
+  .timeline-item { display: flex; gap: 10px; padding: 6px 0; font-size: 12px; align-items: flex-start; border-bottom: 1px dashed #f0f0f0; }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-dot { width: 7px; height: 7px; border-radius: 50%; background: #d9d9d9; flex-shrink: 0; margin-top: 5px; }
+  .timeline-dot.done { background: #52c41a; }
+  .timeline-dot.current { background: #3c7eff; box-shadow: 0 0 0 3px rgba(60,126,255,0.15); }
+  .timeline-text { color: #555; }
+
+  /* ===== 弹窗 ===== */
+  .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 200; align-items: center; justify-content: center; transition: background 0.25s; }
+  .modal-mask.show { display: flex; background: rgba(0,0,0,0.5); }
+  .modal { background: #fff; width: 520px; border-radius: 10px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: scale(0.92) translateY(20px); opacity: 0; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s; }
+  .modal-mask.show .modal { transform: scale(1) translateY(0); opacity: 1; }
+  .modal-header { padding: 16px 20px; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
+  .modal-header strong { font-size: 15px; color: #111; }
+  .modal-body { padding: 20px; }
+  .modal-footer { padding: 12px 20px; border-top: 1px solid #f5f5f5; display: flex; gap: 8px; justify-content: flex-end; background: #fafafa; border-radius: 0 0 10px 10px; }
+
+  .form-item { margin-bottom: 14px; }
+  .form-label { display: block; margin-bottom: 6px; font-size: 12px; color: #555; font-weight: 500; }
+  .form-label.required:before { content: '*'; color: #ff4d4f; margin-right: 4px; }
+  .form-control { width: 100%; height: 32px; padding: 0 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 13px; transition: all 0.2s; }
+  .form-control:focus { outline: none; border-color: #3c7eff; box-shadow: 0 0 0 2px rgba(60,126,255,0.1); }
+  textarea.form-control { height: auto; padding: 8px 10px; resize: vertical; }
+
+  .upload-box { width: 100%; height: 80px; border: 1.5px dashed #d9d9d9; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; transition: border-color 0.2s; color: #999; font-size: 12px; background: #fafafa; }
+  .upload-box:hover { border-color: #3c7eff; color: #3c7eff; background: #f0f5ff; }
+
+
+  .alert-tip { background: #fffbe6; border: 1px solid #ffe58f; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #ad6800; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+
+  /* ===== Toast ===== */
+  #toastContainer { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+  .toast { background: rgba(30,30,30,0.88); backdrop-filter: blur(8px); color: #fff; padding: 10px 20px; border-radius: 24px; font-size: 13px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(-20px); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: rgba(60,126,255,0.9); }
+  .toast.error { background: rgba(229,77,66,0.9); }
+  .toast.warning { background: rgba(60,126,255,0.9); }
+
+  .hidden { display: none !important; }
+  .photo-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .photo-thumb { width: 60px; height: 60px; border-radius: 3px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid #e8e8e8; overflow: hidden; cursor: pointer; flex-direction: column; color: #bbb; }
+  .photo-thumb:hover { border-color: #3c7eff; }
+
+  /* 响应式微调 */
+  @media (max-width: 1400px) { .stat-cards { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 1200px) { .impact-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- 侧边栏 -->
+  <div class="sidebar">
+    <div class="logo"><div class="logo-icon">YM</div> 运营管理平台</div>
+    <div class="nav-group">
+      <div class="nav-title">车辆管控</div>
+      <div class="nav-item active"><span>车辆异常追踪</span><span class="nav-badge" id="navBadge">4</span></div>
+    </div>
+  </div>
+
+  <!-- 主体 -->
+  <div class="main">
+    <div class="header">
+      <div class="breadcrumb">车辆管控 / <span>车辆异常追踪</span></div>
+      <div class="user-info"><span style="font-size:12px;color:#666">管理员</span><div class="avatar">管</div></div>
+    </div>
+    <div class="content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="page-title">车辆异常追踪管控</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-default" onclick="exportCSV()">导出列表</button>
+          <button class="btn btn-primary" onclick="openAddModal()">+ 新增异常提报</button>
+        </div>
+      </div>
+
+      <!-- 统计卡片 -->
+      <div class="stat-cards">
+        <div class="stat-card" data-filter="vehicleStatus" data-value="已下线" onclick="statCardFilter(this)">
+          <div class="stat-label">已下线</div><div class="stat-value" id="statOffline">0</div>
+        </div>
+        <div class="stat-card" data-filter="approvalStatus" data-value="待审批" onclick="statCardFilter(this)">
+          <div class="stat-label">待审批</div><div class="stat-value" id="statPending">4</div>
+        </div>
+        <div class="stat-card" data-filter="operStatus" data-value="车辆异常" onclick="statCardFilter(this)">
+          <div class="stat-label">车辆异常</div><div class="stat-value" id="statAbnormal">5</div>
+        </div>
+        <div class="stat-card" data-filter="operStatus" data-value="待确认恢复" onclick="statCardFilter(this)">
+          <div class="stat-label">待确认恢复</div><div class="stat-value" id="statWaitRecover">2</div>
+        </div>
+        <div class="stat-card" data-filter="operStatus" data-value="已恢复运营" onclick="statCardFilter(this)">
+          <div class="stat-label">已恢复运营</div><div class="stat-value" id="statRecovered">3</div>
+        </div>
+        <div class="stat-card" data-filter="operStatus" data-value="已关闭" onclick="statCardFilter(this)">
+          <div class="stat-label">已关闭</div><div class="stat-value" id="statClosed">1</div>
+        </div>
+        <div class="stat-card" data-filter="" data-value="" onclick="statCardFilter(this)">
+          <div class="stat-label">总影响天数</div><div class="stat-value" id="statTotalDays">0</div>
+        </div>
+      </div>
+
+      <!-- 筛选栏 -->
+      <div class="filter-bar">
+        <input type="text" id="filterSearch" placeholder="搜索车号" oninput="applyFilters()">
+        <select id="filterBrand" onchange="applyFilters()"><option value="">品牌</option><option value="新石器">新石器</option><option value="京东">京东</option></select>
+        <select id="filterAnomalyType" onchange="applyFilters()"><option value="">异常类型</option><option value="交通事故">交通事故</option><option value="硬件问题">硬件问题</option><option value="软件问题">软件问题</option><option value="路权问题">路权问题</option><option value="运营问题">运营问题</option></select>
+        <select id="filterVehicleStatus" onchange="applyFilters()"><option value="">车辆状态</option><option value="正常运营">正常运营</option><option value="已下线">已下线</option><option value="待上线">待上线</option></select>
+        <select id="filterApproval" onchange="applyFilters()"><option value="">审批状态</option><option value="待审批">待审批</option><option value="已通过">已通过</option><option value="已驳回">已驳回</option></select>
+
+        <select id="filterDateDim" onchange="updateDateDimOptions()" style="width:80px;">
+          <option value="">维度</option><option value="week">周</option><option value="month">月</option><option value="year">年</option>
+        </select>
+        <select id="filterDateDimVal" onchange="applyDateDimFilter()" style="width:100px;">
+          <option value="">请先选择维度</option>
+        </select>
+        <button class="btn btn-primary" onclick="applyFilters()">筛选</button>
+        <button class="btn btn-default" onclick="resetFilters()">重置</button>
+        <input type="hidden" id="filterDateStart">
+        <input type="hidden" id="filterDateEnd">
+      </div>
+
+      <!-- 列表工具栏 -->
+      <div class="list-toolbar">
+        <div class="list-toolbar-left">共 <strong id="totalCount">0</strong> 条记录</div>
+        <div class="view-switch" style="display:flex;gap:0;border:1px solid #d9d9d9;border-radius:4px;overflow:hidden;">
+          <button class="view-btn active" id="viewByOrder" onclick="switchView('order')">工单维度</button>
+          <button class="view-btn" id="viewByVehicle" onclick="switchView('vehicle')">车辆维度</button>
+        </div>
+      </div>
+
+      <!-- 数据表格 -->
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead"><tr id="tableHeadRow"></tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 抽屉遮罩 -->
+<div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+<!-- 抽屉详情 -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-header-left"><span class="drawer-title" id="drawerTitle">异常详情</span></div>
+    <div class="close-btn" onclick="closeDrawer()">✕</div>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<!-- 审批弹窗 -->
+<div class="modal-mask" id="approvalModal">
+  <div class="modal">
+    <div class="modal-header"><strong>审批确认</strong><div class="close-btn" onclick="closeApprovalModal()">✕</div></div>
+    <div class="modal-body">
+      <div style="background:#f7f9fc;border-radius:6px;padding:12px 14px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+          <div><span style="color:#aaa;">车号：</span><span id="approvalAnomalyId" style="font-weight:600;"></span></div>
+          <div><span style="color:#aaa;">品牌：</span><span id="approvalVehicleInfo"></span></div>
+          <div style="grid-column:span 2;"><span style="color:#aaa;">异常类型：</span><span id="approvalAnomalyType"></span></div>
+        </div>
+      </div>
+      <div class="form-item">
+        <label class="form-label required">审批意见</label>
+        <textarea class="form-control" id="approvalOpinion" rows="3" placeholder="请输入审批意见"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeApprovalModal()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新增异常提报弹窗 -->
+<div class="modal-mask" id="addModal">
+  <div class="modal">
+    <div class="modal-header"><strong>新增异常提报</strong><div class="close-btn" onclick="closeAddModal()">✕</div></div>
+    <div class="modal-body">
+      <div class="alert-tip">小哥提报异常需经审批流程通过后方可生效</div>
+      <div class="form-item">
+        <label class="form-label required">品牌</label>
+        <select class="form-control" id="addBrand"><option value="">请选择</option><option value="新石器">新石器</option><option value="京东">京东</option></select>
+      </div>
+      <div class="form-item">
+        <label class="form-label required">所属站点</label>
+        <input class="form-control" id="addStation" placeholder="请输入所属站点">
+      </div>
+      <div class="form-item">
+        <label class="form-label required">车号</label>
+        <input class="form-control" id="addVehicleNo" placeholder="请输入车号，如x65375">
+      </div>
+      <div class="form-item">
+        <label class="form-label required">异常类型</label>
+        <select class="form-control" id="addAnomalyType" onchange="updateSubTypeOptions()"><option value="">请选择</option><option value="交通事故">交通事故</option><option value="硬件问题">硬件问题</option><option value="软件问题">软件问题</option><option value="路权问题">路权问题</option><option value="运营问题">运营问题</option></select>
+      </div>
+      <div class="form-item" id="addSubTypeWrap">
+        <label class="form-label required">异常子类</label>
+        <select class="form-control" id="addSubType"><option value="">请先选择异常类型</option></select>
+      </div>
+
+      <div class="form-item">
+        <label class="form-label required">异常描述</label>
+        <textarea class="form-control" id="addDescription" rows="3" placeholder="请描述异常情况"></textarea>
+      </div>
+      <div class="form-item">
+        <label class="form-label">照片上传</label>
+        <div class="upload-box" onclick="toast('照片上传功能（原型演示）','warning')"><div class="upload-icon"></div><div>点击上传照片</div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeAddModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitAnomaly()">提交审批</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast容器 -->
+<div id="toastContainer"></div>
+
+<script>
+// ===== Mock数据 =====
+var mockData = [
+  { id:'VA20260601001', source:'自研车', brand:'新石器', vehicleNo:'x88001', model:'途逸EV', station:'望京站', anomalyType:'硬件问题', subType:'逆变器故障', priority:'P0', vehicleStatus:'正常运营', approvalStatus:'待审批', operStatus:'车辆异常', startTime:'2026-06-01 08:30', recovered:false, recoverDate:'', impactDays:15, reporter:'张明辉', workOrderId:'', description:'车辆行驶中突然失去动力，电机控制器故障，疑似电机或逆变器损坏。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'张明辉',time:'2026-06-01 08:30',opinion:'车辆行驶中突然失去动力，存在安全隐患'},
+    {node:'站长审批',status:'待处理',person:'李站长',time:'',opinion:''},
+    {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+    {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  { id:'VA20260602002', source:'租赁车', brand:'京东', vehicleNo:'x66012', model:'金杯EV', station:'朝阳站', anomalyType:'硬件问题', subType:'制动故障', priority:'P0', vehicleStatus:'正常运营', approvalStatus:'待审批', operStatus:'车辆异常', startTime:'2026-06-02 10:15', recovered:false, recoverDate:'', impactDays:14, reporter:'王建国', workOrderId:'', description:'制动踏板行程变长，刹车距离明显增加，制动液泄漏或制动泵故障。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'王建国',time:'2026-06-02 10:15',opinion:'制动效果差，影响安全运营'},
+    {node:'站长审批',status:'待处理',person:'赵站长',time:'',opinion:''},
+    {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+    {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  { id:'VA20260603003', source:'自研车', brand:'新石器', vehicleNo:'x88023', model:'途逸EV', station:'海淀站', anomalyType:'硬件问题', subType:'雷达故障', priority:'P1', vehicleStatus:'正常运营', approvalStatus:'待审批', operStatus:'车辆异常', startTime:'2026-06-03 14:20', recovered:false, recoverDate:'', impactDays:13, reporter:'刘小伟', workOrderId:'', description:'激光雷达数据异常，频繁出现误检，雷达硬件故障影响自动驾驶决策。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'刘小伟',time:'2026-06-03 14:20',opinion:'传感器频繁误检，需尽快排查'},
+    {node:'站长审批',status:'待处理',person:'陈站长',time:'',opinion:''},
+    {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+    {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  { id:'VA20260604004', source:'租赁车', brand:'京东', vehicleNo:'x55007', model:'瑞驰EV', station:'丰台站', anomalyType:'硬件问题', subType:'电池故障', priority:'P1', vehicleStatus:'正常运营', approvalStatus:'待审批', operStatus:'车辆异常', startTime:'2026-06-04 09:45', recovered:false, recoverDate:'', impactDays:12, reporter:'陈思远', workOrderId:'', description:'电池SOC跳变，从80%突然降至20%，电池包硬件异常导致续航不稳定。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'陈思远',time:'2026-06-04 09:45',opinion:'电池电量跳变，续航严重偏差'},
+    {node:'站长审批',status:'待处理',person:'孙站长',time:'',opinion:''},
+    {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+    {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  { id:'VA20260605005', source:'自研车', brand:'新石器', vehicleNo:'x88045', model:'途逸EV', station:'通州站', anomalyType:'硬件问题', subType:'转向故障', priority:'P0', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-05 07:00', recovered:false, recoverDate:'', impactDays:11, reporter:'赵明', workOrderId:'WO20260605001', description:'方向盘转动有异响，低速转向卡顿，转向机硬件故障影响操控安全。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'赵明',time:'2026-06-05 07:00',opinion:'转向异响卡顿，存在安全风险'},
+    {node:'站长审批',status:'已完成',person:'周站长',time:'2026-06-05 08:30',opinion:'确认故障，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-05 10:00',opinion:'批准，请尽快安排维修'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-05 10:01',opinion:'已自动创建工单 WO20260605001'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:2, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-05 11:00',dot:'done'},
+    {status:'诊断中',text:'服务站正在诊断故障原因',time:'2026-06-05 14:00',dot:'current'},
+    {status:'待处理',text:'等待配件到货',time:'',dot:''},
+    {status:'待处理',text:'维修施工',time:'',dot:''},
+    {status:'待处理',text:'维修完成验收',time:'',dot:''}
+  ]}},
+  { id:'VA20260606006', source:'租赁车', brand:'京东', vehicleNo:'x66034', model:'金杯EV', station:'大兴站', anomalyType:'硬件问题', subType:'通讯卡故障', priority:'P1', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-06 11:30', recovered:false, recoverDate:'', impactDays:10, reporter:'孙磊', workOrderId:'WO20260606002', description:'车辆4G通讯卡断连，无法上报实时数据，远程监控失效。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'孙磊',time:'2026-06-06 11:30',opinion:'通信断连，远程监控失效'},
+    {node:'站长审批',status:'已完成',person:'吴站长',time:'2026-06-06 12:00',opinion:'情况属实，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-06 14:00',opinion:'批准维修'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-06 14:01',opinion:'已自动创建工单 WO20260606002'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:1, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-06 15:00',dot:'done'},
+    {status:'诊断中',text:'正在诊断通信模块',time:'2026-06-06 16:00',dot:'current'},
+    {status:'待处理',text:'等待配件',time:'',dot:''},
+    {status:'待处理',text:'维修施工',time:'',dot:''},
+    {status:'待处理',text:'维修完成',time:'',dot:''}
+  ]}},
+  { id:'VA20260607007', source:'自研车', brand:'新石器', vehicleNo:'x88067', model:'途逸EV', station:'顺义站', anomalyType:'硬件问题', subType:'轮胎故障', priority:'P2', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-07 16:00', recovered:false, recoverDate:'', impactDays:9, reporter:'周小波', workOrderId:'WO20260607003', description:'右后轮胎磨损严重，胎面可见钢丝，轮胎有爆胎风险需更换。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'周小波',time:'2026-06-07 16:00',opinion:'轮胎磨损严重需更换'},
+    {node:'站长审批',status:'已完成',person:'郑站长',time:'2026-06-07 16:30',opinion:'确认需更换，同意'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-07 17:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-07 17:01',opinion:'已自动创建工单 WO20260607003'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:0, timeline:[
+    {status:'待接单',text:'等待服务站接单',time:'',dot:'current'}
+  ]}},
+  { id:'VA20260608008', source:'租赁车', brand:'京东', vehicleNo:'x55019', model:'瑞驰EV', station:'昌平站', anomalyType:'交通事故', subType:'与交通设施碰撞', priority:'P2', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-08 08:00', recovered:false, recoverDate:'', impactDays:8, reporter:'马超', workOrderId:'WO20260608004', description:'车辆与马路牙子发生碰撞，车身右侧有明显刮擦和凹陷，保险杠受损。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'马超',time:'2026-06-08 08:00',opinion:'车身刮擦凹陷'},
+    {node:'站长审批',status:'已完成',person:'钱站长',time:'2026-06-08 09:00',opinion:'确认损伤，同意维修'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-08 10:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-08 10:01',opinion:'已自动创建工单 WO20260608004'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:3, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-08 11:00',dot:'done'},
+    {status:'已诊断',text:'诊断完成，需钣金喷漆',time:'2026-06-08 14:00',dot:'done'},
+    {status:'已到货',text:'配件/材料已到',time:'2026-06-09 09:00',dot:'done'},
+    {status:'维修中',text:'正在钣金喷漆维修',time:'2026-06-09 10:00',dot:'current'},
+    {status:'待处理',text:'维修完成验收',time:'',dot:''}
+  ]}},
+  { id:'VA20260609009', source:'自研车', brand:'新石器', vehicleNo:'x88089', model:'途逸EV', station:'望京站', anomalyType:'运营问题', subType:'暴雨停运', priority:'P2', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-09 13:00', recovered:false, recoverDate:'', impactDays:7, reporter:'黄宇', workOrderId:'WO20260609005', description:'暴雨红色预警，路面积水严重，车辆无法正常运营。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'黄宇',time:'2026-06-09 13:00',opinion:'空调失效无法运营'},
+    {node:'站长审批',status:'已完成',person:'李站长',time:'2026-06-09 14:00',opinion:'确认，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-09 15:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-09 15:01',opinion:'已自动创建工单 WO20260609005'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:4, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-09 16:00',dot:'done'},
+    {status:'已诊断',text:'压缩机故障需更换',time:'2026-06-10 09:00',dot:'done'},
+    {status:'已到货',text:'压缩机到货',time:'2026-06-12 10:00',dot:'done'},
+    {status:'维修完成',text:'压缩机更换完成',time:'2026-06-13 14:00',dot:'done'},
+    {status:'待验收',text:'待确认恢复运营',time:'2026-06-13 14:00',dot:'current'}
+  ]}},
+  { id:'VA20260610010', source:'租赁车', brand:'京东', vehicleNo:'x66045', model:'金杯EV', station:'朝阳站', anomalyType:'硬件问题', subType:'逆变器故障', priority:'P0', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'待确认恢复', startTime:'2026-06-10 09:00', recovered:false, recoverDate:'2026-06-15', impactDays:5, reporter:'吴昊', workOrderId:'WO20260610006', description:'车辆无法启动，仪表盘报动力系统故障码，逆变器损坏需更换。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'吴昊',time:'2026-06-10 09:00',opinion:'车辆无法启动'},
+    {node:'站长审批',status:'已完成',person:'赵站长',time:'2026-06-10 10:00',opinion:'确认故障，同意'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-10 11:00',opinion:'批准维修'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-10 11:01',opinion:'已自动创建工单 WO20260610006'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-10 14:00',dot:'done'},
+    {status:'已诊断',text:'逆变器故障',time:'2026-06-11 09:00',dot:'done'},
+    {status:'已到货',text:'逆变器到货',time:'2026-06-13 08:00',dot:'done'},
+    {status:'已维修',text:'逆变器更换完成',time:'2026-06-14 16:00',dot:'done'},
+    {status:'维修完成',text:'维修完成，待确认恢复',time:'2026-06-15 10:00',dot:'current'}
+  ]}},
+  { id:'VA20260611011', source:'自研车', brand:'新石器', vehicleNo:'x88102', model:'途逸EV', station:'海淀站', anomalyType:'硬件问题', subType:'ABS故障', priority:'P1', vehicleStatus:'已下线', approvalStatus:'已通过', operStatus:'待确认恢复', startTime:'2026-06-11 07:30', recovered:false, recoverDate:'2026-06-16', impactDays:5, reporter:'郑天', workOrderId:'WO20260611007', description:'ABS故障灯常亮，制动效能降低，ABS传感器硬件损坏。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'郑天',time:'2026-06-11 07:30',opinion:'ABS故障需排查'},
+    {node:'站长审批',status:'已完成',person:'陈站长',time:'2026-06-11 09:00',opinion:'确认，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-11 10:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-11 10:01',opinion:'已自动创建工单 WO20260611007'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-11 14:00',dot:'done'},
+    {status:'已诊断',text:'ABS传感器损坏',time:'2026-06-12 09:00',dot:'done'},
+    {status:'已到货',text:'传感器到货',time:'2026-06-14 10:00',dot:'done'},
+    {status:'已维修',text:'传感器更换完成',time:'2026-06-15 15:00',dot:'done'},
+    {status:'维修完成',text:'维修完成待确认',time:'2026-06-16 09:00',dot:'current'}
+  ]}},
+  { id:'VA20260605012', source:'自研车', brand:'新石器', vehicleNo:'x88033', model:'途逸EV', station:'丰台站', anomalyType:'硬件问题', subType:'充电故障', priority:'P1', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'已恢复运营', startTime:'2026-06-05 10:00', recovered:true, recoverDate:'2026-06-10', impactDays:5, reporter:'冯杰', workOrderId:'WO20260605008', description:'充电速度极慢，2小时仅充入15%电量，充电口或BMS硬件异常。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'冯杰',time:'2026-06-05 10:00',opinion:'充电异常缓慢'},
+    {node:'站长审批',status:'已完成',person:'孙站长',time:'2026-06-05 11:00',opinion:'确认，同意'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-05 13:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-05 13:01',opinion:'已自动创建工单 WO20260605008'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-05 15:00',dot:'done'},
+    {status:'已诊断',text:'BMS软件需升级',time:'2026-06-06 09:00',dot:'done'},
+    {status:'已升级',text:'BMS升级完成',time:'2026-06-08 10:00',dot:'done'},
+    {status:'已测试',text:'充电测试通过',time:'2026-06-09 14:00',dot:'done'},
+    {status:'已恢复',text:'已确认恢复运营',time:'2026-06-10 09:00',dot:'done'}
+  ]}},
+  { id:'VA20260603013', source:'租赁车', brand:'京东', vehicleNo:'x55056', model:'瑞驰EV', station:'通州站', anomalyType:'软件问题', subType:'小哥工作台故障', priority:'P2', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'已恢复运营', startTime:'2026-06-03 15:00', recovered:true, recoverDate:'2026-06-06', impactDays:3, reporter:'何伟', workOrderId:'WO20260603009', description:'小哥工作台频繁崩溃，无法正常接单和上报，APP需紧急修复。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'何伟',time:'2026-06-03 15:00',opinion:'超声波传感器误报'},
+    {node:'站长审批',status:'已完成',person:'周站长',time:'2026-06-03 16:00',opinion:'同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-04 09:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-04 09:01',opinion:'已自动创建工单 WO20260603009'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-04 10:00',dot:'done'},
+    {status:'已诊断',text:'传感器灵敏度异常',time:'2026-06-04 14:00',dot:'done'},
+    {status:'已校准',text:'传感器重新校准',time:'2026-06-05 09:00',dot:'done'},
+    {status:'已测试',text:'测试通过',time:'2026-06-05 16:00',dot:'done'},
+    {status:'已恢复',text:'已确认恢复运营',time:'2026-06-06 08:00',dot:'done'}
+  ]}},
+  { id:'VA20260601014', source:'自研车', brand:'新石器', vehicleNo:'x88078', model:'途逸EV', station:'大兴站', anomalyType:'路权问题', subType:'交警扣车', priority:'P2', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'已恢复运营', startTime:'2026-06-01 09:00', recovered:true, recoverDate:'2026-06-03', impactDays:2, reporter:'许明', workOrderId:'WO20260601010', description:'交警临时扣车检查，车辆被扣留2天后放行恢复运营。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'许明',time:'2026-06-01 09:00',opinion:'GPS定位严重漂移'},
+    {node:'站长审批',status:'已完成',person:'吴站长',time:'2026-06-01 10:00',opinion:'确认，同意'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-01 11:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-01 11:01',opinion:'已自动创建工单 WO20260601010'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-01 14:00',dot:'done'},
+    {status:'已诊断',text:'天线接触不良',time:'2026-06-01 16:00',dot:'done'},
+    {status:'已修复',text:'天线重新固定',time:'2026-06-02 09:00',dot:'done'},
+    {status:'已测试',text:'GPS信号恢复正常',time:'2026-06-02 14:00',dot:'done'},
+    {status:'已恢复',text:'已确认恢复运营',time:'2026-06-03 08:00',dot:'done'}
+  ]}},
+  { id:'VA20260602015', source:'租赁车', brand:'京东', vehicleNo:'x55088', model:'瑞驰EV', station:'昌平站', anomalyType:'交通事故', subType:'与交通设施碰撞', priority:'P2', vehicleStatus:'正常运营', approvalStatus:'已驳回', operStatus:'已关闭', startTime:'2026-06-02 11:00', recovered:true, recoverDate:'', impactDays:0, reporter:'林涛', workOrderId:'', description:'车辆与园区抬杆发生碰撞，车身有轻微划痕。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'林涛',time:'2026-06-02 11:00',opinion:'车身轻微划痕'},
+    {node:'站长审批',status:'已驳回',person:'钱站长',time:'2026-06-02 12:00',opinion:'描述不清晰，划痕程度未说明，照片缺失，请补充详细描述和照片后重新提报'},
+    {node:'区域运管审批',status:'已取消',person:'',time:'',opinion:''},
+    {node:'创建售后工单',status:'已取消',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  // x88001 同一车号多条工单（已有1条逆变器故障，再加2条）
+  { id:'VA20260616016', source:'自研车', brand:'新石器', vehicleNo:'x88001', model:'途逸EV', station:'望京站', anomalyType:'软件问题', subType:'APP故障', priority:'P2', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'已恢复运营', startTime:'2026-06-16 09:00', recovered:true, recoverDate:'2026-06-18', impactDays:2, reporter:'张明辉', workOrderId:'WO20260616011', description:'配送APP频繁闪退，小哥无法正常操作接单流程。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'张明辉',time:'2026-06-16 09:00',opinion:'APP闪退影响接单'},
+    {node:'站长审批',status:'已完成',person:'李站长',time:'2026-06-16 10:30',opinion:'确认闪退问题，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-16 11:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-16 11:01',opinion:'已自动创建工单 WO20260616011'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'技术团队接单',time:'2026-06-16 14:00',dot:'done'},
+    {status:'已诊断',text:'APP内存泄漏',time:'2026-06-17 09:00',dot:'done'},
+    {status:'已修复',text:'APP补丁发布',time:'2026-06-17 16:00',dot:'done'},
+    {status:'已测试',text:'测试通过',time:'2026-06-18 09:00',dot:'done'},
+    {status:'已恢复',text:'已确认恢复运营',time:'2026-06-18 10:00',dot:'done'}
+  ]}},
+  { id:'VA20260619017', source:'自研车', brand:'新石器', vehicleNo:'x88001', model:'途逸EV', station:'望京站', anomalyType:'硬件问题', subType:'轮胎故障', priority:'P1', vehicleStatus:'正常运营', approvalStatus:'待审批', operStatus:'车辆异常', startTime:'2026-06-19 07:30', recovered:false, recoverDate:'', impactDays:1, reporter:'张明辉', workOrderId:'', description:'左前轮胎压不足，目测有慢漏气，需要检查更换。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'张明辉',time:'2026-06-19 07:30',opinion:'轮胎慢漏气'},
+    {node:'站长审批',status:'待处理',person:'李站长',time:'',opinion:''},
+    {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+    {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+  ], workOrderFlow:null },
+  // x55056 同一车号多条工单（已有1条小哥工作台故障，再加1条）
+  { id:'VA20260618018', source:'租赁车', brand:'京东', vehicleNo:'x55056', model:'瑞驰EV', station:'通州站', anomalyType:'硬件问题', subType:'充电故障', priority:'P1', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'车辆异常', startTime:'2026-06-18 10:00', recovered:false, recoverDate:'', impactDays:4, reporter:'何伟', workOrderId:'WO20260618012', description:'充电口接触不良，充电时频繁断连，BMS报充电异常。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'何伟',time:'2026-06-18 10:00',opinion:'充电口断连'},
+    {node:'站长审批',status:'已完成',person:'周站长',time:'2026-06-18 11:00',opinion:'确认充电问题，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-18 12:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-18 12:01',opinion:'已自动创建工单 WO20260618012'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:2, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-18 14:00',dot:'done'},
+    {status:'诊断中',text:'充电口氧化',time:'2026-06-19 09:00',dot:'current'},
+    {status:'待处理',text:'等待配件',time:'',dot:''},
+    {status:'待处理',text:'维修施工',time:'',dot:''},
+    {status:'待处理',text:'维修完成',time:'',dot:''}
+  ]}},
+  // x66012 同一车号多条工单（已有1条制动故障，再加1条）
+  { id:'VA20260617019', source:'租赁车', brand:'京东', vehicleNo:'x66012', model:'金杯EV', station:'朝阳站', anomalyType:'路权问题', subType:'交警扣车', priority:'P2', vehicleStatus:'正常运营', approvalStatus:'已通过', operStatus:'已恢复运营', startTime:'2026-06-17 15:00', recovered:true, recoverDate:'2026-06-18', impactDays:1, reporter:'王建国', workOrderId:'WO20260617013', description:'交警例行检查临时扣车，次日放行恢复运营。', approvalFlow:[
+    {node:'小哥提报',status:'已完成',person:'王建国',time:'2026-06-17 15:00',opinion:'交警扣车'},
+    {node:'站长审批',status:'已完成',person:'赵站长',time:'2026-06-17 16:00',opinion:'确认，同意提报'},
+    {node:'区域运管审批',status:'已完成',person:'王运管',time:'2026-06-17 17:00',opinion:'批准'},
+    {node:'创建售后工单',status:'已完成',person:'系统',time:'2026-06-17 17:01',opinion:'已自动创建工单 WO20260617013'}
+  ], workOrderFlow:{ steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:5, timeline:[
+    {status:'已接单',text:'服务站已接单',time:'2026-06-17 18:00',dot:'done'},
+    {status:'已处理',text:'提交放行申请',time:'2026-06-18 08:00',dot:'done'},
+    {status:'已放行',text:'车辆放行',time:'2026-06-18 10:00',dot:'done'},
+    {status:'已测试',text:'车辆正常',time:'2026-06-18 11:00',dot:'done'},
+    {status:'已恢复',text:'已确认恢复运营',time:'2026-06-18 12:00',dot:'done'}
+  ]}}
+];
+
+// ===== 工具函数 =====
+function toast(msg, type) {
+  var c = document.getElementById('toastContainer');
+  var t = document.createElement('div');
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function(){ t.classList.add('show'); }, 30);
+  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 2500);
+}
+
+function brandTag(b) { return b; }
+var subTypeMap = {
+  '交通事故': ['与社会车辆碰撞','与行人碰撞','与交通设施碰撞'],
+  '硬件问题': ['轮胎故障','雷达故障','摄像头故障','通讯卡故障','电池故障','充电故障','箱门故障','转向故障','制动故障','ABS故障','逆变器故障','电机故障'],
+  '软件问题': ['APP故障','小哥工作台故障','系统升级故障'],
+  '路权问题': ['交警扣车','政府停运要求','供应商停运通知'],
+  '运营问题': ['暴雨停运','雪灾停运','高温停运']
+};
+function updateSubTypeOptions() {
+  var type = document.getElementById('addAnomalyType').value;
+  var sel = document.getElementById('addSubType');
+  sel.innerHTML = '<option value="">请选择</option>';
+  if(type && subTypeMap[type]) {
+    subTypeMap[type].forEach(function(s) { sel.innerHTML += '<option value="'+s+'">'+s+'</option>'; });
+  }
+}
+function priorityTag(p) { return '<span class="tag tag-' + p.toLowerCase() + '">' + p + '</span>'; }
+function approvalTag(s) {
+  if(s==='待审批') return '<span class="tag tag-pending">待审批</span>';
+  if(s==='已通过') return '<span class="tag tag-approved">已通过</span>';
+  if(s==='已驳回') return '<span class="tag tag-rejected">已驳回</span>';
+  return '<span class="tag">' + s + '</span>';
+}
+function operStatusTag(s) {
+  if(s==='车辆异常') return '<span class="tag tag-abnormal">车辆异常</span>';
+  if(s==='待确认恢复') return '<span class="tag tag-wait-recover">待确认恢复</span>';
+  if(s==='已恢复运营') return '<span class="tag tag-recovered">已恢复运营</span>';
+  if(s==='已关闭') return '<span class="tag tag-closed">已关闭</span>';
+  return '<span class="tag">' + s + '</span>';
+}
+function vehicleStatusTag(s) {
+  if(s==='已下线') return '<span class="tag tag-vs-offline">已下线</span>';
+  if(s==='正常运营') return '<span class="tag tag-vs-normal">正常运营</span>';
+  if(s==='待上线') return '<span class="tag tag-vs-pending">待上线</span>';
+  return '<span class="tag">' + s + '</span>';
+}
+function recoverTag(r) { return r ? '<span style="color:#52c41a;">已恢复</span>' : '<span style="color:#e54d42;">未恢复</span>'; }
+function impactDaysStyle(d) { return d >= 5 ? 'color:#e54d42;font-weight:700;' : d >= 3 ? 'color:#d48806;font-weight:600;' : 'color:#333;'; }
+
+// ===== 统计 =====
+function updateStats() {
+  var pending=0, abnormal=0, waitRecover=0, recovered=0, closed=0, offline=0, totalDays=0;
+  mockData.forEach(function(d){
+    if(d.approvalStatus==='待审批') pending++;
+    if(d.operStatus==='车辆异常') abnormal++;
+    if(d.operStatus==='待确认恢复') waitRecover++;
+    if(d.operStatus==='已恢复运营') recovered++;
+
+    if(d.operStatus==='已关闭') closed++;
+    if(d.vehicleStatus==='已下线') offline++;
+    totalDays += d.impactDays;
+  });
+  document.getElementById('statOffline').textContent = offline;
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statAbnormal').textContent = abnormal;
+  document.getElementById('statWaitRecover').textContent = waitRecover;
+  document.getElementById('statRecovered').textContent = recovered;
+  document.getElementById('statClosed').textContent = closed;
+  document.getElementById('statTotalDays').textContent = totalDays;
+  var badge = document.getElementById('navBadge');
+  if(badge) badge.textContent = pending;
+}
+
+// ===== 筛选 =====
+var activeStatFilter = null;
+function statCardFilter(el) {
+  var filterKey = el.getAttribute('data-filter');
+  var filterVal = el.getAttribute('data-value');
+  document.querySelectorAll('.stat-card').forEach(function(c){ c.classList.remove('active'); });
+  if(activeStatFilter && activeStatFilter.key === filterKey && activeStatFilter.val === filterVal) {
+    activeStatFilter = null;
+  } else {
+    el.classList.add('active');
+    activeStatFilter = { key: filterKey, val: filterVal };
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  var search = document.getElementById('filterSearch').value.trim().toLowerCase();
+  var brand = document.getElementById('filterBrand').value;
+  var anomalyType = document.getElementById('filterAnomalyType').value;
+  var vehicleStatus = document.getElementById('filterVehicleStatus').value;
+  var approval = document.getElementById('filterApproval').value;
+
+  var dateStart = document.getElementById('filterDateStart').value;
+  var dateEnd = document.getElementById('filterDateEnd').value;
+
+  var filtered = mockData.filter(function(d) {
+    if(search && d.vehicleNo.toLowerCase().indexOf(search)===-1) return false;
+    if(brand && d.brand !== brand) return false;
+    if(anomalyType && d.anomalyType !== anomalyType) return false;
+    if(vehicleStatus && d.vehicleStatus !== vehicleStatus) return false;
+    if(approval && d.approvalStatus !== approval) return false;
+
+    if(dateStart && d.startTime < dateStart) return false;
+    if(dateEnd && d.startTime > dateEnd + ' 23:59') return false;
+    if(activeStatFilter && activeStatFilter.key) {
+      if(activeStatFilter.key === 'approvalStatus' && d.approvalStatus !== activeStatFilter.val) return false;
+      if(activeStatFilter.key === 'operStatus' && d.operStatus !== activeStatFilter.val) return false;
+      if(activeStatFilter.key === 'vehicleStatus' && d.vehicleStatus !== activeStatFilter.val) return false;
+    }
+    return true;
+  });
+  renderTable(filtered);
+}
+
+function updateDateDimOptions() {
+  var dim = document.getElementById('filterDateDim').value;
+  var sel = document.getElementById('filterDateDimVal');
+  sel.innerHTML = '';
+  if(!dim) { sel.innerHTML = '<option value="">请先选择维度</option>'; applyFilters(); return; }
+  var now = new Date();
+  var year = now.getFullYear();
+  if(dim === 'week') {
+    // 计算当前是第几周，生成周选项
+    var currentWeek = getWeekNumber(now);
+    for(var w = currentWeek; w >= 1; w--) {
+      var range = getWeekRange(year, w);
+      sel.innerHTML += '<option value="'+w+'">第'+w+'周 ('+range.start.slice(5)+'~'+range.end.slice(5)+')</option>';
+    }
+  } else if(dim === 'month') {
+    var currentMonth = now.getMonth() + 1;
+    for(var m = currentMonth; m >= 1; m--) {
+      sel.innerHTML += '<option value="'+m+'">'+m+'月</option>';
+    }
+  } else if(dim === 'year') {
+    for(var y = year; y >= year - 2; y--) {
+      sel.innerHTML += '<option value="'+y+'">'+y+'年</option>';
+    }
+  }
+  applyFilters();
+}
+
+function getWeekNumber(d) {
+  var oneJan = new Date(d.getFullYear(), 0, 1);
+  var dayOfYear = Math.floor((d - oneJan) / 86400000) + 1;
+  return Math.ceil(dayOfYear / 7);
+}
+
+function getWeekRange(year, week) {
+  var oneJan = new Date(year, 0, 1);
+  var start = new Date(oneJan.getTime() + (week - 1) * 7 * 86400000);
+  var end = new Date(start.getTime() + 6 * 86400000);
+  return { start: start.toISOString().slice(0,10), end: end.toISOString().slice(0,10) };
+}
+
+function applyDateDimFilter() {
+  var dim = document.getElementById('filterDateDim').value;
+  var val = document.getElementById('filterDateDimVal').value;
+  if(!dim || !val) { applyFilters(); return; }
+  var start, end;
+  var year = new Date().getFullYear();
+  if(dim === 'week') {
+    var range = getWeekRange(year, parseInt(val));
+    start = range.start; end = range.end;
+  } else if(dim === 'month') {
+    var m = parseInt(val);
+    start = year + '-' + (m < 10 ? '0' + m : m) + '-01';
+    var lastDay = new Date(year, m, 0).getDate();
+    end = year + '-' + (m < 10 ? '0' + m : m) + '-' + lastDay;
+  } else if(dim === 'year') {
+    start = val + '-01-01'; end = val + '-12-31';
+  }
+  // 同步到隐藏的日期字段供applyFilters使用
+  document.getElementById('filterDateStart').value = start;
+  document.getElementById('filterDateEnd').value = end;
+  applyFilters();
+}
+
+function resetFilters() {
+  document.getElementById('filterSearch').value = '';
+  document.getElementById('filterBrand').value = '';
+  document.getElementById('filterAnomalyType').value = '';
+  document.getElementById('filterVehicleStatus').value = '';
+  document.getElementById('filterApproval').value = '';
+
+  document.getElementById('filterDateDim').value = '';
+  document.getElementById('filterDateDimVal').innerHTML = '<option value="">请先选择维度</option>';
+  document.getElementById('filterDateStart').value = '';
+  document.getElementById('filterDateEnd').value = '';
+  activeStatFilter = null;
+  document.querySelectorAll('.stat-card').forEach(function(c){ c.classList.remove('active'); });
+  applyFilters();
+}
+
+// ===== 视图切换 =====
+var currentView = 'order'; // 'order' = 工单维度, 'vehicle' = 车辆维度
+
+function switchView(view) {
+  currentView = view;
+  document.getElementById('viewByOrder').classList.toggle('active', view === 'order');
+  document.getElementById('viewByVehicle').classList.toggle('active', view === 'vehicle');
+  applyFilters();
+}
+
+function renderTableHead() {
+  var row = document.getElementById('tableHeadRow');
+  if(currentView === 'order') {
+    row.innerHTML = '<th>品牌</th><th>所属站点</th><th>车号</th><th>异常类型</th><th>车辆状态</th><th>审批状态</th><th>异常开始时间</th><th>是否恢复运营</th><th>恢复日期</th><th>影响天数</th><th>提报人</th><th>关联工单</th><th class="col-action">操作</th>';
+  } else {
+    row.innerHTML = '<th>品牌</th><th>所属站点</th><th>车号</th><th>车辆状态</th><th style="padding:10px 6px;">异常工单数</th><th style="padding:10px 6px;">累计影响天数</th><th style="padding:10px 8px;">工单概览</th><th class="col-action">操作</th>';
+  }
+}
+
+
+
+// ===== 渲染表格 =====
+function renderTable(data) {
+  renderTableHead();
+  var tbody = document.getElementById('tableBody');
+  if(!data) data = mockData;
+
+  if(currentView === 'order') {
+    document.getElementById('totalCount').textContent = data.length;
+    var html = '';
+    data.forEach(function(d) {
+      var actions = '';
+      if(d.operStatus === '待确认恢复') {
+        actions += '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();confirmRecover(\''+d.id+'\')">确认恢复</button> ';
+      }
+      actions += '<button class="btn btn-text" onclick="event.stopPropagation();openDrawer(\''+d.id+'\')">详情</button>';
+      html += '<tr data-id="'+d.id+'" onclick="openDrawer(\''+d.id+'\')">' +
+        '<td>'+d.brand+'</td>' +
+        '<td>'+d.station+'</td>' +
+        '<td style="font-weight:600;">'+d.vehicleNo+'</td>' +
+        '<td>'+d.anomalyType+(d.subType?'<br><span style="color:#999;font-size:10px;">'+d.subType+'</span>':'')+'</td>' +
+        '<td>'+vehicleStatusTag(d.vehicleStatus)+'</td>' +
+        '<td>'+approvalTag(d.approvalStatus)+'</td>' +
+        '<td>'+d.startTime+'</td>' +
+        '<td>'+recoverTag(d.recovered)+'</td>' +
+        '<td>'+((d.recoverDate||'-'))+'</td>' +
+        '<td style="'+impactDaysStyle(d.impactDays)+'">'+d.impactDays+'天</td>' +
+        '<td>'+d.reporter+'</td>' +
+        '<td>'+((d.workOrderId?'<a href="javascript:void(0)" onclick="event.stopPropagation();toast(\'工单详情：'+d.workOrderId+'\',\'warning\')" style="color:#3c7eff;">'+d.workOrderId+'</a>':'-'))+'</td>' +
+        '<td class="col-action">'+actions+'</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  } else {
+    // 车辆维度：按vehicleNo聚合
+    var vehicleMap = {};
+    data.forEach(function(d) {
+      if(!vehicleMap[d.vehicleNo]) {
+        vehicleMap[d.vehicleNo] = { brand: d.brand, station: d.station, vehicleNo: d.vehicleNo, vehicleStatus: d.vehicleStatus||'正常运营', orders: [], totalDays: 0 };
+      }
+      vehicleMap[d.vehicleNo].orders.push(d);
+      vehicleMap[d.vehicleNo].totalDays += d.impactDays;
+    });
+    var vehicles = Object.values(vehicleMap);
+    document.getElementById('totalCount').textContent = vehicles.length;
+    var html = '';
+    vehicles.forEach(function(v) {
+      var vs = v.orders.some(function(o) { return o.operStatus !== '已恢复运营' && o.operStatus !== '已关闭'; }) ? '已下线' : '正常运营';
+      var orderOverview = v.orders.map(function(o) {
+        var timeInfo = o.startTime.slice(0,10);
+        if(o.recoverDate) timeInfo += ' ~ ' + o.recoverDate;
+        return '<div style="margin-bottom:6px;line-height:1.4;">' +
+          '<div style="display:flex;align-items:center;gap:4px;">' +
+            '<span style="font-weight:600;font-size:11px;">'+((o.workOrderId||'待分配'))+'</span>' +
+            operStatusTag(o.operStatus) +
+          '</div>' +
+          '<div style="color:#999;font-size:10px;margin-top:1px;">'+o.anomalyType+((o.subType?' · '+o.subType:''))+' &nbsp; '+timeInfo+'</div>' +
+        '</div>';
+      }).join('');
+      html += '<tr onclick="openVehicleDrawer(\''+v.vehicleNo+'\')" style="cursor:pointer;">' +
+        '<td>'+v.brand+'</td>' +
+        '<td>'+v.station+'</td>' +
+        '<td style="font-weight:600;">'+v.vehicleNo+'</td>' +
+        '<td>'+vehicleStatusTag(vs)+'</td>' +
+        '<td style="font-weight:600;padding:10px 6px;">'+v.orders.length+'</td>' +
+        '<td style="'+impactDaysStyle(v.totalDays)+'padding:10px 6px;">'+v.totalDays+'天</td>' +
+        '<td style="white-space:normal;max-width:280px;padding:10px 8px;">'+orderOverview+'</td>' +
+        '<td class="col-action"><button class="btn btn-text" onclick="event.stopPropagation();openVehicleDrawer(\''+v.vehicleNo+'\')">详情</button></td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+  }
+}
+// ===== 抽屉详情 =====
+var currentDetail = null;
+function openDrawer(id) {
+  var d = mockData.find(function(x){return x.id===id;});
+  if(!d) return;
+  currentDetail = d;
+  document.querySelectorAll('tbody tr').forEach(function(tr){
+    tr.classList.toggle('row-selected', tr.getAttribute('data-id')===id);
+  });
+
+  // 基本信息卡片
+  var html = '';
+  html += '<div class="detail-card"><div class="section-title">基本信息</div>';
+  html += '<div class="info-grid">';
+  html += '<div class="info-item"><span class="info-label">品牌</span><span class="info-value">'+d.brand+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">所属站点</span><span class="info-value">'+d.station+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">车号</span><span class="info-value" style="font-weight:600;">'+d.vehicleNo+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">异常类型</span><span class="info-value">'+d.anomalyType+(d.subType?' · '+d.subType:'')+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">车辆状态</span><span class="info-value">'+vehicleStatusTag(d.vehicleStatus||'正常运营')+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">审批状态</span><span class="info-value">'+approvalTag(d.approvalStatus)+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">提报人</span><span class="info-value">'+d.reporter+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">关联工单</span><span class="info-value">'+(d.workOrderId?'<a href="javascript:void(0)" onclick="toast(\'工单详情：'+d.workOrderId+'\',\'warning\')" style="color:#1890ff;">'+d.workOrderId+'</a>':'-')+'</span></div>';
+  html += '<div class="info-item span3"><span class="info-label">异常描述</span><span class="info-value">'+d.description+'</span></div>';
+  html += '</div></div>';
+
+  // 车效影响卡片
+  html += '<div class="detail-card"><div class="section-title">车效影响</div>';
+  var recClass = d.recovered ? 'tag-recovered-text' : 'tag-unrecovered-text';
+  var recText = d.recovered ? '已恢复' : '未恢复';
+  var dayClass = d.impactDays >= 5 ? 'red' : d.impactDays >= 3 ? 'orange' : 'green';
+  html += '<div class="impact-grid">';
+  html += '<div class="impact-item"><div class="impact-label">异常开始时间</div><div class="impact-value blue">'+d.startTime+'</div></div>';
+  html += '<div class="impact-item"><div class="impact-label">是否恢复运营</div><div class="impact-value '+recClass+'">'+recText+'</div></div>';
+  html += '<div class="impact-item"><div class="impact-label">恢复日期</div><div class="impact-value">'+(d.recoverDate||'-')+'</div></div>';
+  html += '<div class="impact-item"><div class="impact-label">影响运营天数</div><div class="impact-value '+dayClass+'">'+d.impactDays+'天</div></div>';
+  html += '</div></div>';
+
+  // 审批流程卡片
+  html += '<div class="detail-card"><div class="section-title">审批流程</div>';
+  html += '<div class="approval-flow">';
+  d.approvalFlow.forEach(function(n, i) {
+    var iconClass = '', titleClass = '';
+    if(n.status==='已完成') { iconClass='done'; }
+    else if(n.status==='待处理') { iconClass='current'; }
+    else if(n.status==='已驳回') { iconClass='rejected'; }
+    else if(n.status==='已取消') { iconClass='cancelled'; titleClass='cancelled'; }
+    var nodeClass = iconClass;
+    html += '<div class="approval-node '+nodeClass+'">';
+    html += '<div class="node-icon '+iconClass+'"></div>';
+    html += '<div class="node-content">';
+    html += '<div class="node-title '+titleClass+'">'+n.node+'</div>';
+    if(n.person) html += '<div class="node-info"><span class="name">'+n.person+'</span>'+(n.time?' · '+n.time:'')+'</div>';
+    if(n.opinion) {
+      var opinionClass = n.status==='已完成'?'approved':n.status==='已驳回'?'rejected-op':'';
+      html += '<div class="node-opinion '+opinionClass+'">'+n.opinion+'</div>';
+    }
+    html += '</div></div>';
+  });
+  html += '</div></div>';
+
+  // 工单进度卡片
+  if(d.workOrderFlow) {
+    html += '<div class="detail-card"><div class="section-title">工单进度</div>';
+    html += '<div class="status-flow">';
+    d.workOrderFlow.steps.forEach(function(step, i) {
+      var circleClass = '', labelClass = '', lineClass = '';
+      if(i < d.workOrderFlow.current) { circleClass='done'; labelClass=''; lineClass='done'; }
+      else if(i === d.workOrderFlow.current) { circleClass='current'; labelClass='current-label'; }
+      if(i > 0) html += '<div class="step-line '+lineClass+'"></div>';
+      html += '<div class="status-step"><div class="step-circle '+circleClass+'"></div><div class="step-label '+labelClass+'">'+step+'</div></div>';
+    });
+    html += '</div>';
+    if(d.workOrderFlow.timeline) {
+      html += '<div class="timeline">';
+      d.workOrderFlow.timeline.forEach(function(t) {
+        var dotClass = t.dot || '';
+        html += '<div class="timeline-item"><div class="timeline-dot '+dotClass+'"></div><div class="timeline-text">';
+        if(t.time) html += '<span style="color:#bbb;font-size:11px;margin-right:8px;">'+t.time+'</span>';
+        html += t.text+'</div></div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('drawerTitle').innerHTML = d.vehicleNo + ' - ' + d.brand + ' ' + approvalTag(d.approvalStatus);
+  document.getElementById('drawerBody').innerHTML = html;
+  document.getElementById('drawerMask').classList.add('show');
+  document.getElementById('drawer').classList.add('show');
+}
+
+function closeDrawer() {
+  document.getElementById('drawerMask').classList.remove('show');
+  document.getElementById('drawer').classList.remove('show');
+  document.querySelectorAll('tbody tr').forEach(function(tr){ tr.classList.remove('row-selected'); });
+  currentDetail = null;
+}
+
+// ===== 车辆维度抽屉 =====
+function openVehicleDrawer(vehicleNo) {
+  var orders = mockData.filter(function(d){ return d.vehicleNo === vehicleNo; });
+  if(!orders.length) return;
+  var d0 = orders[0];
+  var vs = orders.reduce(function(acc, o) { return o.vehicleStatus==='已下线'?'已下线':acc; }, '正常运营');
+  var totalDays = orders.reduce(function(s, o){ return s + o.impactDays; }, 0);
+
+  var html = '';
+  // 车辆信息卡片
+  html += '<div class="detail-card"><div class="section-title">车辆信息</div>';
+  html += '<div class="info-grid">';
+  html += '<div class="info-item"><span class="info-label">品牌</span><span class="info-value">'+d0.brand+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">所属站点</span><span class="info-value">'+d0.station+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">车号</span><span class="info-value" style="font-weight:600;">'+d0.vehicleNo+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">车辆状态</span><span class="info-value">'+vehicleStatusTag(vs)+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">异常工单数</span><span class="info-value" style="font-weight:600;">'+orders.length+'</span></div>';
+  html += '<div class="info-item"><span class="info-label">累计影响天数</span><span class="info-value">'+totalDays+'天</span></div>';
+  html += '</div></div>';
+
+  // 工单列表卡片
+  html += '<div class="detail-card"><div class="section-title">工单列表</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:12px;">';
+  orders.forEach(function(o, i) {
+    html += '<div style="background:#f7f9fc;border-radius:6px;padding:12px 14px;border:1px solid #e8e8e8;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">';
+    html += '<div style="font-weight:600;font-size:13px;">'+((o.workOrderId||'工单待分配'))+'</div>';
+    html += '<div style="display:flex;gap:6px;">'+operStatusTag(o.operStatus)+approvalTag(o.approvalStatus)+'</div>';
+    html += '</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">';
+    html += '<div><span style="color:#aaa;">异常类型：</span>'+o.anomalyType+((o.subType?' · '+o.subType:''))+'</div>';
+    html += '<div><span style="color:#aaa;">车辆状态：</span>'+vehicleStatusTag(o.vehicleStatus||'正常运营')+'</div>';
+    html += '<div><span style="color:#aaa;">开始时间：</span>'+o.startTime+'</div>';
+    html += '<div><span style="color:#aaa;">提报人：</span>'+o.reporter+'</div>';
+    html += '<div><span style="color:#aaa;">恢复：</span>'+recoverTag(o.recovered)+((o.recoverDate?' · '+o.recoverDate:''))+'</div>';
+    html += '<div><span style="color:#aaa;">影响天数：</span><span style="'+impactDaysStyle(o.impactDays)+'">'+o.impactDays+'天</span></div>';
+    html += '</div>';
+    // 工单进度（如果有）
+    if(o.workOrderFlow) {
+      html += '<div style="margin-top:10px;border-top:1px solid #eee;padding-top:10px;">';
+      html += '<div style="font-size:12px;color:#aaa;margin-bottom:6px;">工单进度</div>';
+      html += '<div class="status-flow" style="margin-bottom:0;">';
+      o.workOrderFlow.steps.forEach(function(step, si) {
+        var circleClass = '', labelClass = '', lineClass = '';
+        if(si < o.workOrderFlow.current) { circleClass='done'; lineClass='done'; }
+        else if(si === o.workOrderFlow.current) { circleClass='current'; labelClass='current-label'; }
+        if(si > 0) html += '<div class="step-line '+lineClass+'"></div>';
+        html += '<div class="status-step"><div class="step-circle '+circleClass+'"></div><div class="step-label '+labelClass+'">'+step+'</div></div>';
+      });
+      html += '</div></div>';
+    }
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  document.getElementById('drawerTitle').innerHTML = d0.vehicleNo + ' - ' + d0.brand + ' 车辆详情';
+  document.getElementById('drawerBody').innerHTML = html;
+  document.getElementById('drawerMask').classList.add('show');
+  document.getElementById('drawer').classList.add('show');
+}
+
+// ===== 审批弹窗 =====
+var approvalTargetId = null;
+var approvalAction = null;
+function openApprovalModal(id, action) {
+  var d = mockData.find(function(x){return x.id===id;});
+  if(!d) return;
+  approvalTargetId = id;
+  approvalAction = action;
+  document.getElementById('approvalAnomalyId').textContent = d.vehicleNo;
+  document.getElementById('approvalVehicleInfo').textContent = d.brand;
+  document.getElementById('approvalAnomalyType').textContent = d.anomalyType;
+  document.getElementById('approvalOpinion').value = '';
+  document.getElementById('approvalModal').classList.add('show');
+}
+function closeApprovalModal() {
+  document.getElementById('approvalModal').classList.remove('show');
+  approvalTargetId = null;
+  approvalAction = null;
+}
+function doApprove() {
+  if(!approvalTargetId) return;
+  var opinion = document.getElementById('approvalOpinion').value.trim();
+  if(!opinion) { toast('请输入审批意见','warning'); return; }
+  var d = mockData.find(function(x){return x.id===approvalTargetId;});
+  if(!d) return;
+  // 更新审批流：站长通过、区域运管自动通过、创建工单
+  d.approvalStatus = '已通过';
+  d.approvalFlow[1].status = '已完成';
+  d.approvalFlow[1].opinion = opinion;
+  d.approvalFlow[1].time = new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-');
+  d.approvalFlow[2].status = '已完成';
+  d.approvalFlow[2].opinion = '站长已审批通过，自动审批';
+  d.approvalFlow[2].time = d.approvalFlow[1].time;
+  d.approvalFlow[3].status = '已完成';
+  d.workOrderId = 'WO' + Date.now().toString().slice(-10);
+  d.approvalFlow[3].opinion = '已自动创建工单 ' + d.workOrderId;
+  d.approvalFlow[3].time = d.approvalFlow[1].time;
+  // 创建简单工单流
+  d.workOrderFlow = { steps:['待服务站接单','服务站诊断中','待配件','维修中','维修完成'], current:0, timeline:[
+    {status:'待接单',text:'等待服务站接单',time:'',dot:'current'}
+  ]};
+  closeApprovalModal();
+  updateStats();
+  applyFilters();
+  toast('审批通过，已自动创建工单 ' + d.workOrderId, 'success');
+}
+function doReject() {
+  if(!approvalTargetId) return;
+  var opinion = document.getElementById('approvalOpinion').value.trim();
+  if(!opinion) { toast('请输入驳回原因','warning'); return; }
+  var d = mockData.find(function(x){return x.id===approvalTargetId;});
+  if(!d) return;
+  d.approvalStatus = '已驳回';
+  d.operStatus = '已关闭';
+  d.approvalFlow[1].status = '已驳回';
+  d.approvalFlow[1].opinion = opinion;
+  d.approvalFlow[1].time = new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-');
+  d.approvalFlow[2].status = '已取消';
+  d.approvalFlow[3].status = '已取消';
+  closeApprovalModal();
+  updateStats();
+  applyFilters();
+  toast('已驳回异常提报', 'error');
+}
+
+// ===== 确认恢复 =====
+function confirmRecover(id) {
+  var d = mockData.find(function(x){return x.id===id;});
+  if(!d) return;
+  d.operStatus = '已恢复运营';
+  d.recovered = true;
+  d.recoverDate = new Date().toISOString().slice(0,10);
+  updateStats();
+  applyFilters();
+  toast('已确认车辆恢复运营', 'success');
+}
+
+// ===== 新增提报 =====
+function openAddModal() { document.getElementById('addModal').classList.add('show'); }
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('show');
+  document.getElementById('addBrand').value = '';
+  document.getElementById('addStation').value = '';
+  document.getElementById('addVehicleNo').value = '';
+  document.getElementById('addAnomalyType').value = '';
+  document.getElementById('addSubType').innerHTML = '<option value="">请先选择异常类型</option>';
+  document.getElementById('addSubTypeWrap').style.display = 'none';
+  document.getElementById('addDescription').value = '';
+}
+var subTypeMap = {
+  '交通事故': ['与社会车辆碰撞','与行人碰撞','与交通设施碰撞'],
+  '硬件问题': ['轮胎故障','雷达故障','摄像头故障','通讯卡故障','电池故障','充电故障','箱门故障','转向故障','制动故障','ABS故障','逆变器故障'],
+  '软件问题': ['APP故障','小哥工作台故障','系统崩溃'],
+  '路权问题': ['交警扣车','政府停运要求','供应商停运通知'],
+  '运营问题': ['暴雨停运','雪灾停运','高温停运']
+};
+function updateSubTypeOptions() {
+  var type = document.getElementById('addAnomalyType').value;
+  var sel = document.getElementById('addSubType');
+  var wrap = document.getElementById('addSubTypeWrap');
+  sel.innerHTML = '';
+  if(type && subTypeMap[type]) {
+    wrap.style.display = 'block';
+    sel.innerHTML = '<option value="">请选择</option>';
+    subTypeMap[type].forEach(function(s) { sel.innerHTML += '<option value="'+s+'">'+s+'</option>'; });
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+function submitAnomaly() {
+  var brand = document.getElementById('addBrand').value;
+  var station = document.getElementById('addStation').value.trim();
+  var vehicleNo = document.getElementById('addVehicleNo').value.trim();
+  var anomalyType = document.getElementById('addAnomalyType').value;
+  var subType = document.getElementById('addSubType').value;
+  var description = document.getElementById('addDescription').value.trim();
+  if(!brand||!station||!vehicleNo||!anomalyType||!description) { toast('请填写完整信息','warning'); return; }
+  var newId = 'VA' + Date.now().toString().slice(-10);
+  var newItem = {
+    id: newId, source: brand==='新石器'?'自研车':'租赁车', brand: brand, vehicleNo: vehicleNo, station: station, anomalyType: anomalyType, subType: subType||'', priority:'P1', vehicleStatus:'正常运营', approvalStatus: '待审批', operStatus: '车辆异常', startTime: new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-'), recovered: false, recoverDate: '', impactDays: 0, reporter: '当前用户', workOrderId: '', description: description,
+    approvalFlow: [
+      {node:'小哥提报',status:'已完成',person:'当前用户',time:new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-'),opinion:description},
+      {node:'站长审批',status:'待处理',person:'李站长',time:'',opinion:''},
+      {node:'区域运管审批',status:'待处理',person:'王运管',time:'',opinion:''},
+      {node:'创建售后工单',status:'待处理',person:'',time:'',opinion:''}
+    ],
+    workOrderFlow: null
+  };
+  mockData.unshift(newItem);
+  closeAddModal();
+  updateStats();
+  applyFilters();
+  toast('异常提报已提交，等待审批', 'success');
+}
+
+// ===== 导出CSV =====
+function exportCSV() {
+  // 获取当前筛选后的数据
+  var search = document.getElementById('filterSearch').value.trim().toLowerCase();
+  var brand = document.getElementById('filterBrand').value;
+  var anomalyType = document.getElementById('filterAnomalyType').value;
+  var vehicleStatus = document.getElementById('filterVehicleStatus').value;
+  var approval = document.getElementById('filterApproval').value;
+  var dateStart = document.getElementById('filterDateStart').value;
+  var dateEnd = document.getElementById('filterDateEnd').value;
+  var filtered = mockData.filter(function(d) {
+    if(search && d.vehicleNo.toLowerCase().indexOf(search)===-1) return false;
+    if(brand && d.brand !== brand) return false;
+    if(anomalyType && d.anomalyType !== anomalyType) return false;
+    if(vehicleStatus && d.vehicleStatus !== vehicleStatus) return false;
+    if(approval && d.approvalStatus !== approval) return false;
+    if(dateStart && d.startTime < dateStart) return false;
+    if(dateEnd && d.startTime > dateEnd + ' 23:59') return false;
+    if(activeStatFilter && activeStatFilter.key) {
+      if(activeStatFilter.key === 'approvalStatus' && d.approvalStatus !== activeStatFilter.val) return false;
+      if(activeStatFilter.key === 'operStatus' && d.operStatus !== activeStatFilter.val) return false;
+      if(activeStatFilter.key === 'vehicleStatus' && d.vehicleStatus !== activeStatFilter.val) return false;
+    }
+    return true;
+  });
+  if(filtered.length === 0) { toast('当前筛选范围内无数据可导出','warning'); return; }
+  var headers = ['车号','品牌','所属站点','异常类型','异常子类','车辆状态','审批状态','运营状态','异常开始时间','是否恢复运营','恢复日期','影响天数','提报人','关联工单','异常描述'];
+  var rows = filtered.map(function(d) {
+    return [d.vehicleNo, d.brand, d.station, d.anomalyType, d.subType||'', d.vehicleStatus||'正常运营', d.approvalStatus, d.operStatus, d.startTime, d.recovered?'已恢复':'未恢复', d.recoverDate||'', d.impactDays, d.reporter, d.workOrderId||'', d.description];
+  });
+  var csvContent = '\uFEFF' + headers.join(',') + '\n' + rows.map(function(r) { return r.map(function(c) { return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = '车辆异常追踪_' + new Date().toISOString().slice(0,10) + '.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+  toast('已导出 ' + filtered.length + ' 条数据','success');
+}
+
+// ===== 初始化 =====
+updateStats();
+applyFilters();
+</script>
+</body>
+</html>
