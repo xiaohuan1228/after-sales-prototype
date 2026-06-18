@@ -233,6 +233,13 @@
   .vehicle-page { padding: 10px 12px 70px; background:#f6f6f8; min-height:100%; }
   .vehicle-hero { background:#fff; border-radius:10px; padding:13px 14px; margin-bottom:10px; }
   .vehicle-title-row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .vehicle-return { width:100%; margin-bottom:10px; min-height:32px; }
+  .vehicle-select-list { display:flex; flex-direction:column; gap:8px; }
+  .vehicle-select-card { width:100%; border:1px solid #eeeeee; background:#fff; border-radius:9px; padding:9px 10px; text-align:left; cursor:pointer; }
+  .vehicle-select-card.active { border-color:var(--brand); background:var(--brand-soft); }
+  .vehicle-select-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .vehicle-select-id { font-size:13px; color:#222; font-weight:600; }
+  .vehicle-select-sub { font-size:10px; color:#888; line-height:1.45; margin-top:3px; }
   .vehicle-name { font-size:16px; font-weight:600; color:#222; }
   .vehicle-sub { font-size:11px; color:#888; margin-top:4px; line-height:1.5; }
   .vehicle-status-pill { flex:0 0 auto; border-radius:999px; padding:3px 8px; font-size:10px; background:#edf8ef; color:#2e7d3d; border:1px solid #d7ecd9; }
@@ -593,69 +600,7 @@
         </div>
 
         <!-- 车辆工具 -->
-        <div id="station-vehicles" class="hidden vehicle-page">
-          <div class="vehicle-hero">
-            <div class="vehicle-title-row">
-              <div>
-                <div class="vehicle-name">JXG-001234</div>
-                <div class="vehicle-sub">北京亦庄站点 · 天津市冀津贸易有限公司<br>关联工单：WO-2026060001 · 故障维修</div>
-              </div>
-              <span class="vehicle-status-pill">在线</span>
-            </div>
-            <div class="vehicle-metrics">
-              <div class="metric"><div class="metric-label">SOC</div><div class="metric-value">78%</div></div>
-              <div class="metric"><div class="metric-label">车速</div><div class="metric-value">0 km/h</div></div>
-              <div class="metric"><div class="metric-label">运行模式</div><div class="metric-value">维修</div></div>
-              <div class="metric"><div class="metric-label">电池温度</div><div class="metric-value">31℃</div></div>
-              <div class="metric"><div class="metric-label">故障等级</div><div class="metric-value">P0</div></div>
-              <div class="metric"><div class="metric-label">Agent</div><div class="metric-value">已连接</div></div>
-            </div>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-title">控车工具 <span>车辆维修状态下可用</span></div>
-            <div class="tool-grid">
-              <button class="tool-btn" onclick="runVehicleTool('车辆遥控', true)"><strong>车辆遥控</strong><small>低速挪车 / 调整车位</small></button>
-              <button class="tool-btn" onclick="runVehicleTool('开舱门', false)"><strong>开舱门</strong><small>远程打开货舱门</small></button>
-              <button class="tool-btn warn" onclick="runVehicleTool('自由跑行', true)"><strong>自由跑行</strong><small>维修测试场景使用</small></button>
-              <button class="tool-btn warn" onclick="runVehicleTool('开关重启', true)"><strong>开关重启</strong><small>开机 / 关机 / 重启</small></button>
-              <button class="tool-btn" onclick="runVehicleTool('导航找车', false)"><strong>导航找车</strong><small>打开车辆位置导航</small></button>
-              <button class="tool-btn" onclick="runVehicleTool('实时车况刷新', false)"><strong>刷新车况</strong><small>同步车辆实时数据</small></button>
-            </div>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-title">远程诊断 <span id="diag-status">未开始</span></div>
-            <div class="fault-list">
-              <div class="fault-item"><strong>检测范围</strong><span>雷达 / 相机 / GNSS / 路由器 / 域控</span></div>
-              <div class="fault-item"><strong>当前故障码</strong><span>U0100 · 域控通信异常</span></div>
-              <div class="fault-item"><strong>车辆位置</strong><span>北京市亦庄经济开发区科创三街</span></div>
-            </div>
-            <div class="diag-progress"><div class="diag-progress-bar" id="diag-progress-bar"></div></div>
-            <div class="diagnosis-actions">
-              <button class="btn btn-primary" onclick="startRemoteDiagnosis()">开始自检</button>
-              <button class="btn btn-default" onclick="collectDiagnosisLog()">采集日志</button>
-              <button class="btn btn-default" onclick="generateDiagnosisReport()">生成报告</button>
-            </div>
-            <div class="diag-result" id="diag-result">
-              <div class="fault-list">
-                <div class="fault-item"><strong>诊断结论</strong><span>GNSS 信号弱，域控通信偶发中断</span></div>
-                <div class="fault-item"><strong>建议动作</strong><span>检查线束；重启域控后复测</span></div>
-                <div class="fault-item"><strong>流转建议</strong><span>需要维修，进入备件/预约环节</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-title">设备操作 <span>按模块下发</span></div>
-            <div class="tool-grid">
-              <button class="tool-btn" onclick="runVehicleTool('雷达标定', true)"><strong>雷达标定</strong><small>发起标定任务</small></button>
-              <button class="tool-btn" onclick="runVehicleTool('相机画面查看', false)"><strong>相机画面</strong><small>查看实时画面</small></button>
-              <button class="tool-btn" onclick="runVehicleTool('底盘自检', false)"><strong>底盘自检</strong><small>执行底盘检查</small></button>
-              <button class="tool-btn warn" onclick="runVehicleTool('域控重启', true)"><strong>域控重启</strong><small>高风险操作需确认</small></button>
-            </div>
-          </div>
-        </div>
+        <div id="station-vehicles" class="hidden vehicle-page"></div>
 
         <!-- 我的 -->
         <div id="station-mine" class="hidden profile-page">
@@ -1278,13 +1223,14 @@
             </div>
           </div>
         </div>
+        <div id="rd-vehicles" class="hidden vehicle-page"></div>
       </div>
 
       <div class="tab-bar">
-        <div class="tab active"><div class="tab-icon"></div><div>工单</div></div>
-        <div class="tab"><div class="tab-icon"></div><div>分派</div></div>
-        <div class="tab"><div class="tab-icon"></div><div>支持</div></div>
-        <div class="tab"><div class="tab-icon"></div><div>我的</div></div>
+        <div class="tab active" onclick="switchRdTab('orders')"><div class="tab-icon"></div><div>工单</div></div>
+        <div class="tab" onclick="switchRdTab('vehicles')"><div class="tab-icon"></div><div>车辆工具</div></div>
+        <div class="tab" onclick="switchRdTab('support')"><div class="tab-icon"></div><div>支持</div></div>
+        <div class="tab" onclick="switchRdTab('mine')"><div class="tab-icon"></div><div>我的</div></div>
       </div>
 
       <!-- 结论弹层 -->
@@ -1361,7 +1307,10 @@ function switchView(role, view){
   } else if(role === 'rd'){
     document.getElementById('rd-list').classList.toggle('hidden', view!=='list');
     document.getElementById('rd-detail').classList.toggle('hidden', view!=='detail');
+    var rdVehicles = document.getElementById('rd-vehicles');
+    if(rdVehicles) rdVehicles.classList.add('hidden');
     document.getElementById('title-rd').innerText = view==='detail'?'工单详情':'售后工程师工作台';
+    setRdTabActive('orders');
   }
 }
 function openStationDetail(){
@@ -1384,6 +1333,7 @@ function populateDetailFromCard(role, maybeCard){
   if(!detail) return;
   const data = readCardData(card);
   _currentDetailData = data;
+  _currentDetailRole = role;
   detail.innerHTML = renderDetail(role, data);
 }
 
@@ -1661,6 +1611,9 @@ function closeTaskResultDetail(el){
 
 // 全局变量保存当前详情数据
 var _currentDetailData = {};
+var _currentDetailRole = '';
+var _vehicleToolReturn = {};
+var _vehicleToolSelected = { station: 'JXG-001234', rd: 'JXG-001241' };
 
 // ===== 移动端诊断留言 =====
 var mobileCommentStore = {};
@@ -1800,10 +1753,12 @@ function renderTimeline(role, data){
 }
 
 function renderDetailActions(role, data){
-  if(role === 'station') return `<button class="btn btn-default" onclick="openSheet('sheetUpgrade')">上升技术支持</button><button class="btn btn-primary" onclick="openSheet('sheetSubmit')">提交验收</button>`;
+  var vehicleBtn = isVehicleToolEligible(data) && (role === 'station' || role === 'rd') ? `<button class="btn btn-default" onclick="openVehicleToolsFromDetail('${role}')">车辆工具</button>` : '';
+  if(role === 'station') return `${vehicleBtn}<button class="btn btn-default" onclick="openSheet('sheetUpgrade')">上升技术支持</button><button class="btn btn-primary" onclick="openSheet('sheetSubmit')">提交验收</button>`;
   if(data.main === '已完成') return `<button class="btn btn-default" onclick="alert('已打开归档资料')">查看归档</button><button class="btn btn-default" onclick="alert('已打开处理记录')">处理记录</button>`;
-  if(data.main === '待验收') return '';
+  if(data.main === '待验收') return role === 'rd' ? vehicleBtn : '';
   if(role === 'rd' && data.main === '待分派') return `<button class="btn btn-primary" onclick="openSheet('sheetAssign')">去分派</button>`;
+  if(role === 'rd') return vehicleBtn;
   if(role === 'site' && data.main === '待分派') return `<button class="btn btn-default" onclick="alert('已打开提报详情')">查看提报</button><button class="btn btn-default" onclick="alert('已提醒售后工程师分派')">提醒分派</button>`;
   return '';
 }
@@ -1841,6 +1796,7 @@ function switchStationTab(tabName){
     if(mine) mine.classList.add('hidden');
     document.getElementById('title-station').innerText = '车辆工具';
     setStationTabActive('vehicles');
+    renderVehicleToolPage('station');
     return;
   }
   if(tabName === 'mine'){
@@ -1856,6 +1812,37 @@ function switchStationTab(tabName){
   if(vehicles) vehicles.classList.add('hidden');
   if(mine) mine.classList.add('hidden');
   switchView('station','list');
+}
+
+function setRdTabActive(tabName){
+  const phone = document.querySelector('.phone-rd .phone');
+  if(!phone) return;
+  const tabs = phone.querySelectorAll('.tab-bar .tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  const idx = tabName === 'vehicles' ? 1 : tabName === 'support' ? 2 : tabName === 'mine' ? 3 : 0;
+  if(tabs[idx]) tabs[idx].classList.add('active');
+}
+
+function switchRdTab(tabName){
+  const list = document.getElementById('rd-list');
+  const detail = document.getElementById('rd-detail');
+  const vehicles = document.getElementById('rd-vehicles');
+  if(tabName === 'vehicles'){
+    if(list) list.classList.add('hidden');
+    if(detail) detail.classList.add('hidden');
+    if(vehicles) vehicles.classList.remove('hidden');
+    document.getElementById('title-rd').innerText = '车辆工具';
+    setRdTabActive('vehicles');
+    renderVehicleToolPage('rd');
+    return;
+  }
+  if(tabName === 'support' || tabName === 'mine'){
+    setRdTabActive(tabName);
+    alert(tabName === 'support' ? '技术支持工作台暂未展开' : '我的页面暂未展开');
+    return;
+  }
+  if(vehicles) vehicles.classList.add('hidden');
+  switchView('rd','list');
 }
 
 var stationStaffAccounts = [
@@ -1956,15 +1943,198 @@ function deleteStaffAccount(index){
   renderStationStaffList();
 }
 
-function runVehicleTool(name, highRisk){
-  if(highRisk && !confirm(name + '属于高风险车辆操作，请确认车辆处于维修状态、Agent在线且周边环境安全。是否继续下发？')) return;
-  alert(name + '指令已下发至车端 Agent，执行结果会同步到车辆记录和关联工单。');
+var vehicleToolRecords = [
+  {vehicle:'JXG-001234', workOrder:'WO-2026060001', type:'故障维修', issue:'定位漂移，服务站受理超时', site:'北京亦庄站点', serviceStation:'天津市冀津贸易有限公司', main:'维修中', sub:'受理超时', priority:'P0', soc:'78%', speed:'0 km/h', mode:'维修', temp:'31℃', fault:'P0', agent:'已连接', location:'北京市大兴区亦庄经海四路站点停车区', code:'P0123 · GNSS信号异常'},
+  {vehicle:'JXG-001241', workOrder:'WO-2026060003', type:'故障维修', issue:'域控通信异常，待确认备件', site:'上海浦东站', serviceStation:'天津市冀津贸易有限公司', main:'维修中', sub:'待确认备件', priority:'P1', soc:'64%', speed:'0 km/h', mode:'维修', temp:'33℃', fault:'P1', agent:'已连接', location:'上海市浦东新区金桥站点停车区', code:'U0100 · 域控通信异常'},
+  {vehicle:'JXG-001244', workOrder:'WO-2026060009', type:'故障维修', issue:'底盘异响，服务站受理超时', site:'上海嘉定站', serviceStation:'天津市冀津贸易有限公司', main:'维修中', sub:'受理超时', priority:'P0', soc:'55%', speed:'0 km/h', mode:'维修', temp:'30℃', fault:'P0', agent:'在线', location:'上海市嘉定区配送站维修位', code:'C0412 · 底盘控制异常'},
+  {vehicle:'JXG-001280', workOrder:'WO-2026060012', type:'车辆事故', issue:'前保险杠刮蹭，验收驳回后重新处理', site:'广州天河站', serviceStation:'广州服务站', main:'维修中', sub:'验收驳回', priority:'P1', soc:'82%', speed:'0 km/h', mode:'维修', temp:'32℃', fault:'P1', agent:'已连接', location:'广州市天河区站点维修区', code:'B2001 · 外观维修复测'},
+  {vehicle:'JXG-001299', workOrder:'WO-2026060016', type:'故障维修', issue:'摄像头离线，已提交验收', site:'杭州滨江站', serviceStation:'天津市冀津贸易有限公司', main:'待验收', sub:'待验收', priority:'P1', soc:'71%', speed:'0 km/h', mode:'维修', temp:'29℃', fault:'P1', agent:'已连接', location:'杭州市滨江区物联网街站点停车位', code:'CAM-204 · 前向相机离线'}
+];
+
+function isVehicleToolEligible(data){
+  return data && data.main !== '已完成' && data.station && data.station !== '-';
 }
 
-function startRemoteDiagnosis(){
-  const bar = document.getElementById('diag-progress-bar');
-  const status = document.getElementById('diag-status');
-  const result = document.getElementById('diag-result');
+function getVehicleToolRecords(role){
+  if(role === 'station'){
+    return vehicleToolRecords.filter(function(item){
+      return item.main !== '已完成' && item.serviceStation === '天津市冀津贸易有限公司';
+    });
+  }
+  return vehicleToolRecords.filter(function(item){
+    return item.main !== '已完成' && item.serviceStation && item.serviceStation !== '-';
+  });
+}
+
+function normalizeVehicleFromDetail(data){
+  return {
+    vehicle: data.vehicle,
+    workOrder: data.id,
+    type: data.type,
+    issue: data.desc || data.sub || data.main,
+    site: data.site,
+    serviceStation: data.station,
+    main: data.main,
+    sub: data.sub,
+    priority: data.priority,
+    soc: '68%',
+    speed: '0 km/h',
+    mode: '维修',
+    temp: '32℃',
+    fault: data.priority || 'P1',
+    agent: '已连接',
+    location: data.realtimeLocation || buildRealtimeLocation(data.site),
+    code: 'U0100 · 待远程诊断确认'
+  };
+}
+
+function ensureVehicleRecordFromDetail(data){
+  if(!isVehicleToolEligible(data)) return null;
+  var existing = vehicleToolRecords.find(function(item){ return item.vehicle === data.vehicle; });
+  if(existing) return existing;
+  var record = normalizeVehicleFromDetail(data);
+  vehicleToolRecords.unshift(record);
+  return record;
+}
+
+function openVehicleToolsFromDetail(role){
+  var record = ensureVehicleRecordFromDetail(_currentDetailData);
+  if(!record){
+    alert('当前工单还未进入服务站维修，暂不能使用车辆工具。');
+    return;
+  }
+  _vehicleToolReturn[role] = 'detail';
+  _vehicleToolSelected[role] = record.vehicle;
+  openVehicleToolPage(role);
+}
+
+function openVehicleToolPage(role){
+  if(role === 'station') switchStationTab('vehicles');
+  else if(role === 'rd') switchRdTab('vehicles');
+}
+
+function renderVehicleToolPage(role){
+  var container = document.getElementById(role + '-vehicles');
+  if(!container) return;
+  var records = getVehicleToolRecords(role);
+  if(!records.length){
+    container.innerHTML = '<div class="tool-card"><div class="tool-title">选择车辆 <span>暂无可操作车辆</span></div><div class="vehicle-sub">仅展示已在服务站维修、未完成的车辆。</div></div>';
+    return;
+  }
+  var selected = records.find(function(item){ return item.vehicle === _vehicleToolSelected[role]; }) || records[0];
+  _vehicleToolSelected[role] = selected.vehicle;
+  var returnButton = _vehicleToolReturn[role] === 'detail' ? '<button class="btn btn-default vehicle-return" onclick="returnFromVehicleTools(\'' + role + '\')">返回工单详情</button>' : '';
+  container.innerHTML = returnButton
+    + '<div class="tool-card">'
+    + '<div class="tool-title">选择车辆 <span>服务站维修中 / 未完成</span></div>'
+    + '<div class="vehicle-select-list">' + records.map(function(item){
+      var active = item.vehicle === selected.vehicle ? ' active' : '';
+      return '<button class="vehicle-select-card' + active + '" onclick="selectVehicleForTool(\'' + role + '\',\'' + escapeAttr(item.vehicle) + '\')">'
+        + '<div class="vehicle-select-top"><div><div class="vehicle-select-id">' + escapeHtml(item.vehicle) + '</div><div class="vehicle-select-sub">' + escapeHtml(item.workOrder + ' · ' + item.type) + '<br>' + escapeHtml(item.site + ' · ' + item.serviceStation) + '</div></div><span class="tag ' + priorityClass(item.priority) + '">' + escapeHtml(item.priority) + '</span></div>'
+        + '<div class="vehicle-select-sub">' + escapeHtml(item.issue) + '</div>'
+        + '</button>';
+    }).join('') + '</div></div>'
+    + renderSelectedVehicleTools(role, selected);
+}
+
+function renderSelectedVehicleTools(role, vehicle){
+  var prefix = role + '-diag';
+  return `
+    <div class="vehicle-hero">
+      <div class="vehicle-title-row">
+        <div>
+          <div class="vehicle-name">${escapeHtml(vehicle.vehicle)}</div>
+          <div class="vehicle-sub">${escapeHtml(vehicle.site)} · ${escapeHtml(vehicle.serviceStation)}<br>关联工单：${escapeHtml(vehicle.workOrder)} · ${escapeHtml(vehicle.type)}</div>
+        </div>
+        <span class="vehicle-status-pill">${escapeHtml(vehicle.agent)}</span>
+      </div>
+      <div class="vehicle-metrics">
+        <div class="metric"><div class="metric-label">SOC</div><div class="metric-value">${escapeHtml(vehicle.soc)}</div></div>
+        <div class="metric"><div class="metric-label">车速</div><div class="metric-value">${escapeHtml(vehicle.speed)}</div></div>
+        <div class="metric"><div class="metric-label">运行模式</div><div class="metric-value">${escapeHtml(vehicle.mode)}</div></div>
+        <div class="metric"><div class="metric-label">电池温度</div><div class="metric-value">${escapeHtml(vehicle.temp)}</div></div>
+        <div class="metric"><div class="metric-label">故障等级</div><div class="metric-value">${escapeHtml(vehicle.fault)}</div></div>
+        <div class="metric"><div class="metric-label">工单状态</div><div class="metric-value">${escapeHtml(vehicle.sub || vehicle.main)}</div></div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-title">控车工具 <span>当前车辆：${escapeHtml(vehicle.vehicle)}</span></div>
+      <div class="tool-grid">
+        <button class="tool-btn" onclick="runVehicleTool('${role}','车辆遥控', true)"><strong>车辆遥控</strong><small>低速挪车 / 调整车位</small></button>
+        <button class="tool-btn" onclick="runVehicleTool('${role}','开舱门', false)"><strong>开舱门</strong><small>远程打开货舱门</small></button>
+        <button class="tool-btn warn" onclick="runVehicleTool('${role}','自由跑行', true)"><strong>自由跑行</strong><small>维修测试场景使用</small></button>
+        <button class="tool-btn warn" onclick="runVehicleTool('${role}','开关重启', true)"><strong>开关重启</strong><small>开机 / 关机 / 重启</small></button>
+        <button class="tool-btn" onclick="runVehicleTool('${role}','导航找车', false)"><strong>导航找车</strong><small>打开车辆位置导航</small></button>
+        <button class="tool-btn" onclick="runVehicleTool('${role}','实时车况刷新', false)"><strong>刷新车况</strong><small>同步车辆实时数据</small></button>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-title">远程诊断 <span id="${prefix}-status">未开始</span></div>
+      <div class="fault-list">
+        <div class="fault-item"><strong>检测范围</strong><span>雷达 / 相机 / GNSS / 路由器 / 域控</span></div>
+        <div class="fault-item"><strong>当前故障码</strong><span>${escapeHtml(vehicle.code)}</span></div>
+        <div class="fault-item"><strong>车辆位置</strong><span>${escapeHtml(vehicle.location)}</span></div>
+      </div>
+      <div class="diag-progress"><div class="diag-progress-bar" id="${prefix}-progress-bar"></div></div>
+      <div class="diagnosis-actions">
+        <button class="btn btn-primary" onclick="startRemoteDiagnosis('${role}')">开始自检</button>
+        <button class="btn btn-default" onclick="collectDiagnosisLog('${role}')">采集日志</button>
+        <button class="btn btn-default" onclick="generateDiagnosisReport('${role}')">生成报告</button>
+      </div>
+      <div class="diag-result" id="${prefix}-result">
+        <div class="fault-list">
+          <div class="fault-item"><strong>诊断结论</strong><span>车辆通信链路偶发异常，需要维修复测</span></div>
+          <div class="fault-item"><strong>建议动作</strong><span>采集日志；检查线束；必要时更换备件</span></div>
+          <div class="fault-item"><strong>流转建议</strong><span>需要维修，进入备件/预约环节</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-title">设备操作 <span>按模块下发</span></div>
+      <div class="tool-grid">
+        <button class="tool-btn" onclick="runVehicleTool('${role}','雷达标定', true)"><strong>雷达标定</strong><small>发起标定任务</small></button>
+        <button class="tool-btn" onclick="runVehicleTool('${role}','相机画面查看', false)"><strong>相机画面</strong><small>查看实时画面</small></button>
+        <button class="tool-btn" onclick="runVehicleTool('${role}','底盘自检', false)"><strong>底盘自检</strong><small>执行底盘检查</small></button>
+        <button class="tool-btn warn" onclick="runVehicleTool('${role}','域控重启', true)"><strong>域控重启</strong><small>高风险操作需确认</small></button>
+      </div>
+    </div>
+  `;
+}
+
+function selectVehicleForTool(role, vehicle){
+  _vehicleToolSelected[role] = vehicle;
+  _vehicleToolReturn[role] = _vehicleToolReturn[role] || '';
+  renderVehicleToolPage(role);
+}
+
+function getSelectedVehicle(role){
+  var records = getVehicleToolRecords(role);
+  return records.find(function(item){ return item.vehicle === _vehicleToolSelected[role]; }) || records[0] || null;
+}
+
+function returnFromVehicleTools(role){
+  _vehicleToolReturn[role] = '';
+  switchView(role, 'detail');
+}
+
+function runVehicleTool(role, name, highRisk){
+  var vehicle = getSelectedVehicle(role);
+  if(!vehicle){
+    alert('请先选择车辆');
+    return;
+  }
+  if(highRisk && !confirm(name + '属于高风险车辆操作，请确认车辆处于维修状态、Agent在线且周边环境安全。是否继续下发？')) return;
+  alert(vehicle.vehicle + ' · ' + name + '指令已下发至车端 Agent，执行结果会同步到车辆记录和关联工单 ' + vehicle.workOrder + '。');
+}
+
+function startRemoteDiagnosis(role){
+  var prefix = role + '-diag';
+  const bar = document.getElementById(prefix + '-progress-bar');
+  const status = document.getElementById(prefix + '-status');
+  const result = document.getElementById(prefix + '-result');
   if(!bar || !status || !result) return;
   if(window.remoteDiagnosisTimer) clearInterval(window.remoteDiagnosisTimer);
   result.classList.remove('show');
@@ -1989,17 +2159,20 @@ function startRemoteDiagnosis(){
   }, 520);
 }
 
-function collectDiagnosisLog(){
-  alert('日志采集任务已创建，车端 Agent 正在上传雷达、域控和网络日志。');
+function collectDiagnosisLog(role){
+  var vehicle = getSelectedVehicle(role);
+  alert((vehicle ? vehicle.vehicle + ' · ' : '') + '日志采集任务已创建，车端 Agent 正在上传雷达、域控和网络日志。');
 }
 
-function generateDiagnosisReport(){
-  const result = document.getElementById('diag-result');
+function generateDiagnosisReport(role){
+  var prefix = role + '-diag';
+  const result = document.getElementById(prefix + '-result');
   if(result && !result.classList.contains('show')){
     alert('请先完成远程自检，再生成诊断报告。');
     return;
   }
-  alert('诊断报告已生成，并同步到关联工单的远程诊断记录。');
+  var vehicle = getSelectedVehicle(role);
+  alert((vehicle ? vehicle.vehicle + ' · ' : '') + '诊断报告已生成，并同步到关联工单的远程诊断记录。');
 }
 
 function setSiteTabActive(tabName){
