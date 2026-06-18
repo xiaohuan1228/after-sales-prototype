@@ -285,7 +285,13 @@
   .voice-wave span:nth-child(4) { height: 16px; animation-delay: 0.3s; }
   .voice-wave span:nth-child(5) { height: 6px; animation-delay: 0.4s; }
   @keyframes voiceWave { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
-</style>
+  /* 详情Tab切换 */
+  .detail-tabs { display: flex; background: #fff; border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; z-index: 5; }
+  .detail-tab { flex: 1; text-align: center; padding: 10px 0; font-size: 12px; font-weight: 500; color: #999; cursor: pointer; position: relative; transition: color 0.2s; border: none; background: none; }
+  .detail-tab.active { color: var(--brand); font-weight: 600; }
+  .detail-tab.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 2px; background: var(--brand); border-radius: 1px; }
+  .detail-tab-panel { display: none; }
+  .detail-tab-panel.active { display: block; }
 </head>
 <body>
 
@@ -1338,6 +1344,7 @@ function readCardData(card){
 function renderDetail(role, data){
   const roleTitle = {station:'服务站处理', site:'站点负责人处理', rd:'售后工程师处理'}[role];
   const roleNames = {station:'服务站', site:'站点', rd:'售后工程师'};
+  const tabId = 'dtabs-' + role;
   return `
     <div class="detail-header">
       <button class="back-btn" onclick="switchView('${role}','list')">返回</button>
@@ -1349,50 +1356,76 @@ function renderDetail(role, data){
         <span class="tag" style="background:rgba(0,0,0,0.08);color:#333;">${escapeHtml(data.sub || roleTitle)}</span>
       </div>
     </div>
-    <div class="master-status">
-      <div class="section-title">主工单状态</div>
-      ${renderMasterFlow(data.main)}
+    <div class="detail-tabs" id="${tabId}">
+      <button class="detail-tab active" onclick="switchDetailTab('${role}','info',this)">概况</button>
+      <button class="detail-tab" onclick="switchDetailTab('${role}','flow',this)">流程</button>
+      <button class="detail-tab" onclick="switchDetailTab('${role}','comment',this)">留言</button>
+      <button class="detail-tab" onclick="switchDetailTab('${role}','log',this)">记录</button>
     </div>
-    <div class="section">
-      <div class="section-title">工单信息</div>
-      <div class="info-row"><span class="info-label">工单类型</span><span>${escapeHtml(data.type)}</span></div>
-      <div class="info-row"><span class="info-label">问题描述</span><span>${escapeHtml(data.desc)}</span></div>
-      <div class="info-row"><span class="info-label">车辆</span><span>${escapeHtml(data.vehicle)}</span></div>
-      <div class="info-row"><span class="info-label">站点</span><span>${escapeHtml(data.site)}</span></div>
-      <div class="info-row"><span class="info-label">服务站</span><span>${escapeHtml(data.station)}</span></div>
-      <div class="info-row"><span class="info-label">SLA</span><span>${escapeHtml(data.sla)}</span></div>
+    <div class="detail-tab-panel active" data-tab="info">
+      <div class="master-status">
+        <div class="section-title">主工单状态</div>
+        ${renderMasterFlow(data.main)}
+      </div>
+      <div class="section">
+        <div class="section-title">工单信息</div>
+        <div class="info-row"><span class="info-label">工单类型</span><span>${escapeHtml(data.type)}</span></div>
+        <div class="info-row"><span class="info-label">问题描述</span><span>${escapeHtml(data.desc)}</span></div>
+        <div class="info-row"><span class="info-label">车辆</span><span>${escapeHtml(data.vehicle)}</span></div>
+        <div class="info-row"><span class="info-label">站点</span><span>${escapeHtml(data.site)}</span></div>
+        <div class="info-row"><span class="info-label">服务站</span><span>${escapeHtml(data.station)}</span></div>
+        <div class="info-row"><span class="info-label">SLA</span><span>${escapeHtml(data.sla)}</span></div>
+      </div>
+      <div class="section">
+        <div class="section-title">操作</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">${renderDetailActions(role, data)}</div>
+      </div>
     </div>
-    <div class="section">
-      <div class="section-title">子任务流程</div>
-      <div class="task-chain">${renderTaskChain(data)}</div>
+    <div class="detail-tab-panel" data-tab="flow">
+      <div class="section">
+        <div class="section-title">子任务流程</div>
+        <div class="task-chain">${renderTaskChain(data)}</div>
+      </div>
     </div>
-    <div class="section">
-      <div class="section-title">诊断留言</div>
-      <div class="comment-list" id="commentList-${role}">${renderMobileComments(data.id, role)}</div>
-      <div class="comment-input-wrap">
-        <div class="comment-input-row">
-          <textarea class="comment-textarea" id="commentInput-${role}" placeholder="输入诊断留言..." rows="1" oninput="autoResize(this)"></textarea>
-          <div class="voice-wave" id="voiceWave-${role}">
-            <span></span><span></span><span></span><span></span><span></span>
+    <div class="detail-tab-panel" data-tab="comment">
+      <div class="section">
+        <div class="section-title">诊断留言</div>
+        <div class="comment-list" id="commentList-${role}">${renderMobileComments(data.id, role)}</div>
+        <div class="comment-input-wrap">
+          <div class="comment-input-row">
+            <textarea class="comment-textarea" id="commentInput-${role}" placeholder="输入诊断留言..." rows="1" oninput="autoResize(this)"></textarea>
+            <div class="voice-wave" id="voiceWave-${role}">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
           </div>
-        </div>
-        <div class="comment-actions">
-          <button class="comment-tool-btn" id="voiceBtn-${role}" onclick="toggleVoice('${role}')">🎤 语音</button>
-          <button class="comment-tool-btn" onclick="document.getElementById('commentImg-${role}').click()">📷 图片</button>
-          <input type="file" id="commentImg-${role}" accept="image/*" multiple style="display:none" onchange="handleCommentImg(this, '${role}')">
-          <button class="comment-submit" onclick="submitComment('${role}')">发送</button>
+          <div class="comment-actions">
+            <button class="comment-tool-btn" id="voiceBtn-${role}" onclick="toggleVoice('${role}')">🎤 语音</button>
+            <button class="comment-tool-btn" onclick="document.getElementById('commentImg-${role}').click()">📷 图片</button>
+            <input type="file" id="commentImg-${role}" accept="image/*" multiple style="display:none" onchange="handleCommentImg(this, '${role}')">
+            <button class="comment-submit" onclick="submitComment('${role}')">发送</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="section">
-      <div class="section-title">流转记录</div>
-      <div class="timeline">${renderTimeline(role, data)}</div>
-    </div>
-    <div class="section">
-      <div class="section-title">操作</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">${renderDetailActions(role, data)}</div>
+    <div class="detail-tab-panel" data-tab="log">
+      <div class="section">
+        <div class="section-title">流转记录</div>
+        <div class="timeline">${renderTimeline(role, data)}</div>
+      </div>
     </div>
   `;
+}
+
+function switchDetailTab(role, tabName, btnEl){
+  var detail = document.getElementById(role + '-detail');
+  if(!detail) return;
+  // 切换tab高亮
+  detail.querySelectorAll('.detail-tab').forEach(function(t){ t.classList.remove('active'); });
+  if(btnEl) btnEl.classList.add('active');
+  // 切换面板
+  detail.querySelectorAll('.detail-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  var panel = detail.querySelector('.detail-tab-panel[data-tab="' + tabName + '"]');
+  if(panel) panel.classList.add('active');
 }
 
 function renderMasterFlow(main){
