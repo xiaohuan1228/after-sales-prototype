@@ -9,7 +9,7 @@
   .layout { display: flex; min-height: 100vh; }
 
   /* ===== 侧边栏升级 ===== */
-  .sidebar { width: 220px; background: linear-gradient(180deg, #0a1628 0%, #001529 100%); color: #fff; padding: 16px 0; position: relative; box-shadow: 2px 0 12px rgba(0,0,0,0.15); }
+  .sidebar { width: 220px; background: linear-gradient(180deg, #0a1628 0%, #001529 100%); color: #fff; padding: 16px 0; position: relative; box-shadow: 2px 0 12px rgba(0,0,0,0.15); overflow-y: auto; }
   .logo { padding: 0 20px 16px; font-size: 15px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; letter-spacing: 0.3px; }
   .logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #1890ff, #096dd9); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
   .nav-group { padding: 12px 0; }
@@ -26,7 +26,7 @@
   .nav-parent-arrow { font-size: 10px; transition: transform 0.2s; }
   .nav-parent.open .nav-parent-arrow { transform: rotate(90deg); }
   .nav-sub { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
-  .nav-sub.open { max-height: 200px; }
+  .nav-sub.open { max-height: 300px; }
   .nav-sub-item { padding: 8px 20px 8px 40px; cursor: pointer; color: rgba(255,255,255,0.45); font-size: 12px; margin: 1px 8px; border-radius: 6px; transition: all 0.2s; position: relative; }
   .nav-sub-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
   .nav-sub-item.active { color: #fff; background: linear-gradient(90deg, #1890ff, #096dd9); }
@@ -530,6 +530,13 @@
   .nav-item:hover { background:#f6f8fc; color:var(--brand); }
   .nav-item.active { background:#eef4ff; color:var(--brand); }
   .nav-item.active::before { background:var(--brand); }
+  .nav-parent { color:#475569; }
+  .nav-parent:hover { background:#f6f8fc; color:var(--brand); }
+  .nav-parent.open { color:var(--brand); font-weight:600; }
+  .nav-sub-item { color:#64748b; }
+  .nav-sub-item:hover { background:#f6f8fc; color:var(--brand); }
+  .nav-sub-item.active { background:#eef4ff; color:var(--brand); font-weight:600; }
+  .nav-sub-item.active::before { background:var(--brand); }
   .filter-bar, .table-wrap, .config-tabs, .detail-card, .detail-side-card, .detail-page-header, .stat-card, .modal, .drawer {
     border-color:#e6ebf2;
     box-shadow:none;
@@ -631,18 +638,18 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="logo"><div class="logo-icon">AS</div>售后管理系统</div>
-    <div class="nav-item active" id="nav-workorder" onclick="showPage('workorder')">
-      <span>工单管理</span>
-      <span class="nav-badge" id="navBadge">7</span>
+    <div class="nav-parent open" id="nav-aftersales-parent" onclick="toggleNavSub('aftersales')">
+      <span>售后管理</span>
+      <span class="nav-parent-arrow">▶</span>
     </div>
-    <div class="nav-item" id="nav-maint" onclick="showPage('maint')">
-      <span>保养管理</span>
-    </div>
-    <div class="nav-item" id="nav-bill" onclick="showPage('bill')">
-      <span>结算单管理</span>
-    </div>
-    <div class="nav-item" id="nav-config" onclick="showPage('config')">
-      <span>系统配置</span>
+    <div class="nav-sub open" id="nav-aftersales-sub">
+      <div class="nav-sub-item active" id="nav-workorder" onclick="showPage('workorder')">
+        <span>工单管理</span>
+        <span class="nav-badge" id="navBadge">7</span>
+      </div>
+      <div class="nav-sub-item" id="nav-maint" onclick="showPage('maint')">保养管理</div>
+      <div class="nav-sub-item" id="nav-bill" onclick="showPage('bill')">结算单管理</div>
+      <div class="nav-sub-item" id="nav-config" onclick="showPage('config')">系统配置</div>
     </div>
     <div class="nav-parent" id="nav-device-parent" onclick="toggleNavSub('device')">
       <span>设备基础信息管理</span>
@@ -710,7 +717,7 @@
           </div>
           <select id="fType"><option value="">工单类型</option></select>
           <select id="fStatus"><option value="">主状态</option><option>待分派</option><option>维修中</option><option>待验收</option><option>已完成</option><option>已关闭</option></select>
-          <select id="fSub"><option value="">子状态</option><option>待分派</option><option>服务站受理</option><option>远程诊断</option><option>备件确认</option><option>预约上门</option><option>到场维修</option><option>开始维修</option><option>维修自检</option><option>提交维修结果</option><option>待站点验收</option><option>已归档</option><option>服务站拒绝关闭</option></select>
+          <select id="fSub"><option value="">子状态</option><option>待分派</option><option>服务站受理</option><option>远程诊断</option><option>备件确认</option><option>预约上门</option><option>确认预约时间（站点负责人）</option><option>到场维修</option><option>开始维修</option><option>维修自检</option><option>提交维修结果</option><option>到场救援</option><option>提交救援结果</option><option>工程师受理</option><option>问题定位</option><option>开始修复</option><option>软件自检</option><option>修复完成</option><option>待站点验收</option><option>已归档</option><option>服务站拒绝关闭</option></select>
           <select id="fPri"><option value="">优先级</option><option>P0</option><option>P1</option><option>P2</option></select>
           <select id="fSrc"><option value="">来源</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option><option>运营巡检导入</option></select>
           <select id="fOem"><option value="">整车厂</option><option>长安凯程</option><option>东风柳汽</option><option>上汽大通</option></select>
@@ -2073,7 +2080,7 @@ const flowTemplates = {
 };
 function getFlow(type) {
   var base = flowTemplates[type] || flowTemplates['故障维修'];
-  var processNodes = (base.processTasks || PROCESS_TASKS).map(function(t){ return Object.assign({}, t); });
+  var processNodes = getProcessTasksForType(type).map(function(t){ return Object.assign({}, t); });
   return {
     master: ['待分派','维修中','待验收','已完成','已关闭'],
     sub: processNodes.map(function(t){ return t.step; }),
@@ -2082,10 +2089,10 @@ function getFlow(type) {
 }
 // 兼容旧引用
 const masterStatusList = ['待分派','维修中','待验收','已完成','已关闭'];
-const subStatusList = ['服务站受理','远程诊断','备件确认','预约上门','到场维修','开始维修','维修自检','提交维修结果'];
+const subStatusList = ['服务站受理','远程诊断','备件确认','预约上门','确认预约时间（站点负责人）','到场维修','开始维修','维修自检','提交维修结果','到场救援','提交救援结果','工程师受理','问题定位','开始修复','软件自检','修复完成'];
 
 var _typeAutoDispatchMap = {
-  '故障维修':'是','现场救援':'是','软件问题':'是','车辆事故':'是','周期保养':'否','车辆批改':'否','车辆整备':'否'
+  '故障维修':'是','现场救援':'是','软件问题':'否','车辆事故':'是','周期保养':'是','车辆批改':'否','车辆整备':'否'
 };
 var _typeEnabledMap = {};
 
@@ -2557,6 +2564,7 @@ var PROCESS_TASKS = [
   {step:'远程诊断', task:'远程诊断', owner:'服务站', desc:'远程排查问题原因，判断是否需要备件或上门'},
   {step:'备件确认', task:'备件确认', owner:'服务站', desc:'确认备件型号、库存、费用承担方和是否需要调拨'},
   {step:'预约上门', task:'预约上门', owner:'服务站', desc:'与站点确认上门维修时间'},
+  {step:'确认预约时间（站点负责人）', task:'确认预约时间（站点负责人）', owner:'站点负责人', desc:'站点负责人确认预约时间，系统记录确认人和确认时间'},
   {step:'到场维修', task:'到场维修', owner:'服务站', desc:'技师到达现场并完成到场确认'},
   {step:'开始维修', task:'开始维修', owner:'服务站', desc:'执行现场维修或更换备件'},
   {step:'维修自检', task:'维修自检', owner:'服务站', desc:'维修完成后进行自检和试跑验证'},
@@ -2564,6 +2572,33 @@ var PROCESS_TASKS = [
 ];
 var PROCESS_TASK_INDEX = {};
 PROCESS_TASKS.forEach(function(t, i){ PROCESS_TASK_INDEX[t.step] = i; });
+var TYPE_PROCESS_TASKS = {
+  '故障维修': PROCESS_TASKS,
+  '车辆事故': PROCESS_TASKS,
+  '周期保养': PROCESS_TASKS,
+  '车辆批改': PROCESS_TASKS,
+  '车辆整备': PROCESS_TASKS,
+  '现场救援': [
+    {step:'服务站受理', task:'服务站受理', owner:'服务站', desc:'服务站收到救援任务后确认受理并安排救援人员'},
+    {step:'到场救援', task:'到场救援', owner:'服务站', desc:'救援人员到达现场并完成救援处置'},
+    {step:'提交救援结果', task:'提交救援结果', owner:'服务站', desc:'上传救援结论、现场照片和车辆恢复情况'}
+  ],
+  '软件问题': [
+    {step:'工程师受理', task:'工程师受理', owner:'工程师', desc:'工程师接收软件问题并确认处理范围'},
+    {step:'问题定位', task:'问题定位', owner:'工程师', desc:'定位软件问题原因，判断涉及模块和影响范围'},
+    {step:'开始修复', task:'开始修复', owner:'工程师', desc:'执行版本修复、参数调整或配置修正'},
+    {step:'软件自检', task:'软件自检', owner:'工程师', desc:'完成修复后进行功能回归和异常复测'},
+    {step:'修复完成', task:'修复完成', owner:'工程师', desc:'提交修复结论和验证结果'}
+  ]
+};
+function getProcessTasksForType(type){
+  return (TYPE_PROCESS_TASKS[type] || PROCESS_TASKS).map(function(t){ return Object.assign({}, t); });
+}
+function getProcessTaskIndex(type){
+  var idx = {};
+  getProcessTasksForType(type).forEach(function(t, i){ idx[t.step] = i; });
+  return idx;
+}
 var _subAlias = {
   '-':'待分派',
   '待服务站受理':'服务站受理',
@@ -2581,6 +2616,8 @@ var _subAlias = {
   '待预约':'预约上门',
   '待预约上门':'预约上门',
   '已预约':'预约上门',
+  '确认预约':'确认预约时间（站点负责人）',
+  '待确认预约时间':'确认预约时间（站点负责人）',
   '待上门':'到场维修',
   '待到场':'到场维修',
   '已到场':'到场维修',
@@ -2591,13 +2628,43 @@ var _subAlias = {
   '待提交维修结果':'提交维修结果',
   '待验收':'待站点验收'
 };
-function normalizeSubStatus(s){ return _subAlias[s] || s || '待分派'; }
-function buildProcessTaskList(currentSub, completedSteps){
-  var cur = PROCESS_TASK_INDEX[normalizeSubStatus(currentSub)];
+var _typeSubAlias = {
+  '现场救援': {
+    '远程诊断':'到场救援',
+    '诊断中':'到场救援',
+    '预约上门':'到场救援',
+    '到场维修':'到场救援',
+    '待上门':'到场救援',
+    '维修开始':'到场救援',
+    '维修完成':'提交救援结果',
+    '提交维修结果':'提交救援结果'
+  },
+  '软件问题': {
+    '服务站受理':'工程师受理',
+    '待服务站接单':'工程师受理',
+    '远程诊断':'问题定位',
+    '诊断中':'问题定位',
+    '已升级':'开始修复',
+    '技术支持中':'问题定位',
+    '维修开始':'开始修复',
+    '开始维修':'开始修复',
+    '维修自检':'软件自检',
+    '维修完成':'修复完成',
+    '提交维修结果':'修复完成'
+  }
+};
+function normalizeSubStatus(s, type){
+  var normalized = _subAlias[s] || s || '待分派';
+  var typeAlias = _typeSubAlias[type] || {};
+  return typeAlias[normalized] || typeAlias[s] || normalized;
+}
+function buildProcessTaskList(currentSub, completedSteps, type){
+  var taskIndex = getProcessTaskIndex(type);
+  var cur = taskIndex[normalizeSubStatus(currentSub, type)];
   if(cur == null) cur = 0;
   var doneMap = {};
-  (completedSteps || []).forEach(function(s){ doneMap[normalizeSubStatus(s)] = true; });
-  return PROCESS_TASKS.map(function(t, i){
+  (completedSteps || []).forEach(function(s){ doneMap[normalizeSubStatus(s, type)] = true; });
+  return getProcessTasksForType(type).map(function(t, i){
     var status = doneMap[t.step] || i < cur ? 'done' : (i === cur ? 'current' : 'todo');
     return {step:t.step, task:t.task, owner:t.owner, desc:t.desc, status:status, executor:null, startTime:null, endTime:null};
   });
@@ -2605,13 +2672,13 @@ function buildProcessTaskList(currentSub, completedSteps){
 function ensureOrderTasks(o){
   if(!o) return;
   o.status = toUnifiedStatus(o.status);
-  o.sub = normalizeSubStatus(o.sub);
+  o.sub = normalizeSubStatus(o.sub, o.type);
   if(o.status === '待分派') o.sub = '待分派';
   if(o.status === '已完成' && (!o.sub || o.sub === '待分派')) o.sub = '已归档';
   if(o.status === '已关闭' && (!o.sub || o.sub === '待分派')) o.sub = '服务站拒绝关闭';
   if(o.status === '维修中' && o.sub === '待站点验收') o.sub = '提交维修结果';
   var oldDone = (o.subSteps || []).filter(function(s){ return s.endTime; }).map(function(s){ return s.step; });
-  if(!o.tasks || !o.tasks.length) o.tasks = buildProcessTaskList(o.sub, oldDone);
+  if(!o.tasks || !o.tasks.length) o.tasks = buildProcessTaskList(o.sub, oldDone, o.type);
   o.subSteps = o.tasks.map(function(t){ return {step:t.step, executor:t.executor || t.owner, startTime:t.startTime, endTime:t.endTime}; });
 }
 function normalizeMockOrders(){
@@ -2630,17 +2697,18 @@ function normalizeMockOrders(){
   orders.forEach(function(o){
     if(overrides[o.id]){
       Object.assign(o, overrides[o.id]);
-      o.tasks = buildProcessTaskList(o.sub);
+      o.tasks = buildProcessTaskList(o.sub, null, o.type);
       ensureOrderTasks(o);
     }
   });
 }
 function normalizeFlowTemplates(){
   Object.keys(flowTemplates).forEach(function(type){
+    var processTasks = getProcessTasksForType(type);
     flowTemplates[type].master = ['待分派','维修中','待验收','已完成','已关闭'];
-    flowTemplates[type].sub = PROCESS_TASKS.map(function(t){ return t.step; });
+    flowTemplates[type].sub = processTasks.map(function(t){ return t.step; });
     flowTemplates[type].phases = {
-      '维修中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })
+      '维修中': processTasks.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })
     };
   });
 }
@@ -2757,6 +2825,11 @@ function onEditTypeChange() {
   var rt = startVal ? new Date(startVal) : new Date();
   var planEnd = calcPlanEnd(type, rt, pri);
   document.getElementById('editPlanEnd').value = planEnd ? toDatetimeLocal(planEnd) : '';
+  var presets = getProcessTasksForType(type);
+  if (_editTasks.length && presets.length && !_editTasks.some(function(t){ return presets.some(function(p){ return p.step === t.step; }); })) {
+    _editTasks = buildProcessTaskList(presets[0].step, null, type);
+  }
+  renderEditTasks();
 }
 function getSlaText(order){
   if(toUnifiedStatus(order.status)==='已完成'||toUnifiedStatus(order.status)==='已关闭') return '-';
@@ -3039,8 +3112,10 @@ function jumpToOrder(orderId){
     document.getElementById(id).classList.add('hidden');
   });
   document.getElementById('page-workorder').classList.remove('hidden');
-  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  document.querySelectorAll('.nav-sub-item').forEach(function(n){n.classList.remove('active');});
   document.getElementById('nav-workorder').classList.add('active');
+  document.getElementById('nav-aftersales-parent').classList.add('open');
+  document.getElementById('nav-aftersales-sub').classList.add('open');
   document.getElementById('crumb').innerText = '工单管理';
   openDrawer(orderId);
 }
@@ -3318,15 +3393,15 @@ function toggleOrderTask(orderId, idx, checked){
 function renderSubNodeDetail(nodeName, o, isDone) {
   var html = '';
   // 诊断任务 → 诊断结果
-  if(nodeName === '远程诊断' || nodeName === '服务站诊断中' || nodeName === '事故评估中' || nodeName === '日志收集中') {
+  if(nodeName === '远程诊断' || nodeName === '问题定位' || nodeName === '服务站诊断中' || nodeName === '事故评估中' || nodeName === '日志收集中') {
     if(isDone || o.sub === nodeName) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
-      html += '<div style="font-weight:600;color:#1890ff;margin-bottom:4px;">诊断结果</div>';
+      html += '<div style="font-weight:600;color:#1890ff;margin-bottom:4px;">'+(nodeName === '问题定位' ? '定位结果' : '诊断结果')+'</div>';
       html += '<div class="result-kv" style="font-size:11px;">';
       html += '<span class="result-k">诊断工具</span><span class="result-v">京小鸽诊断 v2.3.1</span>';
       html += '<span class="result-k">故障码</span><span class="result-v">P0420 / U0100</span>';
-      html += '<span class="result-k">诊断人</span><span class="result-v">张师傅</span>';
-      html += '<span class="result-k">诊断时间</span><span class="result-v">2026-06-08 09:22</span>';
+      html += '<span class="result-k">处理人</span><span class="result-v">'+(nodeName === '问题定位' ? '李工程师' : '张师傅')+'</span>';
+      html += '<span class="result-k">处理时间</span><span class="result-v">2026-06-08 09:22</span>';
       html += '<span class="result-k">初步结论</span><span class="result-v">GPS 模块信号干扰，定位偏差超过 50m，建议更换 GPS 天线</span>';
       html += '</div>';
     html += '</div>';
@@ -3346,7 +3421,7 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 到场 → 到场时间信息
-  if(nodeName === '到场维修' || nodeName === '已到场') {
+  if(nodeName === '到场维修' || nodeName === '到场救援' || nodeName === '已到场') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#fa8c16;margin-bottom:4px;">到场信息</div>';
@@ -3359,10 +3434,11 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 维修任务 → 维修结果
-  if(nodeName === '维修自检' || nodeName === '提交维修结果' || nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
+  if(nodeName === '维修自检' || nodeName === '软件自检' || nodeName === '提交维修结果' || nodeName === '提交救援结果' || nodeName === '修复完成' || nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
-      html += '<div style="font-weight:600;color:#52c41a;margin-bottom:4px;">维修结果</div>';
+      var resultTitle = nodeName === '提交救援结果' ? '救援结果' : (nodeName === '修复完成' || nodeName === '软件自检' ? '修复结果' : '维修结果');
+      html += '<div style="font-weight:600;color:#52c41a;margin-bottom:4px;">'+resultTitle+'</div>';
       html += '<div class="result-kv" style="font-size:11px;">';
       html += '<span class="result-k">故障根因</span><span class="result-v">GPS 天线老化，信号遮挡导致持续漂移</span>';
       html += '<span class="result-k">维修动作</span><span class="result-v">更换 GPS 天线（零件号 JXG-ANT-003）并重新标定</span>';
@@ -3539,17 +3615,18 @@ function opAct(id, act){
     }
     var now = new Date();
     var nowStr = now.getFullYear()+'-'+pad2(now.getMonth()+1)+'-'+pad2(now.getDate())+' '+pad2(now.getHours())+':'+pad2(now.getMinutes());
-    o.tasks = buildProcessTaskList(o.sub);
+    o.tasks = buildProcessTaskList(o.sub, null, o.type);
     o.subSteps = o.tasks.map(function(t){ return { step: t.step, executor: null, startTime: null, endTime: null }; });
     // 第一个子步骤自动激活
-    o.tasks[0].executor = '服务站';
+    var firstOwner = (o.tasks[0] && o.tasks[0].owner) || '服务站';
+    o.tasks[0].executor = firstOwner;
     o.tasks[0].startTime = nowStr;
-    o.subSteps[0].executor = '服务站';
+    o.subSteps[0].executor = firstOwner;
     o.subSteps[0].startTime = nowStr;
     o.lastOp = '运营';
     o.lastOpTime = nowStr;
-    o.next = '服务站确认受理';
-    showToast('工单 ' + id + ' 已分派服务站，进入服务站受理', 'success');
+    o.next = o.sub;
+    showToast('工单 ' + id + ' 已分派，进入' + o.sub, 'success');
   } else if(act === '驳回' || act === '关闭'){
     o.status = '已关闭';
     o.sub = act === '驳回' ? '服务站拒绝关闭' : '取消关闭';
@@ -3565,7 +3642,7 @@ function opAct(id, act){
   } else if(act === '验收驳回'){
     o.status = '维修中';
     o.sub = '验收驳回';
-    o.tasks = buildProcessTaskList('验收驳回');
+    o.tasks = buildProcessTaskList('验收驳回', null, o.type);
     o.lastOp = '运营';
     o.lastOpTime = formatDate(new Date());
     showToast('工单 ' + id + ' 验收驳回', 'success');
@@ -3601,14 +3678,21 @@ function refreshOrderRow(id){
 /* ===== 编辑工单 ===== */
 var editingId = null;
 var _editTasks = [];
+function getEditTaskPresets(){
+  var typeEl = document.getElementById('editType');
+  var type = typeEl ? typeEl.value : '';
+  var o = orders.find(function(x){ return x.id === editingId; });
+  return getProcessTasksForType(type || (o && o.type));
+}
 function renderEditTasks(){
   var wrap = document.getElementById('editTaskList');
   if(!wrap) return;
+  var presets = getEditTaskPresets();
   wrap.innerHTML = _editTasks.map(function(t, idx){
     return '<div style="display:grid;grid-template-columns:24px 120px 130px 1fr 92px 28px;gap:8px;align-items:center;border:1px solid #e8e8e8;border-radius:8px;padding:8px;background:#fff;">' +
       '<input type="checkbox" '+(t.status==='done'?'checked':'')+' onchange="updateEditTaskField('+idx+',\'status\',this.checked?\'done\':\'todo\')" style="accent-color:#1890ff;">' +
       '<input class="form-control" value="'+(t.task||'')+'" placeholder="任务名称" onchange="updateEditTaskField('+idx+',\'task\',this.value)" style="height:30px;font-size:12px;">' +
-      '<select class="form-control" onchange="updateEditTaskField('+idx+',\'step\',this.value)" style="height:30px;font-size:12px;">' + PROCESS_TASKS.map(function(p){ return '<option value="'+p.step+'"'+(p.step===t.step?' selected':'')+'>'+p.step+'</option>'; }).join('') + '</select>' +
+      '<select class="form-control" onchange="updateEditTaskField('+idx+',\'step\',this.value)" style="height:30px;font-size:12px;">' + presets.map(function(p){ return '<option value="'+p.step+'"'+(p.step===t.step?' selected':'')+'>'+p.step+'</option>'; }).join('') + '</select>' +
       '<input class="form-control" value="'+(t.desc||'')+'" placeholder="任务说明" onchange="updateEditTaskField('+idx+',\'desc\',this.value)" style="height:30px;font-size:12px;">' +
       '<input class="form-control" value="'+(t.owner||'')+'" placeholder="处理方" onchange="updateEditTaskField('+idx+',\'owner\',this.value)" style="height:30px;font-size:12px;">' +
       '<button class="btn btn-default" style="height:26px;padding:0;font-size:13px;" onclick="removeEditTask('+idx+')">×</button>' +
@@ -3619,7 +3703,7 @@ function updateEditTaskField(idx, field, value){
   if(!_editTasks[idx]) return;
   _editTasks[idx][field] = value;
   if(field === 'step'){
-    var preset = PROCESS_TASKS.find(function(t){ return t.step === value; });
+    var preset = getEditTaskPresets().find(function(t){ return t.step === value; });
     if(preset){
       _editTasks[idx].task = _editTasks[idx].task || preset.task;
       _editTasks[idx].desc = _editTasks[idx].desc || preset.desc;
@@ -3628,7 +3712,7 @@ function updateEditTaskField(idx, field, value){
   }
 }
 function addEditTask(){
-  var preset = PROCESS_TASKS[0];
+  var preset = getEditTaskPresets()[0] || PROCESS_TASKS[0];
   _editTasks.push({step:preset.step, task:preset.task, owner:preset.owner, desc:preset.desc, status:'todo', executor:null, startTime:null, endTime:null});
   renderEditTasks();
 }
@@ -3732,8 +3816,9 @@ function submitEdit(){
   o.planStart = document.getElementById('editPlanStart').value || o.planStart || '';
   o.planEnd = document.getElementById('editPlanEnd').value || o.planEnd || '';
   o.ccList = _editCcList.slice();
+  var editPresets = getProcessTasksForType(o.type);
   o.tasks = _editTasks.map(function(t, idx){
-    var preset = PROCESS_TASKS.find(function(p){ return p.step === t.step; }) || {};
+    var preset = editPresets.find(function(p){ return p.step === t.step; }) || {};
     return {
       step: t.step || preset.step || ('自定义任务'+(idx+1)),
       task: t.task || preset.task || t.step || ('自定义任务'+(idx+1)),
@@ -4179,15 +4264,19 @@ function showPage(p){
     var el = document.getElementById(id);
     if (el) el.classList.toggle('hidden', id !== 'page-' + p);
   });
-  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
   document.querySelectorAll('.nav-sub-item').forEach(function(n){n.classList.remove('active');});
   var navEl = document.getElementById('nav-' + p);
   if(navEl) navEl.classList.add('active');
-  // 厂商管理属于子菜单，需高亮父菜单
+  // 售后管理子菜单：工单/保养/结算/配置
+  var aftersalesPages = ['workorder','maint','bill','config'];
+  if(aftersalesPages.indexOf(p) >= 0){
+    document.getElementById('nav-aftersales-parent').classList.add('open');
+    document.getElementById('nav-aftersales-sub').classList.add('open');
+  }
+  // 设备基础信息管理子菜单：厂商管理
   if(p==='manufacturer'){
     document.getElementById('nav-device-parent').classList.add('open');
     document.getElementById('nav-device-sub').classList.add('open');
-    document.getElementById('nav-manufacturer').classList.add('active');
   }
   var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理', manufacturer:'厂商管理' };
   document.getElementById('crumb').innerText = crumbMap[p] || p;
@@ -4201,7 +4290,7 @@ function showPage(p){
 (function(){
   var validPages = ['workorder','config','maint','bill','manufacturer'];
   var hash = location.hash.replace('#','');
-  var initPage = 'workorder';
+  var initPage = validPages.indexOf(hash)>=0 ? hash : 'workorder';
   // 等 DOM 就绪后执行（script 在 body 末尾，DOM 已可用）
   var allPages = ['page-workorder','page-config','page-maint','page-bill',
     'page-order-detail','page-bill-detail',
@@ -4211,15 +4300,20 @@ function showPage(p){
     var el = document.getElementById(id);
     if(el) el.classList.toggle('hidden', id !== 'page-' + initPage);
   });
+  // 高亮当前子菜单项
+  document.querySelectorAll('.nav-sub-item').forEach(function(n){n.classList.remove('active');});
   var navEl = document.getElementById('nav-' + initPage);
-  if(navEl){
-    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-    navEl.classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  // 售后管理子菜单默认展开
+  var aftersalesPages = ['workorder','maint','bill','config'];
+  if(aftersalesPages.indexOf(initPage) >= 0){
+    document.getElementById('nav-aftersales-parent').classList.add('open');
+    document.getElementById('nav-aftersales-sub').classList.add('open');
   }
+  // 设备基础信息管理子菜单
   if(initPage==='manufacturer'){
     document.getElementById('nav-device-parent').classList.add('open');
     document.getElementById('nav-device-sub').classList.add('open');
-    document.getElementById('nav-manufacturer').classList.add('active');
   }
   var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理', manufacturer:'厂商管理' };
   var crumbEl = document.getElementById('crumb');
@@ -5101,7 +5195,7 @@ function initTypeTable() {
     '故障维修':'P1','现场救援':'P0','软件问题':'P1','车辆事故':'P2','周期保养':'P2','车辆批改':'P2','车辆整备':'P1'
   };
   var typeSubMap = {
-    '故障维修':'是','现场救援':'按需','软件问题':'按需','车辆事故':'是','周期保养':'是','车辆批改':'否','车辆整备':'否'
+    '故障维修':'是','现场救援':'是','软件问题':'否','车辆事故':'是','周期保养':'是','车辆批改':'否','车辆整备':'否'
   };
   var typeTplMap = {
     '故障维修':'故障维修标准模板','现场救援':'现场救援模板','软件问题':'软件问题模板','车辆事故':'车辆事故验收','周期保养':'保养验收','车辆批改':'批改流程模板','车辆整备':'车辆整备模板'
@@ -5205,7 +5299,7 @@ function confirmAdvanceSub() {
   o.lastOp = executor;
   o.lastOpTime = now;
   syncOrderFromTasks(o);
-  if (o.sub === '提交维修结果') {
+  if (_advanceSubNextIdx >= o.tasks.length - 1) {
     o.status = '待验收';
     o.sub = '待站点验收';
     o.tasks[_advanceSubNextIdx].status = 'done';
