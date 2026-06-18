@@ -149,9 +149,9 @@
   .all-link { font-size: 11px; color: var(--brand); border: 1px solid var(--brand-line); border-radius: 999px; padding: 4px 9px; background: #fff; cursor: pointer; }
   .hidden { display: none !important; }
   /* 弹窗 */
-  .sheet-mask { display: none; position: absolute; top:0;left:0;right:0;bottom:0; background: transparent; z-index: 50; }
+  .sheet-mask { display: none; position: absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.4); z-index: 50; }
   .sheet-mask.show { display: block; }
-  .sheet { position: absolute; bottom: -100%; left: 0; right: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 16px; transition: bottom 0.3s; max-height: 80%; overflow-y: auto; z-index: 60; box-shadow: 0 -4px 24px rgba(0,0,0,0.12); }
+  .sheet { position: absolute; bottom: -100%; left: 0; right: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 16px; transition: bottom 0.3s; max-height: 80%; overflow-y: auto; z-index: 60; }
   .sheet.show { bottom: 0; }
   .sheet-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; text-align: center; }
   .filter-section { margin-bottom: 14px; }
