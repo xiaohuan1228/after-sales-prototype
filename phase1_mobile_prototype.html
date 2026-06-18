@@ -1864,7 +1864,8 @@ function saveStationProfile(){
 var _serviceOptions = ['拖车救援','故障维修','周期保养','事故维修（钣喷）'];
 var _serviceSelected = ['拖车救援','故障维修','周期保养','事故维修（钣喷）'];
 function openServiceSheet(){
-  var phone = document.getElementById('phone');
+  var phone = document.querySelector('.phone-station .phone');
+  if(!phone) return;
   var mask = phone.querySelector('.sheet-mask');
   // 移除已有的服务能力sheet
   phone.querySelectorAll('.sheet.temp-service-sheet').forEach(function(s){ s.remove(); });
@@ -1889,15 +1890,17 @@ function openServiceSheet(){
   mask.onclick = function(){ closeServiceSheet(); };
 }
 function closeServiceSheet(){
-  var phone = document.getElementById('phone');
+  var phone = document.querySelector('.phone-station .phone');
+  if(!phone) return;
   var mask = phone.querySelector('.sheet-mask');
   var sheet = phone.querySelector('.sheet.temp-service-sheet');
   if(sheet) sheet.classList.remove('show');
-  mask.classList.remove('show');
+  if(mask) mask.classList.remove('show');
   setTimeout(function(){ phone.querySelectorAll('.sheet.temp-service-sheet').forEach(function(s){ s.remove(); }); }, 300);
 }
 function confirmServiceSelect(){
-  var sheet = document.getElementById('phone').querySelector('.sheet.temp-service-sheet');
+  var phone = document.querySelector('.phone-station .phone');
+  var sheet = phone.querySelector('.sheet.temp-service-sheet');
   var checks = sheet.querySelectorAll('input[type=checkbox]');
   _serviceSelected = [];
   checks.forEach(function(cb){ if(cb.checked) _serviceSelected.push(cb.value); });
