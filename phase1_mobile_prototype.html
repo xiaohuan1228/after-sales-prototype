@@ -267,7 +267,7 @@
       <div class="scroll-area" id="station-scroll">
         <div id="station-list">
           <div class="quick-stats">
-            <div class="qs-item active" onclick="setFilter(this,'station','处理中')"><div class="qs-num">8</div><div class="qs-label">处理中</div></div>
+            <div class="qs-item active" onclick="setFilter(this,'station','维修中')"><div class="qs-num">8</div><div class="qs-label">维修中</div></div>
             <div class="qs-item" onclick="setFilter(this,'station','待验收')"><div class="qs-num">2</div><div class="qs-label">待验收</div></div>
             <div class="qs-item" onclick="setFilter(this,'station','已完成')"><div class="qs-num">16</div><div class="qs-label">已完成</div></div>
           </div>
@@ -284,7 +284,7 @@
           </div>
           <div class="empty-tip">没有符合条件的工单</div>
 
-          <div class="card attention" data-main="处理中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060001 故障维修 定位漂移 车辆无法正常配送 服务站受理超时 JXG-001234 北京亦庄站点 天津市冀津贸易有限公司 SLA已超时8分钟" onclick="openStationDetail()">
+          <div class="card attention" data-main="维修中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060001 故障维修 定位漂移 车辆无法正常配送 服务站受理超时 JXG-001234 北京亦庄站点 天津市冀津贸易有限公司 SLA已超时8分钟" onclick="openStationDetail()">
             <div class="card-row">
               <div>
                 <div class="card-title">WO-2026060001 · 故障维修</div>
@@ -305,7 +305,7 @@
             </div>
           </div>
 
-          <div class="card" data-main="处理中" data-sub="待备件确认" data-priority="P2" data-search="WO-2026060005 周期保养 10000公里保养 刹车片传感器备件确认 JXG-001260 武汉光谷站 天津市冀津贸易有限公司 SLA明日到货" onclick="openStationDetail()">
+          <div class="card" data-main="维修中" data-sub="待备件确认" data-priority="P2" data-search="WO-2026060005 周期保养 10000公里保养 刹车片传感器备件确认 JXG-001260 武汉光谷站 天津市冀津贸易有限公司 SLA明日到货" onclick="openStationDetail()">
             <div class="card-row">
               <div>
                 <div class="card-title">WO-2026060005 · 周期保养</div>
@@ -326,7 +326,7 @@
             </div>
           </div>
 
-          <div class="card" data-main="处理中" data-sub="待预约上门" data-priority="P1" data-search="WO-2026060007 故障维修 传感器读数异常 预约上门 JXG-001270 上海徐汇站 天津市冀津贸易有限公司 SLA今日14:30" onclick="openStationDetail()">
+          <div class="card" data-main="维修中" data-sub="待预约上门" data-priority="P1" data-search="WO-2026060007 故障维修 传感器读数异常 预约上门 JXG-001270 上海徐汇站 天津市冀津贸易有限公司 SLA今日14:30" onclick="openStationDetail()">
             <div class="card-row">
               <div>
                 <div class="card-title">WO-2026060007 · 故障维修</div>
@@ -347,7 +347,7 @@
             </div>
           </div>
 
-          <div class="card danger-attention" data-main="处理中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060010 故障维修 制动异响 验收驳回 需重新处理 JXG-001255 北京通州站 天津市冀津贸易有限公司 SLA待重新提交" onclick="openStationDetail()">
+          <div class="card danger-attention" data-main="维修中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060010 故障维修 制动异响 验收驳回 需重新处理 JXG-001255 北京通州站 天津市冀津贸易有限公司 SLA待重新提交" onclick="openStationDetail()">
             <div class="card-row">
               <div>
                 <div class="card-title">WO-2026060010 · 故障维修</div>
@@ -409,14 +409,14 @@
             <button class="back-btn" onclick="switchView('station','list')">返回</button>
             <div class="detail-id" style="margin-top:8px;">WO-2026060001</div>
             <div class="detail-title">故障维修 · 定位漂移</div>
-            <div style="margin-top:8px;"><span class="tag tag-p0">P0</span> <span class="tag" style="background:rgba(0,0,0,0.08);color:#333;">处理中</span> <span class="tag" style="background:rgba(0,0,0,0.08);color:#333;">待服务站受理</span></div>
+            <div style="margin-top:8px;"><span class="tag tag-p0">P0</span> <span class="tag" style="background:rgba(0,0,0,0.08);color:#333;">维修中</span> <span class="tag" style="background:rgba(0,0,0,0.08);color:#333;">待服务站受理</span></div>
           </div>
           <div class="master-status">
             <div class="section-title">主工单状态</div>
             <div class="ms-flow">
               <div class="ms-step"><div class="ms-circle done">完</div><div class="ms-label">待分派</div></div>
               <div class="ms-line done"></div>
-              <div class="ms-step"><div class="ms-circle current">2</div><div class="ms-label">处理中</div></div>
+              <div class="ms-step"><div class="ms-circle current">2</div><div class="ms-label">维修中</div></div>
               <div class="ms-line"></div>
               <div class="ms-step"><div class="ms-circle">3</div><div class="ms-label">待验收</div></div>
               <div class="ms-line"></div>
@@ -695,7 +695,7 @@
         <div id="site-list">
         <div class="quick-stats">
           <div class="qs-item" onclick="setFilter(this,'site','待分派')"><div class="qs-num">1</div><div class="qs-label">待分派</div></div>
-          <div class="qs-item active" onclick="setFilter(this,'site','处理中')"><div class="qs-num">6</div><div class="qs-label">处理中</div></div>
+          <div class="qs-item active" onclick="setFilter(this,'site','维修中')"><div class="qs-num">6</div><div class="qs-label">维修中</div></div>
           <div class="qs-item" onclick="setFilter(this,'site','待验收')"><div class="qs-num">2</div><div class="qs-label">待验收</div></div>
           <div class="qs-item" onclick="setFilter(this,'site','已完成')"><div class="qs-num">18</div><div class="qs-label">已完成</div></div>
         </div>
@@ -729,7 +729,7 @@
           </div>
         </div>
 
-        <div class="card danger-attention" data-main="处理中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060001 故障维修 定位漂移 服务站受理超时 JXG-001234 北京亦庄站点 天津市冀津贸易有限公司 SLA已超时8分钟" onclick="openSiteDetail()">
+        <div class="card danger-attention" data-main="维修中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060001 故障维修 定位漂移 服务站受理超时 JXG-001234 北京亦庄站点 天津市冀津贸易有限公司 SLA已超时8分钟" onclick="openSiteDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060001 · 故障维修</div>
@@ -746,7 +746,7 @@
           </div>
         </div>
 
-        <div class="card attention" data-main="处理中" data-sub="待确认时间" data-priority="P1" data-search="WO-2026060007 故障维修 传感器异常 服务站发起预约 今日14:30 JXG-001270 上海徐汇站 天津市冀津贸易有限公司 SLA待确认" onclick="openSiteDetail()">
+        <div class="card attention" data-main="维修中" data-sub="待确认时间" data-priority="P1" data-search="WO-2026060007 故障维修 传感器异常 服务站发起预约 今日14:30 JXG-001270 上海徐汇站 天津市冀津贸易有限公司 SLA待确认" onclick="openSiteDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060007 · 故障维修</div>
@@ -788,7 +788,7 @@
           </div>
         </div>
 
-        <div class="card danger-attention" data-main="处理中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060012 车辆事故 前保险杠刮蹭 自检视频缺失 JXG-001280 广州天河站 广州服务站 SLA待重新提交" onclick="openSiteDetail()">
+        <div class="card danger-attention" data-main="维修中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060012 车辆事故 前保险杠刮蹭 自检视频缺失 JXG-001280 广州天河站 广州服务站 SLA待重新提交" onclick="openSiteDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060012 · 车辆事故</div>
@@ -836,7 +836,7 @@
             <div class="ms-flow">
               <div class="ms-step"><div class="ms-circle done">完</div><div class="ms-label">待分派</div></div>
               <div class="ms-line done"></div>
-              <div class="ms-step"><div class="ms-circle done">完</div><div class="ms-label">处理中</div></div>
+              <div class="ms-step"><div class="ms-circle done">完</div><div class="ms-label">维修中</div></div>
               <div class="ms-line done"></div>
               <div class="ms-step"><div class="ms-circle current">3</div><div class="ms-label">待验收</div></div>
               <div class="ms-line"></div>
@@ -974,7 +974,7 @@
         <div id="rd-list">
         <div class="quick-stats">
           <div class="qs-item active" onclick="setFilter(this,'rd','待分派')"><div class="qs-num">4</div><div class="qs-label">待分派</div></div>
-          <div class="qs-item" onclick="setFilter(this,'rd','处理中')"><div class="qs-num">11</div><div class="qs-label">处理中</div></div>
+          <div class="qs-item" onclick="setFilter(this,'rd','维修中')"><div class="qs-num">11</div><div class="qs-label">维修中</div></div>
           <div class="qs-item" onclick="setFilter(this,'rd','待验收')"><div class="qs-num">3</div><div class="qs-label">待验收</div></div>
           <div class="qs-item" onclick="setFilter(this,'rd','已完成')"><div class="qs-num">28</div><div class="qs-label">已完成</div></div>
         </div>
@@ -1012,7 +1012,7 @@
           </div>
         </div>
 
-        <div class="card danger-attention" data-main="处理中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060009 故障维修 底盘异响 服务站受理超时 JXG-001244 上海嘉定站 天津市冀津贸易有限公司 SLA超时18分钟" onclick="openRdDetail()">
+        <div class="card danger-attention" data-main="维修中" data-sub="受理超时" data-priority="P0" data-search="WO-2026060009 故障维修 底盘异响 服务站受理超时 JXG-001244 上海嘉定站 天津市冀津贸易有限公司 SLA超时18分钟" onclick="openRdDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060009 · 故障维修</div>
@@ -1033,7 +1033,7 @@
           </div>
         </div>
 
-        <div class="card danger-attention" data-main="处理中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060012 车辆事故 前保险杠刮蹭 验收驳回 自检视频缺失 JXG-001280 广州天河站 广州服务站 SLA待重新处理" onclick="openRdDetail()">
+        <div class="card danger-attention" data-main="维修中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060012 车辆事故 前保险杠刮蹭 验收驳回 自检视频缺失 JXG-001280 广州天河站 广州服务站 SLA待重新处理" onclick="openRdDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060012 · 车辆事故</div>
@@ -1054,7 +1054,7 @@
           </div>
         </div>
 
-        <div class="card" data-main="处理中" data-sub="待确认备件" data-priority="P1" data-search="WO-2026060003 故障维修 域控通信异常 备件费用产研承担 待确认备件 JXG-001241 上海浦东站 天津市冀津贸易有限公司 SLA还剩1.5小时" onclick="openRdDetail()">
+        <div class="card" data-main="维修中" data-sub="待确认备件" data-priority="P1" data-search="WO-2026060003 故障维修 域控通信异常 备件费用产研承担 待确认备件 JXG-001241 上海浦东站 天津市冀津贸易有限公司 SLA还剩1.5小时" onclick="openRdDetail()">
           <div class="card-row">
             <div>
               <div class="card-title">WO-2026060003 · 故障维修</div>
@@ -1128,7 +1128,7 @@
             <div class="ms-flow">
               <div class="ms-step"><div class="ms-circle current">1</div><div class="ms-label">待分派</div></div>
               <div class="ms-line"></div>
-              <div class="ms-step"><div class="ms-circle">2</div><div class="ms-label">处理中</div></div>
+              <div class="ms-step"><div class="ms-circle">2</div><div class="ms-label">维修中</div></div>
               <div class="ms-line"></div>
               <div class="ms-step"><div class="ms-circle">3</div><div class="ms-label">待验收</div></div>
               <div class="ms-line"></div>
@@ -1149,7 +1149,7 @@
             <div class="section-title">售后工程师任务</div>
             <div class="task-list">
               <div class="task-item">
-                <div class="task-main"><div class="task-name">分派服务站</div><div class="task-desc">确认推荐服务站是否合适；完成后进入处理中 / 待服务站受理。</div></div>
+                <div class="task-main"><div class="task-name">分派服务站</div><div class="task-desc">确认推荐服务站是否合适；完成后进入维修中 / 待服务站受理。</div></div>
                 <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('分派服务站','无需分派')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('分派服务站')">已完成</button></div>
               </div>
               <div class="task-item">
@@ -1171,7 +1171,7 @@
             <div class="section-title">分派判断</div>
             <div class="info-row"><span class="info-label">距离</span><span>华南一站距站点 4.2km</span></div>
             <div class="info-row"><span class="info-label">能力</span><span>支持故障维修 / 备件齐套</span></div>
-            <div class="info-row"><span class="info-label">当前负载</span><span>3 单处理中，1 单临期</span></div>
+            <div class="info-row"><span class="info-label">当前负载</span><span>3 单维修中，1 单临期</span></div>
             <div class="info-row"><span class="info-label">建议</span><span>可分派，需服务站手动受理</span></div>
           </div>
 
@@ -1181,7 +1181,7 @@
               <div class="timeline-item done"><div class="tl-name">站点提交故障</div><div class="tl-time">09:10</div><div class="tl-desc">车辆无法完成配送，影响站点运营。</div></div>
               <div class="timeline-item current"><div class="tl-name">待分派服务站</div><div class="tl-time">当前</div><div class="tl-desc">该工单类型未开启自动分派，需要售后工程师确认服务站。</div></div>
               <div class="timeline-item"><div class="tl-name">待服务站受理</div></div>
-              <div class="timeline-item"><div class="tl-name">处理中</div></div>
+              <div class="timeline-item"><div class="tl-name">维修中</div></div>
               <div class="timeline-item"><div class="tl-name">待验收</div></div>
             </div>
           </div>
@@ -1218,7 +1218,7 @@
         <div class="form-item"><label class="form-label">分派说明</label><textarea class="form-input" rows="2" placeholder="说明特殊要求"></textarea></div>
         <div style="display:flex;gap:8px;margin-top:12px;">
           <button class="btn btn-default" onclick="closeSheet('rd')">取消</button>
-          <button class="btn btn-primary" onclick="alert('已分派服务站，主状态进入处理中，子状态为待服务站受理');closeSheet('rd')">确认分派</button>
+          <button class="btn btn-primary" onclick="alert('已分派服务站，主状态进入维修中，子状态为待服务站受理');closeSheet('rd')">确认分派</button>
         </div>
       </div>
 
@@ -1305,7 +1305,7 @@ function readCardData(card){
     id: titleParts[0] || 'WO-2026060000',
     type: titleParts[1] || '故障维修',
     desc: card.querySelector('.card-desc')?.innerText?.trim() || '',
-    main: card.dataset.main || '处理中',
+    main: card.dataset.main || '维修中',
     sub: card.dataset.sub || '',
     priority: card.dataset.priority || 'P1',
     vehicle: meta['车号'] || 'JXG-001234',
@@ -1358,7 +1358,7 @@ function renderDetail(role, data){
 }
 
 function renderMasterFlow(main){
-  const states = ['待分派','处理中','待验收','已完成'];
+  const states = ['待分派','维修中','待验收','已完成'];
   const current = Math.max(0, states.indexOf(main));
   const parts = states.map((state, index) => {
     const circleClass = index < current ? 'done' : index === current ? 'current' : '';
@@ -1702,7 +1702,7 @@ function updateSubFilterVisibility(phone){
   if(!phone) return;
   const filters = phone.querySelector('.quick-filters');
   if(!filters) return;
-  const isProcessing = phone.dataset.mainFilter === '处理中';
+  const isProcessing = phone.dataset.mainFilter === '维修中';
   filters.classList.toggle('hidden', !isProcessing);
   if(!isProcessing){
     phone.dataset.quickFilter = '';
@@ -1759,17 +1759,17 @@ function resetMobileFilters(phone){
 
 const FILTER_ENUMS = {
   station: {
-    main: ['处理中','待验收','已完成'],
+    main: ['维修中','待验收','已完成'],
     sub: ['受理超时','待预约上门','验收驳回'],
     priority: ['P0','P1','P2']
   },
   site: {
-    main: ['待分派','处理中','待验收','已完成'],
+    main: ['待分派','维修中','待验收','已完成'],
     sub: ['受理超时','待确认时间','验收驳回'],
     priority: ['P0','P1','P2']
   },
   rd: {
-    main: ['待分派','处理中','待验收','已完成'],
+    main: ['待分派','维修中','待验收','已完成'],
     sub: ['受理超时','待确认备件','验收驳回'],
     priority: ['P0','P1','P2']
   }

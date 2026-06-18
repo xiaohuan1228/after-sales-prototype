@@ -414,7 +414,7 @@
     box-shadow:0 0 0 2px rgba(47,107,237,0.10);
   }
   .stat-cards {
-    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
     gap:10px;
   }
   .stat-card {
@@ -575,6 +575,10 @@
     border-color:#d93025;
   }
   .tag-verify { background:#e8fff4 !important; color:#078245 !important; border-color:#b7ebc6 !important; }
+  .stat-card[data-status="已关闭"]::before { background:#64748b; }
+  .stat-card[data-status="已关闭"].active { border-color:#64748b; background:#f8fafc; }
+  .stat-card[data-status="已关闭"] .stat-value { color:#64748b; }
+  .stat-card[data-status="已关闭"] .stat-label { color:#475569; }
   .tag-rejected { background:#f3f4f6 !important; color:#64748b !important; border-color:#e5e7eb !important; }
   .tag-p0 { background:#fff1f0 !important; color:#d93025 !important; border-color:#f3c5c1 !important; }
   .tag-p1 { background:#fff8e6 !important; color:#9a6a13 !important; border-color:#f0dfad !important; }
@@ -622,8 +626,8 @@
           <div class="stat-card danger" data-status="受理超时" onclick="filterByCard(this,'受理超时')">
             <div class="stat-label">受理超时</div><div class="stat-value" id="cnt-受理超时">0</div>
           </div>
-          <div class="stat-card" data-status="处理中" onclick="filterByCard(this,'处理中')">
-            <div class="stat-label">处理中</div><div class="stat-value" id="cnt-处理中">0</div>
+          <div class="stat-card" data-status="维修中" onclick="filterByCard(this,'维修中')">
+            <div class="stat-label">维修中</div><div class="stat-value" id="cnt-维修中">0</div>
           </div>
           <div class="stat-card purple" data-status="已升级" onclick="filterByCard(this,'已升级')">
             <div class="stat-label">技术支持</div><div class="stat-value" id="cnt-已升级">0</div>
@@ -636,6 +640,9 @@
           </div>
           <div class="stat-card success" data-status="已完成" onclick="filterByCard(this,'已完成')">
             <div class="stat-label">已完成</div><div class="stat-value" id="cnt-已完成">0</div>
+          </div>
+          <div class="stat-card closed" data-status="已关闭" onclick="filterByCard(this,'已关闭')">
+            <div class="stat-label">已关闭</div><div class="stat-value" id="cnt-已关闭">0</div>
           </div>
 
         </div>
@@ -654,8 +661,8 @@
             </div>
           </div>
           <select id="fType"><option value="">工单类型</option></select>
-          <select id="fStatus"><option value="">主状态</option><option>待分派</option><option>处理中</option><option>待验收</option><option>已完成</option><option>已关闭</option></select>
-          <select id="fSub"><option value="">子状态</option><option>待分派</option><option>待服务站受理</option><option>远程诊断中</option><option>备件确认中</option><option>待备件</option><option>备件已齐套</option><option>技术支持中</option><option>待预约上门</option><option>已预约</option><option>待到场</option><option>已到场</option><option>维修中</option><option>维修自检中</option><option>待提交维修结果</option><option>验收驳回</option><option>重新处理中</option><option>待站点验收</option><option>已归档</option><option>服务站拒绝关闭</option></select>
+          <select id="fStatus"><option value="">主状态</option><option>待分派</option><option>维修中</option><option>待验收</option><option>已完成</option><option>已关闭</option></select>
+          <select id="fSub"><option value="">子状态</option><option>待分派</option><option>服务站受理</option><option>远程诊断</option><option>备件确认</option><option>预约上门</option><option>到场维修</option><option>开始维修</option><option>维修自检</option><option>提交维修结果</option><option>待站点验收</option><option>已归档</option><option>服务站拒绝关闭</option></select>
           <select id="fPri"><option value="">优先级</option><option>P0</option><option>P1</option><option>P2</option></select>
           <select id="fSrc"><option value="">来源</option><option>车辆异常</option><option>站点上报</option><option>运营手动</option><option>运营巡检导入</option></select>
           <select id="fOem"><option value="">整车厂</option><option>长安凯程</option><option>东风柳汽</option><option>上汽大通</option></select>
@@ -1847,9 +1854,9 @@ const flowTemplates = {
   },
 
   '软件问题': {
-    master: ['待受理','软件处理中','待验收','验收驳回','已完成'],
+    master: ['待受理','软件维修中','待验收','验收驳回','已完成'],
     sub: ['待服务站接单','诊断中','已升级','维修自检','维修完成'],
-    phases: {'软件处理中':[
+    phases: {'软件维修中':[
       {task:'待服务站接单',sub:'待服务站接单',desc:'技术支持确认接单并开始处理',executor:'',sla:''},
       {task:'诊断中',sub:'诊断中',desc:'对软件问题进行诊断分析',executor:'',sla:''},
       {task:'已升级',sub:'已升级',desc:'软件问题已升级至研发处理',executor:'',sla:''},
@@ -1916,14 +1923,14 @@ function getFlow(type) {
   var base = flowTemplates[type] || flowTemplates['故障维修'];
   var processNodes = (base.processTasks || PROCESS_TASKS).map(function(t){ return Object.assign({}, t); });
   return {
-    master: ['待分派','处理中','待验收','已完成','已关闭'],
+    master: ['待分派','维修中','待验收','已完成','已关闭'],
     sub: processNodes.map(function(t){ return t.step; }),
-    phases: {'处理中': processNodes}
+    phases: {'维修中': processNodes}
   };
 }
 // 兼容旧引用
-const masterStatusList = flowTemplates['故障维修'].master;
-const subStatusList = flowTemplates['故障维修'].sub;
+const masterStatusList = ['待分派','维修中','待验收','已完成','已关闭'];
+const subStatusList = ['服务站受理','远程诊断','备件确认','预约上门','到场维修','开始维修','维修自检','提交维修结果'];
 
 var _typeAutoDispatchMap = {
   '故障维修':'是','现场救援':'是','软件问题':'是','车辆事故':'是','周期保养':'否','车辆批改':'否','车辆整备':'否'
@@ -2192,8 +2199,8 @@ function acceptBlock(o) {
 }
 
 function syncBlock(o) {
-  const diagnosedStates = ['已升级','待配件','待预约','已预约','已到场','维修开始','维修自检','维修完成','-'];
-  const repairedStates = ['维修自检','维修完成'];
+  const diagnosedStates = ['远程诊断','备件确认','预约上门','到场维修','开始维修','维修自检','提交维修结果','已升级','待配件','待预约','已预约','已到场','维修开始','维修完成','-'];
+  const repairedStates = ['维修自检','提交维修结果','维修完成'];
   const subIdx = subStatusList.indexOf(o.sub);
   const diagnosed = (subIdx >= subStatusList.indexOf('服务站诊断中') && subIdx > 0) || diagnosedStates.includes(o.sub);
   const showDiag = diagnosed || o.status === '已完成' || o.status === '待验收';
@@ -2225,7 +2232,7 @@ var costRows = {
 };
 var bearerOptions = ['整车厂责任','运营责任','服务站责任','用户责任'];
 function costBlock(o) {
-  var showRepair = ['维修自检','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
+  var showRepair = ['维修自检','提交维修结果','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
   if(!showRepair) return '';
   var rows = costRows[o.id] || [
     {type:'工时费',  required:true,  item:'', fee:0, bearer:'', note:''},
@@ -2271,7 +2278,7 @@ var partsRows = {};
 var partsBeforeOptions = ['GPS天线','刹车片','传感器','电池模块','制动系统','激光雷达','摄像头模块','车门锁体','轮毂轴承','转向电机'];
 var partsAfterOptions  = ['GPS天线(新)','刹车片(新)','传感器(新)','电池模块(新)','制动总成(新)','激光雷达(新)','摄像头模块(新)','车门锁体(新)','轮毂轴承(新)','转向电机(新)'];
 function partsBlock(o) {
-  var showRepair = ['维修自检','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
+  var showRepair = ['维修自检','提交维修结果','维修完成'].includes(o.sub) || o.status==='待验收' || o.status==='已完成';
   if(!showRepair) return '';
   var rows = partsRows[o.id] || [{before:'',after:'',serial:'',qty:1,fee:'',bearer:'',note:''}];
   var beforeSel = function(v){ return '<select class="cost-select">' +
@@ -2373,58 +2380,63 @@ function priTag(p){ return '<span class="tag tag-'+p.toLowerCase()+'">'+p+'</spa
 var _unifiedStatusMap = {
   '待分派':'待分派',
   '待受理':'待分派',
-  '维修中':'处理中',
-  '处理中':'处理中',
-  '软件处理中':'处理中',
-  '整备中':'处理中',
+  '维修中':'维修中',
+  '维修中':'维修中',
+  '软件维修中':'维修中',
+  '整备中':'维修中',
   '待验收':'待验收',
   '已完成':'已完成',
-  '验收驳回':'处理中',
+  '验收驳回':'维修中',
   '受理驳回':'已关闭',
   '已关闭':'已关闭'
 };
-var _unifiedStatusList = ['待分派','处理中','待验收','已完成','已关闭'];
+var _unifiedStatusList = ['待分派','维修中','待验收','已完成','已关闭'];
 function toUnifiedStatus(s){ return _unifiedStatusMap[s] || s; }
 
 function statusTag(s){
-  var m={'待分派':'pending','处理中':'doing','待验收':'verify','已完成':'done','已关闭':'rejected'};
+  var m={'待分派':'pending','维修中':'doing','待验收':'verify','已完成':'done','已关闭':'rejected'};
   var u = toUnifiedStatus(s);
   var tip = u !== s ? ' title="'+s+'"' : '';
   return '<span class="tag tag-'+(m[u]||'status')+'"'+tip+'>'+u+'</span>';
 }
 
 var PROCESS_TASKS = [
-  {step:'待服务站受理', task:'服务站受理', owner:'服务站', desc:'服务站收到维修任务后确认是否受理'},
-  {step:'远程诊断中', task:'远程诊断', owner:'服务站', desc:'远程排查问题原因，判断是否需要备件、上门或技术支持'},
-  {step:'备件确认中', task:'备件确认', owner:'服务站', desc:'确认备件型号、库存、费用承担方和是否需要调拨'},
-  {step:'待备件', task:'等待备件', owner:'服务站', desc:'备件未齐套，等待采购、调拨或供应商确认'},
-  {step:'备件已齐套', task:'备件齐套', owner:'服务站', desc:'备件已确认可用，可以进入预约或维修'},
-  {step:'技术支持中', task:'技术支持', owner:'售后工程师', desc:'服务站升级至售后工程师或研发团队协助处理'},
-  {step:'待预约上门', task:'预约上门', owner:'服务站', desc:'与站点确认上门维修时间'},
-  {step:'已预约', task:'预约确认', owner:'服务站', desc:'上门时间已确认，等待出发'},
-  {step:'待到场', task:'技师出发', owner:'服务站', desc:'技师准备前往或正在前往现场'},
-  {step:'已到场', task:'到场签到', owner:'服务站', desc:'技师到达现场并完成签到'},
-  {step:'维修中', task:'现场维修', owner:'服务站', desc:'执行现场维修或更换备件'},
-  {step:'维修自检中', task:'维修自检', owner:'服务站', desc:'维修完成后进行自检和试跑验证'},
-  {step:'待提交维修结果', task:'提交维修结果', owner:'服务站', desc:'上传维修结论、费用、图片、换件信息'},
-  {step:'验收驳回', task:'验收驳回处理', owner:'服务站', desc:'站点验收不通过，查看原因并重新处理'},
-  {step:'重新处理中', task:'重新处理', owner:'服务站', desc:'根据驳回原因重新诊断、维修或升级技术支持'}
+  {step:'服务站受理', task:'服务站受理', owner:'服务站', desc:'服务站收到维修任务后确认是否受理'},
+  {step:'远程诊断', task:'远程诊断', owner:'服务站', desc:'远程排查问题原因，判断是否需要备件或上门'},
+  {step:'备件确认', task:'备件确认', owner:'服务站', desc:'确认备件型号、库存、费用承担方和是否需要调拨'},
+  {step:'预约上门', task:'预约上门', owner:'服务站', desc:'与站点确认上门维修时间'},
+  {step:'到场维修', task:'到场维修', owner:'服务站', desc:'技师到达现场并完成到场确认'},
+  {step:'开始维修', task:'开始维修', owner:'服务站', desc:'执行现场维修或更换备件'},
+  {step:'维修自检', task:'维修自检', owner:'服务站', desc:'维修完成后进行自检和试跑验证'},
+  {step:'提交维修结果', task:'提交维修结果', owner:'服务站', desc:'上传维修结论、费用、图片、换件信息'}
 ];
 var PROCESS_TASK_INDEX = {};
 PROCESS_TASKS.forEach(function(t, i){ PROCESS_TASK_INDEX[t.step] = i; });
 var _subAlias = {
   '-':'待分派',
-  '待服务站接单':'待服务站受理',
-  '诊断中':'远程诊断中',
-  '服务站诊断中':'远程诊断中',
-  '确认配件中':'备件确认中',
-  '待配件':'待备件',
-  '已升级':'技术支持中',
-  '待预约':'待预约上门',
-  '待上门':'待到场',
-  '维修开始':'维修中',
-  '维修自检':'维修自检中',
-  '维修完成':'待提交维修结果',
+  '待服务站受理':'服务站受理',
+  '待服务站接单':'服务站受理',
+  '诊断中':'远程诊断',
+  '远程诊断中':'远程诊断',
+  '服务站诊断中':'远程诊断',
+  '确认配件中':'备件确认',
+  '备件确认中':'备件确认',
+  '待配件':'备件确认',
+  '待备件':'备件确认',
+  '备件已齐套':'备件确认',
+  '已升级':'远程诊断',
+  '技术支持中':'远程诊断',
+  '待预约':'预约上门',
+  '待预约上门':'预约上门',
+  '已预约':'预约上门',
+  '待上门':'到场维修',
+  '待到场':'到场维修',
+  '已到场':'到场维修',
+  '维修开始':'开始维修',
+  '维修中':'开始维修',
+  '维修自检中':'维修自检',
+  '维修完成':'提交维修结果',
+  '待提交维修结果':'提交维修结果',
   '待验收':'待站点验收'
 };
 function normalizeSubStatus(s){ return _subAlias[s] || s || '待分派'; }
@@ -2445,7 +2457,7 @@ function ensureOrderTasks(o){
   if(o.status === '待分派') o.sub = '待分派';
   if(o.status === '已完成' && (!o.sub || o.sub === '待分派')) o.sub = '已归档';
   if(o.status === '已关闭' && (!o.sub || o.sub === '待分派')) o.sub = '服务站拒绝关闭';
-  if(o.status === '处理中' && o.sub === '待站点验收') o.sub = '待提交维修结果';
+  if(o.status === '维修中' && o.sub === '待站点验收') o.sub = '提交维修结果';
   var oldDone = (o.subSteps || []).filter(function(s){ return s.endTime; }).map(function(s){ return s.step; });
   if(!o.tasks || !o.tasks.length) o.tasks = buildProcessTaskList(o.sub, oldDone);
   o.subSteps = o.tasks.map(function(t){ return {step:t.step, executor:t.executor || t.owner, startTime:t.startTime, endTime:t.endTime}; });
@@ -2453,15 +2465,15 @@ function ensureOrderTasks(o){
 function normalizeMockOrders(){
   orders.forEach(function(o){ ensureOrderTasks(o); });
   var overrides = {
-    'WO-2026060001': {status:'处理中', sub:'远程诊断中', station:'天津市冀津贸易有限公司', next:'完成远程诊断并进入备件确认'},
+    'WO-2026060001': {status:'维修中', sub:'远程诊断', station:'天津市冀津贸易有限公司', next:'完成远程诊断并进入备件确认'},
     'WO-2026060002': {status:'待分派', sub:'待分派', station:'待分配', next:'售后工单师分派服务站'},
-    'WO-2026060003': {status:'处理中', sub:'技术支持中', next:'售后工程师回传技术结论'},
+    'WO-2026060003': {status:'维修中', sub:'远程诊断', next:'完成远程诊断并进入备件确认'},
     'WO-2026060004': {status:'待验收', sub:'待站点验收', next:'站点负责人验收'},
-    'WO-2026060005': {status:'处理中', sub:'待备件', next:'等待备件齐套后预约上门'},
+    'WO-2026060005': {status:'维修中', sub:'备件确认', next:'确认备件后预约上门'},
     'WO-2026060006': {status:'已完成', sub:'已归档', next:'已归档'},
-    'WO-2026060007': {status:'处理中', sub:'待到场', next:'技师到场签到'},
+    'WO-2026060007': {status:'维修中', sub:'到场维修', next:'技师到场维修'},
     'WO-2026060008': {status:'已关闭', sub:'服务站拒绝关闭', next:'已关闭'},
-    'WO-2026060009': {status:'处理中', sub:'验收驳回', next:'根据验收意见重新处理'}
+    'WO-2026060009': {status:'维修中', sub:'验收驳回', next:'根据验收意见重新处理'}
   };
   orders.forEach(function(o){
     if(overrides[o.id]){
@@ -2473,10 +2485,10 @@ function normalizeMockOrders(){
 }
 function normalizeFlowTemplates(){
   Object.keys(flowTemplates).forEach(function(type){
-    flowTemplates[type].master = ['待分派','处理中','待验收','已完成','已关闭'];
+    flowTemplates[type].master = ['待分派','维修中','待验收','已完成','已关闭'];
     flowTemplates[type].sub = PROCESS_TASKS.map(function(t){ return t.step; });
     flowTemplates[type].phases = {
-      '处理中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })
+      '维修中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })
     };
   });
 }
@@ -2646,12 +2658,12 @@ function updateStatCards(){
     var el = document.getElementById('cnt-'+k);
     if(el) el.innerText = orders.filter(function(o){ return toUnifiedStatus(o.status)===k; }).length;
   });
-  // 受理超时 = 已进入处理中但仍处于待服务站受理，且上报时间距今超过30分钟
+  // 受理超时 = 已进入维修中但仍处于服务站受理，且上报时间距今超过30分钟
   var elTimeout = document.getElementById('cnt-受理超时');
   if(elTimeout){
     var now = new Date();
     elTimeout.innerText = orders.filter(function(o){
-      if(toUnifiedStatus(o.status) !== '处理中' || o.sub !== '待服务站受理') return false;
+      if(toUnifiedStatus(o.status) !== '维修中' || o.sub !== '服务站受理') return false;
       if(!o.reportTime) return false;
       var rt = new Date(o.reportTime.replace(' ','T'));
       if(isNaN(rt)) return false;
@@ -2893,7 +2905,7 @@ function filterByCard(el, status){
   } else if(status === '受理超时'){
     var now = new Date();
     list = orders.filter(function(o){
-      if(toUnifiedStatus(o.status) !== '处理中' || o.sub !== '待服务站受理') return false;
+      if(toUnifiedStatus(o.status) !== '维修中' || o.sub !== '服务站受理') return false;
       if(!o.reportTime) return false;
       var rt = new Date(o.reportTime.replace(' ','T'));
       if(isNaN(rt)) return false;
@@ -3121,7 +3133,7 @@ function syncOrderFromTasks(o){
   if(!o || !o.tasks || !o.tasks.length) return;
   var cur = o.tasks.find(function(t){ return t.status === 'current'; });
   if(!cur) cur = o.tasks.find(function(t){ return t.status !== 'done'; });
-  if(o.status === '处理中' && cur) o.sub = cur.step;
+  if(o.status === '维修中' && cur) o.sub = cur.step;
   o.subSteps = o.tasks.map(function(t){ return {step:t.step, executor:t.executor || t.owner, startTime:t.startTime, endTime:t.endTime}; });
 }
 
@@ -3143,7 +3155,7 @@ function toggleOrderTask(orderId, idx, checked){
       if(o.tasks[i].status === 'done') o.tasks[i].status = 'todo';
     }
   }
-  o.status = '处理中';
+  o.status = '维修中';
   syncOrderFromTasks(o);
   o.lastOp = '运营';
   o.lastOpTime = now;
@@ -3154,7 +3166,7 @@ function toggleOrderTask(orderId, idx, checked){
 function renderSubNodeDetail(nodeName, o, isDone) {
   var html = '';
   // 诊断任务 → 诊断结果
-  if(nodeName === '服务站诊断中' || nodeName === '事故评估中' || nodeName === '日志收集中') {
+  if(nodeName === '远程诊断' || nodeName === '服务站诊断中' || nodeName === '事故评估中' || nodeName === '日志收集中') {
     if(isDone || o.sub === nodeName) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#1890ff;margin-bottom:4px;">诊断结果</div>';
@@ -3169,7 +3181,7 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 预约上门 → 预约时间信息
-  if(nodeName === '已预约' || nodeName === '待预约') {
+  if(nodeName === '预约上门' || nodeName === '已预约' || nodeName === '待预约') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#52c41a;margin-bottom:4px;">预约信息</div>';
@@ -3182,7 +3194,7 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 到场 → 到场时间信息
-  if(nodeName === '已到场') {
+  if(nodeName === '到场维修' || nodeName === '已到场') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#fa8c16;margin-bottom:4px;">到场信息</div>';
@@ -3195,7 +3207,7 @@ function renderSubNodeDetail(nodeName, o, isDone) {
 }
   }
   // 维修任务 → 维修结果
-  if(nodeName === '维修自检' || nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
+  if(nodeName === '维修自检' || nodeName === '提交维修结果' || nodeName === '维修完成' || nodeName === '保养完成' || nodeName === '救援完成' || nodeName === '批改完成' || nodeName === '结论已回传') {
     if(isDone) {
       html = '<div style="margin-top:6px;padding:8px 10px;background:#fafafa;border:1px solid #f0f0f0;border-radius:6px;font-size:11px;">';
       html += '<div style="font-weight:600;color:#52c41a;margin-bottom:4px;">维修结果</div>';
@@ -3329,7 +3341,7 @@ function openDrawer(id){
         '<span style="font-size:13px;font-weight:600;color:#333;">子任务进度</span>' +
         '<button class="btn btn-primary" style="height:26px;padding:0 12px;font-size:12px;border-radius:4px;" onclick="openAdvanceSubModal(\''+id+'\')">推进子单</button>' +
       '</div>' +
-      (o.status==='处理中' ? renderTaskChecklist(o, true) : (function(){ var _allPhases = Object.keys(phases); var _allHtml = ''; _allPhases.forEach(function(ph){ var _pn = phases[ph]||[]; if(_pn.length===0) return; var _phaseColor = ph==='处理中'?'#1890ff':ph==='待验收'?'#52c41a':'#1890ff'; var _isCurrentPhase = (ph === currentPhase); _allHtml += '<div style="margin-bottom:12px;' + (_isCurrentPhase?'':'opacity:0.6;') + '">'; _allHtml += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="width:3px;height:14px;border-radius:2px;background:'+_phaseColor+';display:inline-block;"></span><span style="font-size:12px;font-weight:600;color:'+_phaseColor+';">'+ph+'</span></div>'; _allHtml += '<div class="timeline">'+renderPhaseTimeline(_pn, subStepsMap, o)+'</div>'; _allHtml += '</div>'; }); return _allHtml; })()) +
+      (o.status==='维修中' ? renderTaskChecklist(o, true) : (function(){ var _allPhases = Object.keys(phases); var _allHtml = ''; _allPhases.forEach(function(ph){ var _pn = phases[ph]||[]; if(_pn.length===0) return; var _phaseColor = ph==='维修中'?'#1890ff':ph==='待验收'?'#52c41a':'#1890ff'; var _isCurrentPhase = (ph === currentPhase); _allHtml += '<div style="margin-bottom:12px;' + (_isCurrentPhase?'':'opacity:0.6;') + '">'; _allHtml += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="width:3px;height:14px;border-radius:2px;background:'+_phaseColor+';display:inline-block;"></span><span style="font-size:12px;font-weight:600;color:'+_phaseColor+';">'+ph+'</span></div>'; _allHtml += '<div class="timeline">'+renderPhaseTimeline(_pn, subStepsMap, o)+'</div>'; _allHtml += '</div>'; }); return _allHtml; })()) +
     '</div>' +
     '<div class="detail-card">' + costBlock(o) + partsBlock(o) + '</div>' +
     (acceptBlock(o) ? '<div class="detail-card">' + acceptBlock(o) + '</div>' : '') +
@@ -3339,9 +3351,8 @@ function openDrawer(id){
   var actions = '';
   var us = toUnifiedStatus(o.status);
   if(us==='待分派') actions = '<button class="btn btn-danger" onclick="opAct(\''+o.id+'\',\'关闭\')">关闭工单</button><button class="btn btn-primary" onclick="opAct(\''+o.id+'\',\'分派\')">分派服务站</button><button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
-  else if(us==='处理中') {
+  else if(us==='维修中') {
     actions = '<button class="btn btn-primary" onclick="openAdvanceSubModal(\''+o.id+'\')">推进子单</button>';
-    if(o.sub==='远程诊断中'||o.sub==='备件确认中'||o.sub==='维修中'||o.sub==='维修自检中'||o.sub==='验收驳回') actions += '<button class="btn btn-default" onclick="opAct(\''+o.id+'\',\'技术支持\')">升级技术支持</button>';
     actions += '<button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
   }
   else if(us==='待验收') actions = '<button class="btn btn-danger" onclick="opAct(\''+o.id+'\',\'验收驳回\')">验收驳回</button><button class="btn btn-success" onclick="opAct(\''+o.id+'\',\'验收通过\')">验收通过</button><button class="btn btn-default" onclick="openEditModal(\''+o.id+'\')">编辑工单</button>';
@@ -3365,7 +3376,7 @@ function opAct(id, act){
   if(act === '分派' || act === '受理'){
     // 按流程模板自动生成子单
     var flow = getFlow(o.type);
-    o.status = '处理中';
+    o.status = '维修中';
     // 按当前主状态阶段的 phases 生成子单
     var phaseKey = o.status;
     var phaseNodes = (flow.phases && flow.phases[phaseKey]) ? flow.phases[phaseKey] : [];
@@ -3386,7 +3397,7 @@ function opAct(id, act){
     o.lastOp = '运营';
     o.lastOpTime = nowStr;
     o.next = '服务站确认受理';
-    showToast('工单 ' + id + ' 已分派服务站，进入待服务站受理', 'success');
+    showToast('工单 ' + id + ' 已分派服务站，进入服务站受理', 'success');
   } else if(act === '驳回' || act === '关闭'){
     o.status = '已关闭';
     o.sub = act === '驳回' ? '服务站拒绝关闭' : '取消关闭';
@@ -3400,7 +3411,7 @@ function opAct(id, act){
     o.lastOpTime = formatDate(new Date());
     showToast('工单 ' + id + ' 验收通过，工单已完成', 'success');
   } else if(act === '验收驳回'){
-    o.status = '处理中';
+    o.status = '维修中';
     o.sub = '验收驳回';
     o.tasks = buildProcessTaskList('验收驳回');
     o.lastOp = '运营';
@@ -3409,16 +3420,16 @@ function opAct(id, act){
   } else if(act === '技术支持' || act === '升级复诊'){
     ensureOrderTasks(o);
     var now2 = formatDate(new Date());
-    o.status = '处理中';
-    o.sub = '技术支持中';
+    o.status = '维修中';
+    o.sub = '远程诊断';
     o.tasks.forEach(function(t){
       if(t.status === 'current') { t.status = 'todo'; t.endTime = t.endTime || now2; }
-      if(t.step === '技术支持中') { t.status = 'current'; t.executor = '售后工程师'; t.startTime = t.startTime || now2; t.endTime = null; }
+      if(t.step === '远程诊断') { t.status = 'current'; t.executor = '售后工程师'; t.startTime = t.startTime || now2; t.endTime = null; }
     });
     o.lastOp = '售后工程师';
     o.lastOpTime = now2;
     syncOrderFromTasks(o);
-    showToast('工单 ' + id + ' 已升级至技术支持', 'success');
+    showToast('工单 ' + id + ' 已回到远程诊断', 'success');
   } else {
     showToast('已对工单 ' + id + ' 执行：' + act, 'success');
   }
@@ -3582,7 +3593,7 @@ function submitEdit(){
       endTime: t.endTime || null
     };
   });
-  if(o.status === '处理中') syncOrderFromTasks(o);
+  if(o.status === '维修中') syncOrderFromTasks(o);
   renderTable(orders);
   closeFormPage('edit-back');
   if(!document.getElementById('page-order-detail').classList.contains('hidden')){
@@ -3771,8 +3782,8 @@ function submitNew(){
   var id='WO-2026060' + String(Math.floor(Math.random()*900)+100);
   var now = new Date().toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-');
   var autoDispatch = _typeAutoDispatchMap[t] === '是';
-  var initStatus = autoDispatch ? '处理中' : '待分派';
-  var initSub = autoDispatch ? '待服务站受理' : '待分派';
+  var initStatus = autoDispatch ? '维修中' : '待分派';
+  var initSub = autoDispatch ? '服务站受理' : '待分派';
   var selectedStation = document.getElementById('newStation').value || '待推荐';
   var initStation = autoDispatch ? (selectedStation !== '待推荐' ? selectedStation : '天津市冀津贸易有限公司') : selectedStation;
   var initNext = autoDispatch ? '服务站确认受理' : '售后工单师分派服务站';
@@ -3978,7 +3989,7 @@ function confirmMaintByCustomer(idx){
   // 同步在工单列表中创建保养工单
   var now = new Date();
   var nowStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  var maintOrder = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'处理中', sub:'待服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
+  var maintOrder = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'维修中', sub:'服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
   ensureOrderTasks(maintOrder);
   orders.unshift(maintOrder);
   renderMaintPlan();
@@ -3998,7 +4009,7 @@ function generateMaintOrder(idx){
   // 同步在工单列表中创建保养工单
   var now = new Date();
   var nowStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  var maintOrder2 = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'处理中', sub:'待服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
+  var maintOrder2 = {id:orig.orderId, title:r.planType+' - '+r.vehicle, vehicle:r.vehicle, vin:'-', oem:'长安凯程', site:r.site, type:'周期保养', pri:'P2', status:'维修中', sub:'服务站受理', station:'待分配', sla:'剩余 48 小时', next:'服务站确认受理', desc:r.planType+'保养', reporter:'系统自动', reporterPhone:'-', reporterRole:'系统自动', reportTime:nowStr, reportSrc:'保养计划触发', stationManager:'-', vehicleModel:'miniVan量产车型', vehicleNo:'-', lastOp:'系统自动', lastOpTime:nowStr, affectHours:0, affectDays:0, accidentNo:'-', defectNo:'-', relatedDefect:'-', ccList:[]};
   ensureOrderTasks(maintOrder2);
   orders.unshift(maintOrder2);
   renderMaintPlan();
@@ -4881,8 +4892,8 @@ function openTypeAddModal(){
   document.getElementById('teTypeAutoDispatch').value = '否';
   document.getElementById('teTypeTpl').value = '';
   document.getElementById('teTypeEnabled').checked = true;
-  _teMasterSteps = ['待分派','处理中','待验收','已完成','已关闭'];
-  _tePhases = {'处理中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })};
+  _teMasterSteps = ['待分派','维修中','待验收','已完成','已关闭'];
+  _tePhases = {'维修中': PROCESS_TASKS.map(function(t){ return {task:t.task, sub:t.step, desc:t.desc, executor:t.owner, sla:''}; })};
   renderTePhases();
   document.getElementById('typeEditPageTitle').textContent = '新增工单类型';
   showFormPage('page-type-edit');
@@ -5020,7 +5031,7 @@ function confirmAdvanceSub() {
     }
   }
   // 激活下一子状态
-  o.status = '处理中';
+  o.status = '维修中';
   o.sub = o.tasks[_advanceSubNextIdx].step;
   o.tasks[_advanceSubNextIdx].status = 'current';
   o.tasks[_advanceSubNextIdx].executor = executor;
@@ -5028,7 +5039,7 @@ function confirmAdvanceSub() {
   o.lastOp = executor;
   o.lastOpTime = now;
   syncOrderFromTasks(o);
-  if (o.sub === '待提交维修结果') {
+  if (o.sub === '提交维修结果') {
     o.status = '待验收';
     o.sub = '待站点验收';
     o.tasks[_advanceSubNextIdx].status = 'done';
@@ -5100,7 +5111,7 @@ function renderTePhases() {
   var html = '';
   actionablePhases.forEach(function(phase) {
     var nodes = _tePhases[phase] || [];
-    var phaseColor = phase === '维修中' ? '#1890ff' : phase === '软件处理中' ? '#722ed1' : phase === '整备中' ? '#fa8c16' : phase === '待验收' ? '#52c41a' : '#1890ff';
+    var phaseColor = phase === '维修中' ? '#1890ff' : phase === '软件维修中' ? '#722ed1' : phase === '整备中' ? '#fa8c16' : phase === '待验收' ? '#52c41a' : '#1890ff';
     html += '<div style="border:1px solid #e8e8e8;border-radius:8px;margin-bottom:12px;overflow:hidden;">';
     // 阶段标题栏
     html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,'+phaseColor+'11,'+phaseColor+'22);border-bottom:1px solid #e8e8e8;">';
