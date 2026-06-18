@@ -112,8 +112,15 @@
   .back-btn { color: #555; background: #fff; border: 1px solid #e5e5e5; padding: 3px 9px; border-radius: 14px; font-size: 11px; cursor: pointer; }
   .section { background: #fff; margin: 10px 16px; padding: 12px; border-radius: 10px; border: none; }
   .section-title { font-size: 12px; font-weight: 600; margin-bottom: 9px; color: #333; }
-  .info-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11px; }
-  .info-label { color: var(--muted); }
+  .info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 11px; line-height: 1.45; }
+  .info-row span:last-child { text-align: right; color: #333; word-break: break-word; }
+  .info-label { color: var(--muted); flex: 0 0 auto; }
+  .info-subtitle { margin: 10px 0 5px; font-size: 11px; font-weight: 600; color: #222; }
+  .info-subtitle:first-of-type { margin-top: 0; }
+  .fault-block { margin-top: 4px; padding: 9px; border-radius: 8px; background: #fafafa; border: 1px solid #f0f0f0; }
+  .fault-text { font-size: 12px; line-height: 1.55; color: #333; }
+  .fault-images { display: flex; gap: 7px; margin-top: 8px; overflow-x: auto; padding-bottom: 1px; }
+  .fault-image { width: 64px; height: 58px; flex: 0 0 auto; border-radius: 6px; border: 1px solid #e9e9e9; background: #fff; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; line-height: 1.35; color: #777; }
   /* 时间线 */
   .timeline { position: relative; padding-left: 20px; }
   .timeline-item { position: relative; padding-bottom: 12px; }
@@ -1399,8 +1406,25 @@ function readCardData(card){
     vehicle: meta['车号'] || 'JXG-001234',
     site: meta['站点'] || '北京亦庄站点',
     station: meta['服务站'] || '-',
-    sla: meta['SLA'] || '-'
+    sla: meta['SLA'] || '-',
+    model: 'miniVan量产车型',
+    vin: 'LVGH12345678901001',
+    siteManager: '张伟139****0011',
+    reporter: '张伟139****0011',
+    realtimeLocation: buildRealtimeLocation(meta['站点'] || '北京亦庄站点')
   };
+}
+
+function buildRealtimeLocation(site){
+  const locations = {
+    '北京亦庄站点': '北京市大兴区亦庄经海四路站点停车区',
+    '上海徐汇站': '上海市徐汇区龙漕路车辆待命区',
+    '广州黄埔站': '广州市黄埔区科学城配送站入口',
+    '深圳南山站': '深圳市南山区科技园站点装卸区',
+    '杭州滨江站': '杭州市滨江区物联网街站点停车位',
+    '南京江宁站': '南京市江宁区胜太路站点停车区'
+  };
+  return locations[site] || site + '车辆停靠区';
 }
 
 function renderDetail(role, data){
@@ -1431,12 +1455,27 @@ function renderDetail(role, data){
       </div>
       <div class="section">
         <div class="section-title">工单信息</div>
-        <div class="info-row"><span class="info-label">工单类型</span><span>${escapeHtml(data.type)}</span></div>
-        <div class="info-row"><span class="info-label">问题描述</span><span>${escapeHtml(data.desc)}</span></div>
+        <div class="info-subtitle">车辆信息</div>
         <div class="info-row"><span class="info-label">车辆</span><span>${escapeHtml(data.vehicle)}</span></div>
+        <div class="info-row"><span class="info-label">车型</span><span>${escapeHtml(data.model)}</span></div>
+        <div class="info-row"><span class="info-label">VIN</span><span>${escapeHtml(data.vin)}</span></div>
+        <div class="info-row"><span class="info-label">车辆实时位置</span><span>${escapeHtml(data.realtimeLocation)}</span></div>
+        <div class="info-subtitle">站点与服务信息</div>
+        <div class="info-row"><span class="info-label">工单类型</span><span>${escapeHtml(data.type)}</span></div>
         <div class="info-row"><span class="info-label">站点</span><span>${escapeHtml(data.site)}</span></div>
+        <div class="info-row"><span class="info-label">站点负责人</span><span>${escapeHtml(data.siteManager)}</span></div>
+        <div class="info-row"><span class="info-label">提报人</span><span>${escapeHtml(data.reporter)}</span></div>
         <div class="info-row"><span class="info-label">服务站</span><span>${escapeHtml(data.station)}</span></div>
         <div class="info-row"><span class="info-label">SLA</span><span>${escapeHtml(data.sla)}</span></div>
+        <div class="info-subtitle">故障描述</div>
+        <div class="fault-block">
+          <div class="fault-text">${escapeHtml(data.desc)}</div>
+          <div class="fault-images">
+            <div class="fault-image">现场照片<br>车身右侧</div>
+            <div class="fault-image">故障截图<br>诊断码</div>
+            <div class="fault-image">补充图片<br>站点上传</div>
+          </div>
+        </div>
       </div>
       <div class="section">
         <div class="section-title">操作</div>
