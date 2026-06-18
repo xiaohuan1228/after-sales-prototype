@@ -20,6 +20,17 @@
   .nav-item.active::before { content:''; position:absolute; left:-8px; top:50%; transform:translateY(-50%); width:3px; height:20px; background:#1890ff; border-radius:0 3px 3px 0; }
   .nav-badge { background: #ff4d4f; color: #fff; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 600; animation: badgePulse 2s infinite; }
   @keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,77,79,0.4)} 50%{box-shadow:0 0 0 4px rgba(255,77,79,0)} }
+  /* 子菜单 */
+  .nav-parent { padding: 10px 20px 10px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin: 2px 8px; border-radius: 6px; transition: all 0.2s ease; color: rgba(255,255,255,0.65); font-size: 13px; user-select: none; }
+  .nav-parent:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-parent-arrow { font-size: 10px; transition: transform 0.2s; }
+  .nav-parent.open .nav-parent-arrow { transform: rotate(90deg); }
+  .nav-sub { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+  .nav-sub.open { max-height: 200px; }
+  .nav-sub-item { padding: 8px 20px 8px 40px; cursor: pointer; color: rgba(255,255,255,0.45); font-size: 12px; margin: 1px 8px; border-radius: 6px; transition: all 0.2s; position: relative; }
+  .nav-sub-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+  .nav-sub-item.active { color: #fff; background: linear-gradient(90deg, #1890ff, #096dd9); }
+  .nav-sub-item.active::before { content:''; position:absolute; left:-8px; top:50%; transform:translateY(-50%); width:3px; height:16px; background:#1890ff; border-radius:0 3px 3px 0; }
 
   .main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
   .header { height: 52px; background: #fff; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 0 #f0f0f0; }
@@ -603,6 +614,13 @@
     <div class="nav-item" id="nav-config" onclick="showPage('config')">
       <span>系统配置</span>
     </div>
+    <div class="nav-parent" id="nav-device-parent" onclick="toggleNavSub('device')">
+      <span>设备基础信息管理</span>
+      <span class="nav-parent-arrow">▶</span>
+    </div>
+    <div class="nav-sub" id="nav-device-sub">
+      <div class="nav-sub-item" id="nav-manufacturer" onclick="showPage('manufacturer')">厂商管理</div>
+    </div>
   </aside>
 
   <main class="main">
@@ -1173,6 +1191,110 @@
           </div>
         </div>
       </div>
+
+      <!-- ======== 厂商管理页 ======== -->
+      <div id="page-manufacturer" class="hidden">
+        <div class="page-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>厂商管理</span>
+          <button class="btn btn-primary" onclick="openManufacturerDialog()" style="font-size:12px;padding:6px 16px;">+ 新增厂商</button>
+        </div>
+        <!-- 搜索筛选栏 -->
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+          <input class="form-control" id="mfrSearchKey" placeholder="搜索厂商名称/联系人" style="width:220px;height:32px;font-size:12px;" oninput="renderManufacturerTable()">
+          <select class="form-control" id="mfrStatusFilter" style="width:130px;height:32px;font-size:12px;" onchange="renderManufacturerTable()">
+            <option value="">全部状态</option>
+            <option value="启用">启用</option>
+            <option value="停用">停用</option>
+          </select>
+        </div>
+        <!-- 厂商列表 -->
+        <div style="background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead>
+              <tr style="background:#fafafa;border-bottom:1px solid #e8e8e8;">
+                <th style="padding:10px 12px;text-align:left;font-weight:600;color:#555;">厂商名称</th>
+                <th style="padding:10px 12px;text-align:left;font-weight:600;color:#555;">联系人(主账号)</th>
+                <th style="padding:10px 12px;text-align:left;font-weight:600;color:#555;">手机号</th>
+                <th style="padding:10px 12px;text-align:left;font-weight:600;color:#555;">覆盖区域</th>
+                <th style="padding:10px 12px;text-align:left;font-weight:600;color:#555;">支持车型</th>
+                <th style="padding:10px 12px;text-align:center;font-weight:600;color:#555;">账号数</th>
+                <th style="padding:10px 12px;text-align:center;font-weight:600;color:#555;">状态</th>
+                <th style="padding:10px 12px;text-align:center;font-weight:600;color:#555;">操作</th>
+              </tr>
+            </thead>
+            <tbody id="mfrTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ======== 厂商新增/编辑弹窗 ======== -->
+      <div id="mfrDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:10px;width:560px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,0.15);position:relative;">
+          <div style="padding:18px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
+            <span id="mfrDialogTitle" style="font-size:15px;font-weight:700;color:#111;">新增厂商</span>
+            <span style="cursor:pointer;font-size:18px;color:#999;" onclick="closeManufacturerDialog()">&times;</span>
+          </div>
+          <div style="padding:20px 24px;">
+            <div class="form-item"><label class="form-label">厂商名称 <span style="color:#ff3b36;">*</span></label><input class="form-control" id="mfrName" placeholder="请输入厂商名称"></div>
+            <div class="form-item"><label class="form-label">联系人(主账号) <span style="color:#ff3b36;">*</span></label><input class="form-control" id="mfrContact" placeholder="请输入联系人姓名"></div>
+            <div class="form-item"><label class="form-label">手机号(登录账号) <span style="color:#ff3b36;">*</span></label><input class="form-control" id="mfrPhone" placeholder="请输入手机号"></div>
+            <div class="form-item"><label class="form-label">覆盖区域</label><input class="form-control" id="mfrArea" placeholder="如：华北、华东"></div>
+            <div class="form-item"><label class="form-label">支持车型</label><input class="form-control" id="mfrModels" placeholder="如：miniVan量产车型，多个逗号分隔"></div>
+            <div class="form-item"><label class="form-label">状态</label>
+              <select class="form-control" id="mfrStatus">
+                <option value="启用">启用</option>
+                <option value="停用">停用</option>
+              </select>
+            </div>
+          </div>
+          <div style="padding:14px 24px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:10px;">
+            <button class="btn btn-default" onclick="closeManufacturerDialog()">取消</button>
+            <button class="btn btn-primary" onclick="saveManufacturer()">保存</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 账号管理弹窗 ======== -->
+      <div id="accountDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:10px;width:600px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,0.15);position:relative;">
+          <div style="padding:18px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
+            <span id="accountDialogTitle" style="font-size:15px;font-weight:700;color:#111;">账号管理</span>
+            <span style="cursor:pointer;font-size:18px;color:#999;" onclick="closeAccountDialog()">&times;</span>
+          </div>
+          <div style="padding:20px 24px;" id="accountDialogBody"></div>
+          <div style="padding:14px 24px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:10px;">
+            <button class="btn btn-default" onclick="closeAccountDialog()">关闭</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== 新增角色账号弹窗 ======== -->
+      <div id="addAccountDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:110;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:10px;width:420px;box-shadow:0 8px 30px rgba(0,0,0,0.15);position:relative;">
+          <div style="padding:18px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:15px;font-weight:700;color:#111;">新增角色账号</span>
+            <span style="cursor:pointer;font-size:18px;color:#999;" onclick="closeAddAccountDialog()">&times;</span>
+          </div>
+          <div style="padding:20px 24px;">
+            <div class="form-item"><label class="form-label">姓名 <span style="color:#ff3b36;">*</span></label><input class="form-control" id="accName" placeholder="请输入姓名"></div>
+            <div class="form-item"><label class="form-label">手机号(登录账号) <span style="color:#ff3b36;">*</span></label><input class="form-control" id="accPhone" placeholder="请输入手机号"></div>
+            <div class="form-item"><label class="form-label">角色 <span style="color:#ff3b36;">*</span></label>
+              <select class="form-control" id="accRole">
+                <option value="">请选择角色</option>
+                <option value="技术工程师">技术工程师</option>
+                <option value="维修技师">维修技师</option>
+                <option value="配件管理员">配件管理员</option>
+                <option value="服务顾问">服务顾问</option>
+              </select>
+            </div>
+          </div>
+          <div style="padding:14px 24px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:10px;">
+            <button class="btn btn-default" onclick="closeAddAccountDialog()">取消</button>
+            <button class="btn btn-primary" onclick="saveAccount()">保存</button>
+          </div>
+        </div>
+      </div>
+
       <!-- ======== 新建工单页 ======== -->
       <div id="page-new-order" class="hidden">
         <div class="detail-page-header">
@@ -4022,31 +4144,39 @@ function showPage(p){
   var allPages = ['page-workorder','page-config','page-maint','page-bill',
     'page-order-detail','page-bill-detail',
     'page-new-order','page-edit-order','page-defect','page-batch-order',
-    'page-maint-batch','page-type-edit'];
+    'page-maint-batch','page-type-edit','page-manufacturer'];
   allPages.forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.classList.toggle('hidden', id !== 'page-' + p);
   });
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  document.querySelectorAll('.nav-sub-item').forEach(function(n){n.classList.remove('active');});
   var navEl = document.getElementById('nav-' + p);
   if(navEl) navEl.classList.add('active');
-  var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理' };
+  // 厂商管理属于子菜单，需高亮父菜单
+  if(p==='manufacturer'){
+    document.getElementById('nav-device-parent').classList.add('open');
+    document.getElementById('nav-device-sub').classList.add('open');
+    document.getElementById('nav-manufacturer').classList.add('active');
+  }
+  var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理', manufacturer:'厂商管理' };
   document.getElementById('crumb').innerText = crumbMap[p] || p;
   location.hash = p;
   if(p==='maint') renderMaint();
   if(p==='bill'){ renderBillTable(); updateBillStatCards(); }
+  if(p==='manufacturer') renderManufacturerTable();
 }
 
 // 页面加载时恢复上次所在页
 (function(){
-  var validPages = ['workorder','config','maint','bill'];
+  var validPages = ['workorder','config','maint','bill','manufacturer'];
   var hash = location.hash.replace('#','');
   var initPage = 'workorder';
   // 等 DOM 就绪后执行（script 在 body 末尾，DOM 已可用）
   var allPages = ['page-workorder','page-config','page-maint','page-bill',
     'page-order-detail','page-bill-detail',
     'page-new-order','page-edit-order','page-defect','page-batch-order',
-    'page-maint-batch','page-type-edit'];
+    'page-maint-batch','page-type-edit','page-manufacturer'];
   allPages.forEach(function(id){
     var el = document.getElementById(id);
     if(el) el.classList.toggle('hidden', id !== 'page-' + initPage);
@@ -4056,11 +4186,17 @@ function showPage(p){
     document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
     navEl.classList.add('active');
   }
-  var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理' };
+  if(initPage==='manufacturer'){
+    document.getElementById('nav-device-parent').classList.add('open');
+    document.getElementById('nav-device-sub').classList.add('open');
+    document.getElementById('nav-manufacturer').classList.add('active');
+  }
+  var crumbMap = { workorder:'工单管理', config:'系统配置', maint:'保养管理', bill:'结算单管理', manufacturer:'厂商管理' };
   var crumbEl = document.getElementById('crumb');
   if(crumbEl) crumbEl.innerText = crumbMap[initPage] || initPage;
   if(initPage==='maint') renderMaint();
   if(initPage==='bill'){ renderBillTable(); updateBillStatCards(); }
+  if(initPage==='manufacturer') renderManufacturerTable();
 })();
 function switchTab(el, id){
   el.parentNode.querySelectorAll('.tab-item').forEach(function(t){t.classList.remove('active');});
@@ -5375,6 +5511,210 @@ function initSlaTable() {
   });
 }
 initSlaTable();
+
+// ===== 侧边栏子菜单展开/收起 =====
+function toggleNavSub(group){
+  var parent = document.getElementById('nav-'+group+'-parent');
+  var sub = document.getElementById('nav-'+group+'-sub');
+  if(!parent||!sub) return;
+  var isOpen = parent.classList.contains('open');
+  if(isOpen){
+    parent.classList.remove('open');
+    sub.classList.remove('open');
+  } else {
+    parent.classList.add('open');
+    sub.classList.add('open');
+  }
+}
+
+// ===== 厂商管理数据 =====
+var _manufacturerData = [
+  { id:1, name:'江苏鸿运新能源科技有限公司', contact:'张明远', phone:'13812345678', area:'华东', models:'miniVan量产车型', status:'启用',
+    accounts:[ {name:'张明远',phone:'13812345678',role:'厂商联系人(主账号)',isPrimary:true} ] },
+  { id:2, name:'深圳博达动力系统有限公司', contact:'李志强', phone:'13987654321', area:'华南', models:'miniVan量产车型, 城市物流车', status:'启用',
+    accounts:[ {name:'李志强',phone:'13987654321',role:'厂商联系人(主账号)',isPrimary:true}, {name:'王海涛',phone:'13900001111',role:'技术工程师',isPrimary:false}, {name:'赵鹏飞',phone:'13900002222',role:'维修技师',isPrimary:false} ] },
+  { id:3, name:'北京中科智驱技术有限公司', contact:'陈建华', phone:'13611112222', area:'华北', models:'miniVan量产车型', status:'启用',
+    accounts:[ {name:'陈建华',phone:'13611112222',role:'厂商联系人(主账号)',isPrimary:true}, {name:'刘伟',phone:'13611113333',role:'配件管理员',isPrimary:false} ] },
+  { id:4, name:'成都天府新能汽车技术有限公司', contact:'杨晓峰', phone:'13566667777', area:'西南', models:'城市物流车', status:'停用',
+    accounts:[ {name:'杨晓峰',phone:'13566667777',role:'厂商联系人(主账号)',isPrimary:true} ] },
+];
+var _mfrNextId = 5;
+var _editingMfrId = null;
+var _accountMfrId = null; // 当前管理账号的厂商ID
+
+function renderManufacturerTable(){
+  var key = (document.getElementById('mfrSearchKey').value||'').trim().toLowerCase();
+  var statusF = document.getElementById('mfrStatusFilter').value;
+  var list = _manufacturerData.filter(function(m){
+    if(statusF && m.status!==statusF) return false;
+    if(key && m.name.toLowerCase().indexOf(key)<0 && m.contact.toLowerCase().indexOf(key)<0) return false;
+    return true;
+  });
+  var html = '';
+  list.forEach(function(m){
+    var accCount = m.accounts ? m.accounts.length : 0;
+    var statusTag = m.status==='启用' ? '<span style="background:#e8fff4;color:#078245;padding:2px 8px;border-radius:4px;font-size:11px;">启用</span>' : '<span style="background:#f3f4f6;color:#64748b;padding:2px 8px;border-radius:4px;font-size:11px;">停用</span>';
+    html += '<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s;" onmouseenter="this.style.background=\"#fafafa\"" onmouseleave="this.style.background=\"#fff\"">';
+    html += '<td style="padding:10px 12px;color:#111;font-weight:500;">'+m.name+'</td>';
+    html += '<td style="padding:10px 12px;color:#333;">'+m.contact+'</td>';
+    html += '<td style="padding:10px 12px;color:#333;">'+m.phone+'</td>';
+    html += '<td style="padding:10px 12px;color:#333;">'+m.area+'</td>';
+    html += '<td style="padding:10px 12px;color:#333;">'+m.models+'</td>';
+    html += '<td style="padding:10px 12px;text-align:center;"><a href="javascript:void(0)" onclick="openAccountDialog('+m.id+')" style="color:#1890ff;font-weight:600;text-decoration:none;">'+accCount+'</a></td>';
+    html += '<td style="padding:10px 12px;text-align:center;">'+statusTag+'</td>';
+    html += '<td style="padding:10px 12px;text-align:center;white-space:nowrap;">';
+    html += '<a href="javascript:void(0)" onclick="openAccountDialog('+m.id+')" style="color:#1890ff;font-size:12px;margin-right:10px;">账号</a>';
+    html += '<a href="javascript:void(0)" onclick="editManufacturer('+m.id+')" style="color:#1890ff;font-size:12px;margin-right:10px;">编辑</a>';
+    html += '<a href="javascript:void(0)" onclick="toggleMfrStatus('+m.id+')" style="color:'+(m.status==='启用'?'#ff3b36':'#078245')+';font-size:12px;">'+(m.status==='启用'?'停用':'启用')+'</a>';
+    html += '</td></tr>';
+  });
+  if(!list.length){
+    html = '<tr><td colspan="8" style="padding:40px;text-align:center;color:#bbb;font-size:13px;">暂无数据</td></tr>';
+  }
+  document.getElementById('mfrTableBody').innerHTML = html;
+}
+
+function openManufacturerDialog(){
+  _editingMfrId = null;
+  document.getElementById('mfrDialogTitle').innerText = '新增厂商';
+  document.getElementById('mfrName').value = '';
+  document.getElementById('mfrContact').value = '';
+  document.getElementById('mfrPhone').value = '';
+  document.getElementById('mfrArea').value = '';
+  document.getElementById('mfrModels').value = '';
+  document.getElementById('mfrStatus').value = '启用';
+  document.getElementById('mfrDialog').style.display = 'flex';
+}
+function closeManufacturerDialog(){
+  document.getElementById('mfrDialog').style.display = 'none';
+}
+function editManufacturer(id){
+  var m = _manufacturerData.find(function(x){return x.id===id;});
+  if(!m) return;
+  _editingMfrId = id;
+  document.getElementById('mfrDialogTitle').innerText = '编辑厂商';
+  document.getElementById('mfrName').value = m.name;
+  document.getElementById('mfrContact').value = m.contact;
+  document.getElementById('mfrPhone').value = m.phone;
+  document.getElementById('mfrArea').value = m.area;
+  document.getElementById('mfrModels').value = m.models;
+  document.getElementById('mfrStatus').value = m.status;
+  document.getElementById('mfrDialog').style.display = 'flex';
+}
+function saveManufacturer(){
+  var name = document.getElementById('mfrName').value.trim();
+  var contact = document.getElementById('mfrContact').value.trim();
+  var phone = document.getElementById('mfrPhone').value.trim();
+  var area = document.getElementById('mfrArea').value.trim();
+  var models = document.getElementById('mfrModels').value.trim();
+  var status = document.getElementById('mfrStatus').value;
+  if(!name){showToast('请输入厂商名称','error');return;}
+  if(!contact){showToast('请输入联系人','error');return;}
+  if(!phone){showToast('请输入手机号','error');return;}
+  if(_editingMfrId){
+    var m = _manufacturerData.find(function(x){return x.id===_editingMfrId;});
+    if(m){
+      // 如果联系人或手机号变了，同步更新主账号
+      var primaryAcc = m.accounts.find(function(a){return a.isPrimary;});
+      if(primaryAcc){
+        primaryAcc.name = contact;
+        primaryAcc.phone = phone;
+      }
+      m.name=name; m.contact=contact; m.phone=phone; m.area=area; m.models=models; m.status=status;
+    }
+    showToast('厂商信息已更新','success');
+  } else {
+    var newMfr = { id:_mfrNextId++, name:name, contact:contact, phone:phone, area:area, models:models, status:status,
+      accounts:[ {name:contact, phone:phone, role:'厂商联系人(主账号)', isPrimary:true} ] };
+    _manufacturerData.push(newMfr);
+    showToast('厂商已添加','success');
+  }
+  closeManufacturerDialog();
+  renderManufacturerTable();
+}
+function toggleMfrStatus(id){
+  var m = _manufacturerData.find(function(x){return x.id===id;});
+  if(!m) return;
+  m.status = m.status==='启用'?'停用':'启用';
+  showToast('已'+m.status,'success');
+  renderManufacturerTable();
+}
+
+// ===== 账号管理 =====
+function openAccountDialog(mfrId){
+  _accountMfrId = mfrId;
+  var m = _manufacturerData.find(function(x){return x.id===mfrId;});
+  if(!m) return;
+  document.getElementById('accountDialogTitle').innerText = '账号管理 - '+m.name;
+  renderAccountList();
+  document.getElementById('accountDialog').style.display = 'flex';
+}
+function closeAccountDialog(){
+  document.getElementById('accountDialog').style.display = 'none';
+}
+function renderAccountList(){
+  var m = _manufacturerData.find(function(x){return x.id===_accountMfrId;});
+  if(!m) return;
+  var html = '<div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">';
+  html += '<span style="font-size:13px;color:#555;">共 '+(m.accounts.length)+' 个账号（主账号可登录京小鸽）</span>';
+  html += '<button class="btn btn-primary" onclick="openAddAccountDialog()" style="font-size:12px;padding:4px 14px;">+ 新增角色账号</button>';
+  html += '</div>';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+  html += '<thead><tr style="background:#fafafa;border-bottom:1px solid #e8e8e8;">';
+  html += '<th style="padding:8px 10px;text-align:left;font-weight:600;color:#555;">姓名</th>';
+  html += '<th style="padding:8px 10px;text-align:left;font-weight:600;color:#555;">手机号</th>';
+  html += '<th style="padding:8px 10px;text-align:left;font-weight:600;color:#555;">角色</th>';
+  html += '<th style="padding:8px 10px;text-align:center;font-weight:600;color:#555;">类型</th>';
+  html += '<th style="padding:8px 10px;text-align:center;font-weight:600;color:#555;">操作</th>';
+  html += '</tr></thead><tbody>';
+  m.accounts.forEach(function(acc,idx){
+    var typeTag = acc.isPrimary ? '<span style="background:#e6f7ff;color:#1890ff;padding:2px 6px;border-radius:3px;font-size:10px;">主账号</span>' : '<span style="background:#f0f0f0;color:#666;padding:2px 6px;border-radius:3px;font-size:10px;">子账号</span>';
+    html += '<tr style="border-bottom:1px solid #f5f5f5;">';
+    html += '<td style="padding:8px 10px;color:#111;">'+acc.name+'</td>';
+    html += '<td style="padding:8px 10px;color:#333;">'+acc.phone+'</td>';
+    html += '<td style="padding:8px 10px;color:#333;">'+acc.role+'</td>';
+    html += '<td style="padding:8px 10px;text-align:center;">'+typeTag+'</td>';
+    html += '<td style="padding:8px 10px;text-align:center;">';
+    if(!acc.isPrimary){
+      html += '<a href="javascript:void(0)" onclick="deleteAccount('+idx+')" style="color:#ff3b36;font-size:12px;">删除</a>';
+    } else {
+      html += '<span style="color:#ccc;font-size:12px;">-</span>';
+    }
+    html += '</td></tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('accountDialogBody').innerHTML = html;
+}
+function openAddAccountDialog(){
+  document.getElementById('accName').value = '';
+  document.getElementById('accPhone').value = '';
+  document.getElementById('accRole').value = '';
+  document.getElementById('addAccountDialog').style.display = 'flex';
+}
+function closeAddAccountDialog(){
+  document.getElementById('addAccountDialog').style.display = 'none';
+}
+function saveAccount(){
+  var name = document.getElementById('accName').value.trim();
+  var phone = document.getElementById('accPhone').value.trim();
+  var role = document.getElementById('accRole').value;
+  if(!name){showToast('请输入姓名','error');return;}
+  if(!phone){showToast('请输入手机号','error');return;}
+  if(!role){showToast('请选择角色','error');return;}
+  var m = _manufacturerData.find(function(x){return x.id===_accountMfrId;});
+  if(!m) return;
+  m.accounts.push({ name:name, phone:phone, role:role, isPrimary:false });
+  showToast('角色账号已添加','success');
+  closeAddAccountDialog();
+  renderAccountList();
+}
+function deleteAccount(idx){
+  var m = _manufacturerData.find(function(x){return x.id===_accountMfrId;});
+  if(!m||!m.accounts[idx]||m.accounts[idx].isPrimary) return;
+  m.accounts.splice(idx,1);
+  showToast('账号已删除','success');
+  renderAccountList();
+}
 
 
 </script>

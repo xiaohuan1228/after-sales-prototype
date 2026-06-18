@@ -852,7 +852,7 @@ function renderTable(data) {
         '</div>';
       }).join('');
       html += '<tr onclick="openVehicleDrawer(\''+v.vehicleNo+'\')" style="cursor:pointer;">' +
-        '<td>'+v.brand+'</td>' +
+        '<td style="padding:8px 10px 8px 16px;">'+v.brand+'</td>' +
         '<td>'+v.station+'</td>' +
         '<td style="font-weight:600;">'+v.vehicleNo+'</td>' +
         '<td>'+vehicleStatusTag(vs)+'</td>' +
