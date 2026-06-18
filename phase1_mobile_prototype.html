@@ -148,6 +148,40 @@
   .muted { color: var(--muted); }
   .all-link { font-size: 11px; color: var(--brand); border: 1px solid var(--brand-line); border-radius: 999px; padding: 4px 9px; background: #fff; cursor: pointer; }
   .hidden { display: none !important; }
+  /* 子任务流程链 */
+  .task-chain { display: flex; flex-direction: column; }
+  .chain-item { display: flex; gap: 10px; min-height: 48px; }
+  .chain-left { display: flex; flex-direction: column; align-items: center; flex: 0 0 24px; }
+  .chain-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .chain-done .chain-icon { background: #52c41a; color: #fff; }
+  .chain-current .chain-icon { background: #1890ff; color: #fff; box-shadow: 0 0 0 3px rgba(24,144,255,0.2); }
+  .chain-rejected .chain-icon { background: #ff4d4f; color: #fff; }
+  .chain-todo .chain-icon { background: #f0f0f0; color: #bbb; }
+  .chain-line { width: 2px; flex: 1; background: #e8e8e8; margin: 2px 0; min-height: 8px; }
+  .chain-done .chain-line { background: #b7eb8f; }
+  .chain-body { flex: 1; padding-bottom: 12px; }
+  .chain-name { font-size: 12px; font-weight: 600; color: #17233d; }
+  .chain-status { font-size: 10px; font-weight: 500; margin-left: 6px; padding: 1px 5px; border-radius: 3px; }
+  .chain-done .chain-status { background: #f6ffed; color: #52c41a; }
+  .chain-current .chain-status { background: #e6f7ff; color: #1890ff; }
+  .chain-rejected .chain-status { background: #fff1f0; color: #ff4d4f; }
+  .chain-todo .chain-status { background: #f5f5f5; color: #999; }
+  .chain-desc { font-size: 11px; color: #6b7280; line-height: 1.45; margin-top: 3px; }
+  .chain-result { margin-top: 6px; background: #f9fafb; border-radius: 6px; padding: 8px 10px; }
+  .chain-result-text { font-size: 11px; color: #333; line-height: 1.5; }
+  .chain-result-meta { font-size: 10px; color: #999; margin-top: 4px; }
+  .chain-result-images { display: flex; gap: 6px; margin-top: 6px; }
+  .chain-img-thumb { width: 36px; height: 36px; border-radius: 4px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
+  .chain-detail-btn { font-size: 11px; color: #1890ff; background: none; border: none; cursor: pointer; padding: 2px 0; margin-top: 4px; }
+  .chain-detail-btn:hover { text-decoration: underline; }
+  .chain-result-full { padding: 4px 0; }
+  .chain-result-text-full { font-size: 12px; color: #333; line-height: 1.6; white-space: pre-wrap; }
+  .chain-result-images-full { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chain-img-large { width: 80px; height: 80px; border-radius: 6px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .chain-img-placeholder { font-size: 24px; }
+  .chain-img-label { font-size: 9px; color: #999; margin-top: 2px; }
+  /* 时间线 - 驳回状态 */
+  .timeline-item.rejected:before { background: #ff4d4f; border-color: #ff4d4f; }
   /* 弹窗 */
   .sheet-mask { display: none; position: absolute; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.4); z-index: 50; }
   .sheet-mask.show { display: block; }
@@ -1270,6 +1304,7 @@ function populateDetailFromCard(role, maybeCard){
   const detail = document.getElementById(role + '-detail');
   if(!detail) return;
   const data = readCardData(card);
+  _currentDetailData = data;
   detail.innerHTML = renderDetail(role, data);
 }
 
@@ -1298,7 +1333,6 @@ function readCardData(card){
 
 function renderDetail(role, data){
   const roleTitle = {station:'服务站处理', site:'站点负责人处理', rd:'售后工程师处理'}[role];
-  const sectionTitle = {station:'维修任务 To Do List', site:'站点关注项', rd:'售后工程师任务'}[role];
   return `
     <div class="detail-header">
       <button class="back-btn" onclick="switchView('${role}','list')">返回</button>
@@ -1324,8 +1358,8 @@ function renderDetail(role, data){
       <div class="info-row"><span class="info-label">SLA</span><span>${escapeHtml(data.sla)}</span></div>
     </div>
     <div class="section">
-      <div class="section-title">${sectionTitle}</div>
-      <div class="task-list">${renderTasks(role, data)}</div>
+      <div class="section-title">子任务流程</div>
+      <div class="task-chain">${renderTaskChain(data)}</div>
     </div>
     <div class="section">
       <div class="section-title">流转记录</div>
@@ -1350,142 +1384,171 @@ function renderMasterFlow(main){
   return `<div class="ms-flow">${parts}</div>`;
 }
 
+function renderTaskChain(data){
+  var tasks = buildTaskChain(data);
+  return tasks.map(function(task, i){
+    var statusCls = task.status === '已完成' ? 'chain-done' : task.status === '进行中' ? 'chain-current' : task.status === '驳回' ? 'chain-rejected' : 'chain-todo';
+    var statusIcon = task.status === '已完成' ? '✓' : task.status === '进行中' ? '●' : task.status === '驳回' ? '✗' : '○';
+    var html = '<div class="chain-item ' + statusCls + '">';
+    html += '<div class="chain-left"><div class="chain-icon">' + statusIcon + '</div>' + (i < tasks.length - 1 ? '<div class="chain-line"></div>' : '') + '</div>';
+    html += '<div class="chain-body">';
+    html += '<div class="chain-name">' + escapeHtml(task.name) + ' <span class="chain-status">' + escapeHtml(task.status) + '</span></div>';
+    html += '<div class="chain-desc">' + escapeHtml(task.desc) + '</div>';
+    // 已完成任务展示结果摘要
+    if(task.result && (task.status === '已完成' || task.status === '驳回')){
+      var r = task.result;
+      var shortResult = r.result.length > 40 ? r.result.substring(0, 40) + '...' : r.result;
+      html += '<div class="chain-result">';
+      html += '<div class="chain-result-text">' + escapeHtml(shortResult) + '</div>';
+      if(r.operator) html += '<div class="chain-result-meta">' + escapeHtml(r.operator) + ' · ' + escapeHtml(r.time) + '</div>';
+      if(r.images && r.images.length > 0){
+        html += '<div class="chain-result-images">';
+        r.images.forEach(function(img){
+          html += '<div class="chain-img-thumb" title="' + escapeAttr(img) + '">📷</div>';
+        });
+        html += '</div>';
+      }
+      // 如果内容多，加"查看详情"按钮
+      if(r.result.length > 40 || (r.images && r.images.length > 0)){
+        html += '<button class="chain-detail-btn" onclick="openTaskResultDetail(this, ' + i + ')">查看详情</button>';
+      }
+      html += '</div>';
+    }
+    html += '</div></div>';
+    return html;
+  }).join('');
+}
+
+function openTaskResultDetail(btn, taskIndex){
+  var tasks = buildTaskChain(_currentDetailData || {});
+  var task = tasks[taskIndex];
+  if(!task || !task.result) return;
+  var r = task.result;
+  var phone = btn.closest('.phone');
+  var mask = phone.querySelector('.sheet-mask');
+  var sheet = document.createElement('div');
+  sheet.className = 'sheet temp-result-sheet';
+  sheet.innerHTML = '<div class="sheet-title">' + escapeHtml(task.name) + ' · 完成详情</div>'
+    + '<div class="chain-result-full">'
+    + '<div class="chain-result-text-full">' + escapeHtml(r.result) + '</div>'
+    + (r.operator ? '<div class="chain-result-meta">' + escapeHtml(r.operator) + ' · ' + escapeHtml(r.time) + '</div>' : '')
+    + (r.images && r.images.length > 0 ? '<div class="chain-result-images-full">' + r.images.map(function(img){ return '<div class="chain-img-large"><div class="chain-img-placeholder">📷</div><div class="chain-img-label">' + escapeHtml(img) + '</div></div>'; }).join('') + '</div>' : '')
+    + '</div>'
+    + '<div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-default" onclick="closeTaskResultDetail(this)">关闭</button></div>';
+  phone.appendChild(sheet);
+  if(mask){ mask.classList.add('show'); mask.onclick = function(){ closeTaskResultDetail(sheet); }; }
+  requestAnimationFrame(function(){ sheet.classList.add('show'); });
+}
+
+function closeTaskResultDetail(el){
+  var phone = el.closest('.phone');
+  var mask = phone.querySelector('.sheet-mask');
+  phone.querySelectorAll('.sheet.temp-result-sheet').forEach(function(s){ s.remove(); });
+  if(mask) mask.classList.remove('show');
+}
+
+// 全局变量保存当前详情数据
+var _currentDetailData = {};
+
 function renderTasks(role, data){
-  return getDetailTasks(role, data).map(task => `
-    <div class="task-item">
-      <div class="task-main">
-        <div class="task-name">${escapeHtml(task.name)} <span class="tag">${escapeHtml(task.status)}</span></div>
-        <div class="task-desc">${escapeHtml(task.desc)}</div>
-      </div>
-      <div class="task-actions">${taskActionButtons(task)}</div>
-    </div>
-  `).join('');
+  _currentDetailData = data;
+  return renderTaskChain(data);
 }
 
 function getDetailTasks(role, data){
-  if(role === 'station') return stationTasks(data);
-  if(role === 'site') return siteTasks(data);
-  return rdTasks(data);
+  // 统一子任务流程，所有角色看到相同的完整任务链
+  return buildTaskChain(data);
 }
 
-function stationTasks(data){
-  if(data.main === '待验收') return [
-    doneTask('服务站受理','已按时接收维修任务'),
-    doneTask('远程诊断','已同步诊断结论和故障码'),
-    doneTask('维修处理','已完成维修、自检并提交结果'),
-    currentTask('等待站点验收','等待站点负责人确认维修结果')
-  ];
-  if(data.main === '已完成') return [
-    doneTask('服务站受理','受理记录已归档'),
-    doneTask('维修处理','维修图片、费用、结果已归档'),
-    doneTask('站点验收','站点已验收通过'),
-    doneTask('工单关闭','主工单已完成')
-  ];
-  if(data.sub === '受理超时') return [
-    currentTask('服务站受理','当前任务已超时，系统已提醒服务站负责人'),
-    todoTask('远程诊断','受理完成后进入诊断'),
-    todoTask('备件确认','诊断后确认是否需要备件'),
-    todoTask('预约上门','备件确认后发起预约')
-  ];
-  if(data.sub === '待预约上门') return [
-    doneTask('服务站受理','已接收维修任务'),
-    doneTask('远程诊断','诊断结果为需要维修'),
-    doneTask('备件确认','备件已确认齐套'),
-    currentTask('预约上门','向站点发起上门维修时间')
-  ];
-  if(data.sub === '验收驳回') return [
-    doneTask('维修提交','已提交过维修结果'),
-    currentTask('重新处理','按站点驳回意见补充处理和材料'),
-    todoTask('重新提交验收','补充完成后重新提交站点验收')
-  ];
-  return [
-    doneTask('服务站受理','已接收维修任务'),
-    currentTask(data.sub || '处理任务','完成当前处理节点'),
-    todoTask('提交维修结果','完成后提交站点验收')
-  ];
+// ===== 统一子任务流程配置 =====
+var TASK_CHAIN = [
+  {name:'服务站受理', desc:'确认接收维修任务，系统跟踪受理时效'},
+  {name:'远程诊断', desc:'同步诊断工具结果、故障码、日志和图片'},
+  {name:'备件确认', desc:'确认备件齐套，缺件时进入待备件'},
+  {name:'预约上门', desc:'向站点发起上门时间，等待站点确认'},
+  {name:'到场维修', desc:'服务站技师到达现场开始维修'},
+  {name:'维修自检', desc:'维修完成后技师自检并拍摄照片'},
+  {name:'提交验收', desc:'提交维修结果、图片和费用给站点验收'},
+  {name:'站点验收', desc:'站点负责人确认维修结果'},
+  {name:'工单关闭', desc:'验收通过后工单归档关闭'}
+];
+
+// 各主状态对应的当前步骤索引
+var MAIN_STEP_MAP = {
+  '待分派': -1,
+  '维修中': 0,
+  '待验收': 7,
+  '已完成': 9
+};
+
+// 子状态对应的当前步骤索引
+var SUB_STEP_MAP = {
+  '待服务站受理': 0, '受理超时': 0,
+  '远程诊断中': 1, '诊断中': 1,
+  '待备件确认': 2, '待确认备件': 2, '确认配件中': 2,
+  '待预约上门': 3, '待确认时间': 3,
+  '到场维修': 4, '维修开始': 4,
+  '维修自检': 5, '维修中': 5,
+  '提交验收': 6, '维修完成': 6,
+  '待验收': 7, '待站点验收': 7,
+  '验收驳回': 7,
+  '已完成': 9
+};
+
+// 模拟已完成任务的结果数据
+var TASK_RESULTS = {
+  '服务站受理': {result:'已按时接收维修任务，安排张技师负责', operator:'张技师', time:'2026-06-08 09:05', images:[]},
+  '远程诊断': {result:'GNSS天线松动导致定位漂移，故障码 P0123，需重新固定天线并校准', operator:'张技师', time:'2026-06-08 10:30', images:['故障码截图','诊断日志']},
+  '备件确认': {result:'GNSS模块线束 ×1 已确认齐套，无需额外备件', operator:'陈运营', time:'2026-06-08 11:00', images:[]},
+  '预约上门': {result:'已与站点确认上门时间 2026-06-08 14:00', operator:'陈运营', time:'2026-06-08 12:30', images:[]},
+  '到场维修': {result:'张技师于 14:05 到达北京亦庄站点', operator:'张技师', time:'2026-06-08 14:05', images:[]},
+  '维修自检': {result:'已完成天线固定和信号校准，自检通过，定位精度恢复正常', operator:'张技师', time:'2026-06-08 15:30', images:['维修前','维修中','维修后']},
+  '提交验收': {result:'已提交维修结果：更换GNSS天线组件，校准完成，费用 ¥320', operator:'张技师', time:'2026-06-08 15:38', images:['维修报告','费用清单']},
+  '站点验收': {result:'验收通过，车辆定位恢复正常，可以投入运营', operator:'王站长', time:'2026-06-08 16:10', images:[]},
+  '工单关闭': {result:'工单已归档，维修资料和费用已归档', operator:'系统自动', time:'2026-06-08 16:10', images:[]}
+};
+
+function buildTaskChain(data){
+  var currentIndex = SUB_STEP_MAP[data.sub] !== undefined ? SUB_STEP_MAP[data.sub] : MAIN_STEP_MAP[data.main] !== undefined ? MAIN_STEP_MAP[data.main] : 0;
+  if(data.main === '待分派') currentIndex = -1;
+  if(data.main === '已完成') currentIndex = TASK_CHAIN.length;
+  
+  // 验收驳回特殊处理：站点验收步骤标为驳回
+  var isRejected = (data.sub === '验收驳回');
+  
+  return TASK_CHAIN.map(function(task, i){
+    if(i < currentIndex){
+      // 已完成
+      var result = TASK_RESULTS[task.name];
+      return {name: task.name, desc: task.desc, status:'已完成', result: result};
+    } else if(i === currentIndex){
+      // 当前步骤
+      if(isRejected && task.name === '站点验收'){
+        return {name: task.name, desc: task.desc, status:'驳回', result: {result:'站点验收驳回，要求补充制动异响复测视频并重新提交', operator:'王站长', time:'2026-06-08 16:10', images:['驳回截图']}};
+      }
+      return {name: task.name, desc: task.desc, status:'进行中', result: null};
+    } else {
+      return {name: task.name, desc: task.desc, status:'未开始', result: null};
+    }
+  });
 }
 
-function siteTasks(data){
-  if(data.main === '待分派') return [
-    doneTask('问题提报','站点已提交问题描述、车辆和图片信息'),
-    currentTask('等待分派','等待售后工程师确认服务站'),
-    todoTask('跟进处理','分派后关注服务站受理和上门安排')
-  ];
-  if(data.main === '待验收') return [
-    doneTask('等待维修','服务站已完成处理'),
-    currentTask('站点验收','按维修结果、图片、费用和试跑结果完成验收'),
-    todoTask('验收结论','通过后工单完成，驳回后退回服务站')
-  ];
-  if(data.main === '已完成') return [
-    doneTask('问题提报','原始问题已归档'),
-    doneTask('维修处理','服务站已完成处理'),
-    doneTask('站点验收','验收通过，车辆恢复运营')
-  ];
-  if(data.sub === '待确认时间') return [
-    doneTask('服务站处理','服务站已发起预约'),
-    currentTask('确认上门时间','确认或关闭服务站建议的上门时间'),
-    todoTask('等待到场','确认后等待服务站到场维修')
-  ];
-  if(data.sub === '受理超时') return [
-    doneTask('问题提报','工单已进入处理链路'),
-    currentTask('关注受理超时','关注售后工程师催办或改派结果'),
-    todoTask('确认上门时间','服务站受理后确认上门安排')
-  ];
-  if(data.sub === '验收驳回') return [
-    doneTask('站点验收','已提交驳回原因'),
-    currentTask('等待重新处理','等待服务站补充处理和材料'),
-    todoTask('重新验收','服务站重新提交后再次验收')
-  ];
-  return [currentTask('关注处理进展','查看服务站处理和预计恢复时间')];
-}
-
-function rdTasks(data){
-  if(data.main === '待分派') return [
-    currentTask('分派服务站','确认推荐服务站，必要时手动分派'),
-    todoTask('受理跟踪','分派后跟踪服务站是否超时受理'),
-    todoTask('处理跟进','服务站处理异常时介入')
-  ];
-  if(data.main === '待验收') return [
-    doneTask('服务站处理','维修结果已提交'),
-    currentTask('验收时效跟进','关注站点是否按时验收'),
-    todoTask('异常闭环','若站点驳回，推动服务站重新处理')
-  ];
-  if(data.main === '已完成') return [
-    doneTask('分派/支持','售后侧任务已完成'),
-    doneTask('站点验收','站点验收通过'),
-    doneTask('归档复盘','工单资料已归档')
-  ];
-  if(data.sub === '受理超时') return [
-    currentTask('受理超时处理','催办当前服务站，必要时改派'),
-    todoTask('同步站点','处理结果同步给站点负责人')
-  ];
-  if(data.sub === '待确认备件') return [
-    doneTask('服务站诊断','服务站已提交备件和费用承担建议'),
-    currentTask('确认备件费用','产研承担费用时需售后工程师审批'),
-    todoTask('进入预约维修','审批后流转到服务站预约上门')
-  ];
-  if(data.sub === '验收驳回') return [
-    doneTask('站点驳回','站点已提交驳回原因'),
-    currentTask('驳回跟进','确认补充要求并推动服务站重新提交'),
-    todoTask('重新验收','资料补齐后回到待验收')
-  ];
-  return [currentTask('售后处理','完成当前售后工程师任务')];
-}
-
-function doneTask(name, desc){ return {name, desc, status:'已完成'}; }
-function currentTask(name, desc){ return {name, desc, status:'待处理'}; }
-function todoTask(name, desc){ return {name, desc, status:'未开始'}; }
+function stationTasks(data){ return buildTaskChain(data); }
+function siteTasks(data){ return buildTaskChain(data); }
+function rdTasks(data){ return buildTaskChain(data); }
 
 function taskActionButtons(task){
   if(task.status === '已完成') return '<span class="tag">已完成</span>';
+  if(task.status === '驳回') return '<span class="tag" style="background:#fff1f0;color:#ff4d4f;border-color:#ffa39e;">驳回</span>';
+  if(task.status === '进行中') return '<span class="tag" style="background:#e6f7ff;color:#1890ff;border-color:#91d5ff;">进行中</span>';
   return '';
 }
 
 function renderTimeline(role, data){
-  return getDetailTasks(role, data).map(task => {
-    const cls = task.status === '已完成' ? 'done' : task.status === '待处理' ? 'current' : '';
-    const time = task.status === '已完成' ? '已完成' : task.status === '待处理' ? '当前' : '下一步';
-    return `<div class="timeline-item ${cls}"><div class="tl-name">${escapeHtml(task.name)}</div><div class="tl-time">${time}</div><div class="tl-desc">${escapeHtml(task.desc)}</div></div>`;
+  return buildTaskChain(data).map(function(task){
+    var cls = task.status === '已完成' ? 'done' : task.status === '进行中' ? 'current' : task.status === '驳回' ? 'rejected' : '';
+    var time = task.status === '已完成' ? (task.result ? task.result.time || '已完成' : '已完成') : task.status === '进行中' ? '当前' : task.status === '驳回' ? '驳回' : '下一步';
+    return '<div class="timeline-item ' + cls + '"><div class="tl-name">' + escapeHtml(task.name) + '</div><div class="tl-time">' + time + '</div><div class="tl-desc">' + escapeHtml(task.desc) + '</div></div>';
   }).join('');
 }
 
