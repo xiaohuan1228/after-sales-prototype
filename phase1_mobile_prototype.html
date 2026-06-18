@@ -300,8 +300,8 @@
               <span class="meta-item">SLA：已超时 8 分钟</span>
             </div>
             <div class="card-actions">
-              <button class="btn btn-default" onclick="event.stopPropagation();openTaskClose('受理任务','无需受理')">已关闭</button>
-              <button class="btn btn-primary" onclick="event.stopPropagation();openTaskComplete('服务站受理')">已完成</button>
+              
+              
             </div>
           </div>
 
@@ -321,9 +321,7 @@
               <span class="meta-item">SLA：备件预计明日到货</span>
             </div>
             <div class="card-actions">
-              <button class="btn btn-default" onclick="openTaskClose('备件确认','无需备件')">已关闭</button>
-              <button class="btn btn-primary" onclick="openTaskComplete('备件确认')">已完成</button>
-            </div>
+              </div>
           </div>
 
           <div class="card" data-main="维修中" data-sub="待预约上门" data-priority="P1" data-search="WO-2026060007 故障维修 传感器读数异常 预约上门 JXG-001270 上海徐汇站 天津市冀津贸易有限公司 SLA今日14:30" onclick="openStationDetail()">
@@ -342,9 +340,7 @@
               <span class="meta-item">SLA：ETA 14:30</span>
             </div>
             <div class="card-actions">
-              <button class="btn btn-default" onclick="openTaskClose('预约上门','无需上门')">已关闭</button>
-              <button class="btn btn-primary" onclick="openTaskComplete('预约上门时间')">已完成</button>
-            </div>
+              </div>
           </div>
 
           <div class="card danger-attention" data-main="维修中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060010 故障维修 制动异响 验收驳回 需重新处理 JXG-001255 北京通州站 天津市冀津贸易有限公司 SLA待重新提交" onclick="openStationDetail()">
@@ -363,9 +359,7 @@
               <span class="meta-item">SLA：待重新提交</span>
             </div>
             <div class="card-actions">
-              <button class="btn btn-default" onclick="openTaskClose('重新处理','无需继续处理')">已关闭</button>
-              <button class="btn btn-success" onclick="openTaskComplete('重新处理')">已完成</button>
-            </div>
+              </div>
           </div>
 
           <div class="card" data-main="待验收" data-sub="待验收" data-priority="P1" data-search="WO-2026060016 故障维修 摄像头离线 维修结果已提交 JXG-001299 杭州滨江站 天津市冀津贸易有限公司 SLA等待站点验收" onclick="openStationDetail()">
@@ -438,19 +432,19 @@
             <div class="task-list">
               <div class="task-item">
                 <div class="task-main"><div class="task-name">服务站受理</div><div class="task-desc">确认接收维修任务；系统跟踪受理时效，超时触发提醒</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('服务站受理','无法承接')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('服务站受理')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">远程诊断</div><div class="task-desc">同步诊断工具结果、故障码、日志和图片</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('远程诊断','无需诊断')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('远程诊断')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">备件确认</div><div class="task-desc">确认备件齐套；缺件时进入待备件</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('备件确认','无需备件')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('备件确认')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">预约上门时间</div><div class="task-desc">向站点发起上门时间，等待站点确认</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('预约上门','无需上门')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('预约上门时间')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
             </div>
             <button class="all-link" style="margin-top:10px;" onclick="openSheet('sheetEditTasks')">编辑自定义任务</button>
@@ -474,8 +468,7 @@
             <div class="section-title">操作</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
               <button class="btn btn-default" onclick="openSheet('sheetUpgrade')">升级技术支持</button>
-              <button class="btn btn-primary" onclick="openTaskComplete('服务站受理')">已完成</button>
-            </div>
+              </div>
           </div>
 
           <div class="section">
@@ -762,9 +755,7 @@
             <span class="meta-item">SLA：待站点确认</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-default" onclick="openTaskClose('预约确认','需要改期')">已关闭</button>
-            <button class="btn btn-primary" onclick="openTaskComplete('预约确认')">已完成</button>
-          </div>
+            </div>
         </div>
 
         <div class="card" data-main="待验收" data-sub="待验收" data-priority="P1" data-search="WO-2026060004 故障维修 制动异常 维修完成 JXG-001255 北京通州站 天津市冀津贸易有限公司 SLA剩余4小时" onclick="openSiteDetail()">
@@ -783,9 +774,7 @@
             <span class="meta-item">SLA：剩余 4 小时</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-danger" onclick="openTaskClose('站点验收','验收驳回')">已关闭</button>
-            <button class="btn btn-success" onclick="openTaskComplete('站点验收')">已完成</button>
-          </div>
+            </div>
         </div>
 
         <div class="card danger-attention" data-main="维修中" data-sub="验收驳回" data-priority="P1" data-search="WO-2026060012 车辆事故 前保险杠刮蹭 自检视频缺失 JXG-001280 广州天河站 广州服务站 SLA待重新提交" onclick="openSiteDetail()">
@@ -858,15 +847,15 @@
             <div class="task-list">
               <div class="task-item">
                 <div class="task-main"><div class="task-name">确认上门时间</div><div class="task-desc">服务站建议 06-17 14:30-16:00 到场，站点可确认或关闭该预约任务。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('确认上门时间','需要改期')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('确认上门时间')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">站点验收</div><div class="task-desc">按维修结果、图片、费用和试跑结果完成验收。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('站点验收','验收驳回')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('站点验收')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">补充验收意见</div><div class="task-desc">验收驳回时填写原因，并同步退回服务站补充资料。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('验收意见','无需补充')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('验收意见')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
             </div>
           </div>
@@ -1007,8 +996,6 @@
             <span class="meta-item">SLA：剩余 38 分钟</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-default" onclick="openTaskClose('分派任务','无需分派')">已关闭</button>
-            <button class="btn btn-primary" onclick="openTaskComplete('分派任务')">已完成</button>
           </div>
         </div>
 
@@ -1028,8 +1015,6 @@
             <span class="meta-item" style="color:#b91c1c;">SLA：已超时 18 分钟</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-default" onclick="openTaskClose('受理超时处理','无需继续处理')">已关闭</button>
-            <button class="btn btn-primary" onclick="openTaskComplete('受理超时处理')">已完成</button>
           </div>
         </div>
 
@@ -1049,8 +1034,6 @@
             <span class="meta-item">SLA：待重新处理</span>
           </div>
           <div class="card-actions">
-            <button class="btn btn-default" onclick="openTaskClose('验收驳回处理','无需继续处理')">已关闭</button>
-            <button class="btn btn-primary" onclick="openTaskComplete('验收驳回处理')">已完成</button>
           </div>
         </div>
 
@@ -1075,8 +1058,6 @@
             <div><strong>已上传：</strong>诊断日志包.zip · 故障码截图 · 服务站说明</div>
           </div>
           <div class="card-actions">
-            <button class="btn btn-default" onclick="openTaskClose('备件确认','无需产研承担')">已关闭</button>
-            <button class="btn btn-primary" onclick="openTaskComplete('备件确认')">已完成</button>
           </div>
         </div>
 
@@ -1150,19 +1131,19 @@
             <div class="task-list">
               <div class="task-item">
                 <div class="task-main"><div class="task-name">分派服务站</div><div class="task-desc">确认推荐服务站是否合适；完成后进入维修中 / 待服务站受理。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('分派服务站','无需分派')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('分派服务站')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">受理超时处理</div><div class="task-desc">服务站超时未受理时，催办、改派或关闭该处理任务。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('受理超时处理','无需继续处理')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('受理超时处理')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">技术支持结论</div><div class="task-desc">服务站升级后，回传诊断结论、建议动作和是否转研发缺陷。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('技术支持结论','无需技术支持')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('技术支持结论')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
               <div class="task-item">
                 <div class="task-main"><div class="task-name">验收驳回跟进</div><div class="task-desc">站点驳回后确认补充要求，并推动服务站重新提交。</div></div>
-                <div class="task-actions"><button class="btn btn-default" onclick="openTaskClose('验收驳回跟进','无需继续处理')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('验收驳回跟进')">已完成</button></div>
+                <div class="task-actions"></div>
               </div>
             </div>
           </div>
@@ -1497,7 +1478,7 @@ function todoTask(name, desc){ return {name, desc, status:'未开始'}; }
 
 function taskActionButtons(task){
   if(task.status === '已完成') return '<span class="tag">已完成</span>';
-  return `<button class="btn btn-default" onclick="openTaskClose('${escapeAttr(task.name)}','无需操作')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('${escapeAttr(task.name)}')">已完成</button>`;
+  return '';
 }
 
 function renderTimeline(role, data){
@@ -1510,11 +1491,10 @@ function renderTimeline(role, data){
 
 function renderDetailActions(role, data){
   if(data.main === '已完成') return `<button class="btn btn-default" onclick="alert('已打开归档资料')">查看归档</button><button class="btn btn-default" onclick="alert('已打开处理记录')">处理记录</button>`;
-  if(data.main === '待验收') return `<button class="btn btn-default" onclick="openTaskClose('验收任务','验收驳回')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('验收任务')">已完成</button>`;
-  if(role === 'rd' && data.main === '待分派') return `<button class="btn btn-default" onclick="openTaskClose('分派服务站','无需分派')">已关闭</button><button class="btn btn-primary" onclick="openSheet('sheetAssign')">去分派</button>`;
+  if(data.main === '待验收') return '';
+  if(role === 'rd' && data.main === '待分派') return `<button class="btn btn-primary" onclick="openSheet('sheetAssign')">去分派</button>`;
   if(role === 'site' && data.main === '待分派') return `<button class="btn btn-default" onclick="alert('已打开提报详情')">查看提报</button><button class="btn btn-default" onclick="alert('已提醒售后工程师分派')">提醒分派</button>`;
-  const taskName = data.sub || data.main;
-  return `<button class="btn btn-default" onclick="openTaskClose('${escapeAttr(taskName)}','无需继续处理')">已关闭</button><button class="btn btn-primary" onclick="openTaskComplete('${escapeAttr(taskName)}')">已完成</button>`;
+  return '';
 }
 
 function priorityClass(priority){
