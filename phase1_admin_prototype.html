@@ -455,8 +455,10 @@
     box-shadow:0 0 0 2px rgba(47,107,237,0.10);
   }
   .stat-cards {
-    grid-template-columns: repeat(4, minmax(120px, 1fr));
     gap:10px;
+  }
+  #statCards {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
   }
   .stat-card {
     padding:13px 14px 12px;
@@ -623,10 +625,6 @@
     border-color:#d93025;
   }
   .tag-verify { background:#e8fff4 !important; color:#078245 !important; border-color:#b7ebc6 !important; }
-  .stat-card[data-status="已关闭"]::before { background:#64748b; }
-  .stat-card[data-status="已关闭"].active { border-color:#64748b; background:#f8fafc; }
-  .stat-card[data-status="已关闭"] .stat-value { color:#64748b; }
-  .stat-card[data-status="已关闭"] .stat-label { color:#475569; }
   .tag-rejected { background:#f3f4f6 !important; color:#64748b !important; border-color:#e5e7eb !important; }
   .tag-p0 { background:#fff1f0 !important; color:#d93025 !important; border-color:#f3c5c1 !important; }
   .tag-p1 { background:#fff8e6 !important; color:#9a6a13 !important; border-color:#f0dfad !important; }
@@ -651,11 +649,11 @@
       <div class="nav-sub-item" id="nav-bill" onclick="showPage('bill')">结算单管理</div>
       <div class="nav-sub-item" id="nav-config" onclick="showPage('config')">系统配置</div>
     </div>
-    <div class="nav-parent" id="nav-device-parent" onclick="toggleNavSub('device')">
+    <div class="nav-parent open" id="nav-device-parent" onclick="toggleNavSub('device')">
       <span>设备基础信息管理</span>
       <span class="nav-parent-arrow">▶</span>
     </div>
-    <div class="nav-sub" id="nav-device-sub">
+    <div class="nav-sub open" id="nav-device-sub">
       <div class="nav-sub-item" id="nav-manufacturer" onclick="showPage('manufacturer')">厂商管理</div>
     </div>
   </aside>
@@ -696,10 +694,6 @@
           <div class="stat-card success" data-status="已完成" onclick="filterByCard(this,'已完成')">
             <div class="stat-label">已完成</div><div class="stat-value" id="cnt-已完成">0</div>
           </div>
-          <div class="stat-card closed" data-status="已关闭" onclick="filterByCard(this,'已关闭')">
-            <div class="stat-label">已关闭</div><div class="stat-value" id="cnt-已关闭">0</div>
-          </div>
-
         </div>
 
         <div class="filter-bar">
