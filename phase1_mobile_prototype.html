@@ -180,6 +180,8 @@
   .chain-img-large { width: 80px; height: 80px; border-radius: 6px; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .chain-img-placeholder { font-size: 24px; }
   .chain-img-label { font-size: 9px; color: #999; margin-top: 2px; }
+  .chain-action-row { margin-top: 8px; display: flex; gap: 8px; }
+  .chain-action-row .btn { flex: 0 0 auto; min-width: 72px; }
   /* 时间线 - 驳回状态 */
   .timeline-item.rejected:before { background: #ff4d4f; border-color: #ff4d4f; }
   /* 弹窗 */
@@ -313,7 +315,6 @@
   .detail-tab.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 2px; background: var(--brand); border-radius: 1px; }
   .detail-tab-panel { display: none; }
   .detail-tab-panel.active { display: block; }
-</style>
 </head>
 <body>
 
@@ -1503,8 +1504,8 @@ function renderMasterFlow(main){
 function renderTaskChain(data){
   var tasks = buildTaskChain(data);
   return tasks.map(function(task, i){
-    var statusCls = task.status === '已完成' ? 'chain-done' : task.status === '进行中' ? 'chain-current' : task.status === '驳回' ? 'chain-rejected' : 'chain-todo';
-    var statusIcon = task.status === '已完成' ? '✓' : task.status === '进行中' ? '●' : task.status === '驳回' ? '✗' : '○';
+    var statusCls = task.status === '已完成' ? 'chain-done' : task.status === '待处理' ? 'chain-current' : task.status === '驳回' ? 'chain-rejected' : 'chain-todo';
+    var statusIcon = task.status === '已完成' ? '✓' : task.status === '待处理' ? '●' : task.status === '驳回' ? '✗' : '○';
     var html = '<div class="chain-item ' + statusCls + '">';
     html += '<div class="chain-left"><div class="chain-icon">' + statusIcon + '</div>' + (i < tasks.length - 1 ? '<div class="chain-line"></div>' : '') + '</div>';
     html += '<div class="chain-body">';
@@ -1530,9 +1531,64 @@ function renderTaskChain(data){
       }
       html += '</div>';
     }
+    if(task.status === '待处理'){
+      html += '<div class="chain-action-row"><button class="btn btn-primary" onclick="openCurrentTaskComplete(this, ' + i + ')">完成</button></div>';
+    }
     html += '</div></div>';
     return html;
   }).join('');
+}
+
+function openCurrentTaskComplete(btn, taskIndex){
+  var tasks = buildTaskChain(_currentDetailData || {});
+  var task = tasks[taskIndex];
+  if(!task) return;
+  var phone = btn.closest('.phone');
+  var mask = phone.querySelector('.sheet-mask');
+  phone.querySelectorAll('.sheet.temp-current-task-sheet').forEach(function(s){ s.remove(); });
+  var isSchedule = task.name === '预约上门';
+  var sheet = document.createElement('div');
+  sheet.className = 'sheet temp-current-task-sheet';
+  sheet.innerHTML = '<div class="sheet-title">' + escapeHtml(task.name) + ' · 完成</div>'
+    + (isSchedule ? '<div class="form-item"><label class="form-label">预计上门时间（必填）</label><input class="form-input" id="currentTaskVisitTime" type="datetime-local" value="2026-06-18T14:30"></div>' : '')
+    + '<div class="form-item"><label class="form-label">处理批注（必填）</label><textarea class="form-input" id="currentTaskComment" rows="3" placeholder="请填写本次任务处理说明、诊断结论或完成情况"></textarea></div>'
+    + '<div class="form-item"><label class="form-label">完成图片（必填，支持批量上传）</label><input class="form-input" id="currentTaskImages" type="file" accept="image/*" multiple><div class="photo-grid"><div class="photo-slot">上传</div><div class="photo-slot">上传</div><div class="photo-slot">新增</div></div></div>'
+    + '<div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-default" onclick="closeCurrentTaskComplete(this)">取消</button><button class="btn btn-primary" onclick="submitCurrentTaskComplete(this, ' + taskIndex + ')">确认完成</button></div>';
+  phone.appendChild(sheet);
+  if(mask){ mask.classList.add('show'); mask.onclick = function(){ closeCurrentTaskComplete(sheet); }; }
+  requestAnimationFrame(function(){ sheet.classList.add('show'); });
+}
+
+function closeCurrentTaskComplete(el){
+  var phone = el.closest('.phone');
+  var mask = phone.querySelector('.sheet-mask');
+  phone.querySelectorAll('.sheet.temp-current-task-sheet').forEach(function(s){ s.remove(); });
+  if(mask) mask.classList.remove('show');
+}
+
+function submitCurrentTaskComplete(el, taskIndex){
+  var sheet = el.closest('.sheet');
+  var tasks = buildTaskChain(_currentDetailData || {});
+  var task = tasks[taskIndex];
+  var comment = sheet.querySelector('#currentTaskComment')?.value?.trim();
+  var images = sheet.querySelector('#currentTaskImages')?.files || [];
+  var visitTime = sheet.querySelector('#currentTaskVisitTime')?.value;
+  if(task && task.name === '预约上门' && !visitTime){
+    alert('请选择预计上门时间');
+    return;
+  }
+  if(!comment){
+    alert('请填写处理批注');
+    return;
+  }
+  if(!images.length){
+    alert('请上传完成图片');
+    return;
+  }
+  var message = task.name + '已完成，处理批注和完成图片已保存';
+  if(task.name === '预约上门') message += '，预计上门时间：' + visitTime.replace('T', ' ');
+  alert(message);
+  closeCurrentTaskComplete(el);
 }
 
 function openTaskResultDetail(btn, taskIndex){
@@ -1677,7 +1733,7 @@ function buildTaskChain(data){
       if(isRejected && task.name === '站点验收'){
         return {name: task.name, desc: task.desc, status:'驳回', result: {result:'站点验收驳回，要求补充制动异响复测视频并重新提交', operator:'王站长', time:'2026-06-08 16:10', images:['驳回截图']}};
       }
-      return {name: task.name, desc: task.desc, status:'进行中', result: null};
+      return {name: task.name, desc: task.desc, status:'待处理', result: null};
     } else {
       return {name: task.name, desc: task.desc, status:'未开始', result: null};
     }
@@ -1691,19 +1747,20 @@ function rdTasks(data){ return buildTaskChain(data); }
 function taskActionButtons(task){
   if(task.status === '已完成') return '<span class="tag">已完成</span>';
   if(task.status === '驳回') return '<span class="tag" style="background:#fff1f0;color:#ff4d4f;border-color:#ffa39e;">驳回</span>';
-  if(task.status === '进行中') return '<span class="tag" style="background:#e6f7ff;color:#1890ff;border-color:#91d5ff;">进行中</span>';
+  if(task.status === '待处理') return '<span class="tag" style="background:#e6f7ff;color:#1890ff;border-color:#91d5ff;">待处理</span>';
   return '';
 }
 
 function renderTimeline(role, data){
   return buildTaskChain(data).map(function(task){
-    var cls = task.status === '已完成' ? 'done' : task.status === '进行中' ? 'current' : task.status === '驳回' ? 'rejected' : '';
-    var time = task.status === '已完成' ? (task.result ? task.result.time || '已完成' : '已完成') : task.status === '进行中' ? '当前' : task.status === '驳回' ? '驳回' : '下一步';
+    var cls = task.status === '已完成' ? 'done' : task.status === '待处理' ? 'current' : task.status === '驳回' ? 'rejected' : '';
+    var time = task.status === '已完成' ? (task.result ? task.result.time || '已完成' : '已完成') : task.status === '待处理' ? '当前' : task.status === '驳回' ? '驳回' : '下一步';
     return '<div class="timeline-item ' + cls + '"><div class="tl-name">' + escapeHtml(task.name) + '</div><div class="tl-time">' + time + '</div><div class="tl-desc">' + escapeHtml(task.desc) + '</div></div>';
   }).join('');
 }
 
 function renderDetailActions(role, data){
+  if(role === 'station') return `<button class="btn btn-default" onclick="openSheet('sheetUpgrade')">上升技术支持</button><button class="btn btn-primary" onclick="openSheet('sheetSubmit')">提交验收</button>`;
   if(data.main === '已完成') return `<button class="btn btn-default" onclick="alert('已打开归档资料')">查看归档</button><button class="btn btn-default" onclick="alert('已打开处理记录')">处理记录</button>`;
   if(data.main === '待验收') return '';
   if(role === 'rd' && data.main === '待分派') return `<button class="btn btn-primary" onclick="openSheet('sheetAssign')">去分派</button>`;
