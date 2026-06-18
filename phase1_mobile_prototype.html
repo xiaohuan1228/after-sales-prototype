@@ -274,7 +274,7 @@
   .profile-field textarea { width:100%; border:1px solid #eeeeee; background:#fafafa; border-radius:7px; padding:8px 9px; font-size:12px; color:#222; outline:none; }
   .profile-field textarea { resize:vertical; min-height:58px; line-height:1.5; }
   .service-tags { display:flex; flex-wrap:wrap; gap:6px; }
-  .service-tag { border:1px solid #eeeeee; background:#fafafa; color:#555; border-radius:999px; padding:4px 8px; font-size:10px; }
+  .service-tag { border:1px solid var(--brand-line,#eee); background:var(--brand-soft,#f0f5ff); color:var(--brand,#ff3b36); border-radius:999px; padding:4px 8px; font-size:10px; }
   .staff-list { display:flex; flex-direction:column; gap:8px; }
   .staff-item { display:flex; align-items:center; justify-content:space-between; gap:9px; padding:9px 0; border-bottom:1px solid #f1f1f1; }
   .staff-item:last-child { border-bottom:none; }
@@ -612,17 +612,24 @@
               </div>
               <div class="profile-field">
                 <label>服务能力</label>
-                <textarea id="stationServiceInput">故障维修、周期保养、远程诊断、备件更换、事故维修</textarea>
+                <div style="position:relative;" id="serviceSelectWrap">
+                  <div id="serviceSelectDisplay" onclick="toggleServiceSelect()" style="width:100%;border:1px solid #eeeeee;background:#fafafa;border-radius:7px;padding:8px 9px;font-size:12px;color:#222;min-height:36px;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+                    <span class="service-tag" data-val="拖车救援">拖车救援</span>
+                    <span class="service-tag" data-val="故障维修">故障维修</span>
+                    <span class="service-tag" data-val="周期保养">周期保养</span>
+                    <span class="service-tag" data-val="事故维修（钣喷）">事故维修（钣喷）</span>
+                  </div>
+                  <div id="serviceSelectDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:50;margin-top:2px;overflow:hidden;">
+                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="拖车救援" onchange="updateServiceSelect()" checked> 拖车救援</label>
+                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="故障维修" onchange="updateServiceSelect()" checked> 故障维修</label>
+                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;border-bottom:1px solid #f5f5f5;" onclick="event.stopPropagation()"><input type="checkbox" value="周期保养" onchange="updateServiceSelect()" checked> 周期保养</label>
+                    <label style="display:flex;align-items:center;padding:9px 12px;gap:8px;font-size:12px;color:#333;cursor:pointer;" onclick="event.stopPropagation()"><input type="checkbox" value="事故维修（钣喷）" onchange="updateServiceSelect()" checked> 事故维修（钣喷）</label>
+                  </div>
+                </div>
               </div>
               <div class="profile-field">
                 <label>地理位置</label>
                 <input id="stationLocationInput" value="天津市武清区京津科技谷产业园 6 号库">
-              </div>
-              <div class="service-tags">
-                <span class="service-tag">故障维修</span>
-                <span class="service-tag">周期保养</span>
-                <span class="service-tag">远程诊断</span>
-                <span class="service-tag">备件更换</span>
               </div>
               <button class="btn btn-primary" onclick="saveStationProfile()">保存服务站信息</button>
             </div>
@@ -1852,14 +1859,43 @@ var stationStaffAccounts = [
 
 function saveStationProfile(){
   const name = document.getElementById('stationNameInput')?.value?.trim();
-  const service = document.getElementById('stationServiceInput')?.value?.trim();
+  const selected = getSelectedServices();
   const location = document.getElementById('stationLocationInput')?.value?.trim();
-  if(!name || !service || !location){
+  if(!name || !selected.length || !location){
     alert('请完整填写服务站名称、服务能力和地理位置');
     return;
   }
   alert('服务站信息已保存，并同步到服务站资料');
 }
+
+// ===== 服务能力多选下拉 =====
+function toggleServiceSelect(){
+  var dd = document.getElementById('serviceSelectDropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+function updateServiceSelect(){
+  var checks = document.querySelectorAll('#serviceSelectDropdown input[type=checkbox]');
+  var display = document.getElementById('serviceSelectDisplay');
+  var html = '';
+  checks.forEach(function(cb){
+    if(cb.checked){
+      html += '<span class="service-tag" data-val="'+cb.value+'">'+cb.value+'</span>';
+    }
+  });
+  if(!html) html = '<span style="color:#999;font-size:12px;">请选择服务能力</span>';
+  display.innerHTML = html;
+}
+function getSelectedServices(){
+  var checks = document.querySelectorAll('#serviceSelectDropdown input[type=checkbox]:checked');
+  return Array.from(checks).map(function(cb){return cb.value;});
+}
+// 点击外部关闭下拉
+document.addEventListener('click', function(e){
+  var wrap = document.getElementById('serviceSelectWrap');
+  if(wrap && !wrap.contains(e.target)){
+    document.getElementById('serviceSelectDropdown').style.display = 'none';
+  }
+});
 
 function renderStationStaffList(){
   const list = document.getElementById('stationStaffList');
