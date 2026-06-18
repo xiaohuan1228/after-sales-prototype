@@ -260,6 +260,10 @@
   .comment-name { font-size: 12px; font-weight: 600; color: #333; }
   .comment-time { font-size: 10px; color: #999; }
   .comment-content { font-size: 12px; color: #444; line-height: 1.5; background: #f7f9fc; padding: 8px 10px; border-radius: 8px; }
+  .comment-item.self { flex-direction: row-reverse; }
+  .comment-item.self .comment-body { text-align: right; }
+  .comment-item.self .comment-header { justify-content: flex-end; }
+  .comment-item.self .comment-content { background: #e8f4ff; }
   .comment-images { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
   .comment-img { width: 60px; height: 60px; border-radius: 6px; background: #f0f2f5; object-fit: cover; border: 1px solid #eee; }
   .comment-input-wrap { margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
@@ -1333,6 +1337,7 @@ function readCardData(card){
 
 function renderDetail(role, data){
   const roleTitle = {station:'服务站处理', site:'站点负责人处理', rd:'售后工程师处理'}[role];
+  const roleNames = {station:'服务站', site:'站点', rd:'售后工程师'};
   return `
     <div class="detail-header">
       <button class="back-btn" onclick="switchView('${role}','list')">返回</button>
@@ -1360,6 +1365,24 @@ function renderDetail(role, data){
     <div class="section">
       <div class="section-title">子任务流程</div>
       <div class="task-chain">${renderTaskChain(data)}</div>
+    </div>
+    <div class="section">
+      <div class="section-title">诊断留言</div>
+      <div class="comment-list" id="commentList-${role}">${renderMobileComments(data.id, role)}</div>
+      <div class="comment-input-wrap">
+        <div class="comment-input-row">
+          <textarea class="comment-textarea" id="commentInput-${role}" placeholder="输入诊断留言..." rows="1" oninput="autoResize(this)"></textarea>
+          <div class="voice-wave" id="voiceWave-${role}">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="comment-actions">
+          <button class="comment-tool-btn" id="voiceBtn-${role}" onclick="toggleVoice('${role}')">🎤 语音</button>
+          <button class="comment-tool-btn" onclick="document.getElementById('commentImg-${role}').click()">📷 图片</button>
+          <input type="file" id="commentImg-${role}" accept="image/*" multiple style="display:none" onchange="handleCommentImg(this, '${role}')">
+          <button class="comment-submit" onclick="submitComment('${role}')">发送</button>
+        </div>
+      </div>
     </div>
     <div class="section">
       <div class="section-title">流转记录</div>
@@ -1449,6 +1472,41 @@ function closeTaskResultDetail(el){
 
 // 全局变量保存当前详情数据
 var _currentDetailData = {};
+
+// ===== 移动端诊断留言 =====
+var mobileCommentStore = {};
+function getMobileComments(id){
+  if(!mobileCommentStore[id]){
+    mobileCommentStore[id] = [
+      { role:'ops', name:'王运营', time:'2026-06-08 08:55', text:'工单已受理，正在联系服务站接单，请关注进度。' },
+      { role:'station', name:'张技师', time:'2026-06-08 09:10', text:'已到场，正在用诊断仪扫码，初步判断是 GPS 模块问题，稍后上传诊断图片。', imgs:['故障码截图','诊断日志'] },
+      { role:'rd', name:'李研发', time:'2026-06-08 10:30', text:'已查看诊断日志，GPS 天线信号强度 -105dBm，低于阈值 -95dBm，建议更换天线，零件号 JXG-ANT-003。' },
+      { role:'site', name:'王站长', time:'2026-06-08 10:45', text:'收到，麻烦尽快处理，车辆目前无法正常调度。' }
+    ];
+  }
+  return mobileCommentStore[id];
+}
+
+function renderMobileComments(orderId, currentRole){
+  var list = getMobileComments(orderId);
+  var roleMap = { ops:'运营', station:'服务站', rd:'研发', site:'站点', system:'系统' };
+  var avCls = { ops:'comment-avatar', station:'comment-avatar', rd:'comment-avatar rd', site:'comment-avatar site', system:'comment-avatar' };
+  return list.map(function(c){
+    var isSelf = false;
+    if(currentRole === 'station') isSelf = (c.role === 'station');
+    else if(currentRole === 'site') isSelf = (c.role === 'site');
+    else if(currentRole === 'rd') isSelf = (c.role === 'rd' || c.role === 'ops');
+    var imgs = c.imgs ? c.imgs.map(function(img){ return '<div class="comment-img" style="display:flex;align-items:center;justify-content:center;font-size:14px;color:#999;">📷<span style="font-size:9px;margin-left:2px;">'+escapeHtml(img)+'</span></div>'; }).join('') : '';
+    var imgBlock = imgs ? '<div class="comment-images">'+imgs+'</div>' : '';
+    var roleTag = '<span style="font-size:10px;color:#999;margin-left:4px;">'+roleMap[c.role]+'</span>';
+    return '<div class="comment-item'+(isSelf?' self':'')+'">'
+      + '<div class="'+avCls[c.role]+'">'+c.name.charAt(0)+'</div>'
+      + '<div class="comment-body">'
+      +   '<div class="comment-header"><span class="comment-name">'+c.name+'</span>'+roleTag+'<span class="comment-time">'+c.time+'</span></div>'
+      +   '<div class="comment-content">'+c.text+imgBlock+'</div>'
+      + '</div></div>';
+  }).join('');
+}
 
 function renderTasks(role, data){
   _currentDetailData = data;
@@ -2039,72 +2097,72 @@ function toggleVoice(role) {
 
 function handleCommentImg(input, role) {
   if (input.files && input.files.length > 0) {
-    const list = document.getElementById('commentList-' + role);
+    var list = document.getElementById('commentList-' + role);
     if (!list) return;
-    
-    // 显示图片预览提示
-    const lastItem = list.lastElementChild;
-    if (lastItem && lastItem.classList.contains('comment-item')) {
-      let imagesDiv = lastItem.querySelector('.comment-images');
-      if (!imagesDiv) {
-        imagesDiv = document.createElement('div');
-        imagesDiv.className = 'comment-images';
-        lastItem.querySelector('.comment-body').appendChild(imagesDiv);
-      }
-      
-      for (let i = 0; i < Math.min(input.files.length, 3); i++) {
-        const img = document.createElement('div');
-        img.className = 'comment-img';
-        img.style.display = 'flex';
-        img.style.alignItems = 'center';
-        img.style.justifyContent = 'center';
-        img.style.fontSize = '20px';
-        img.style.color = '#999';
-        img.textContent = '📷';
-        imagesDiv.appendChild(img);
-      }
+    // 在输入区域上方添加图片预览
+    var previewId = 'commentImgPreview-' + role;
+    var preview = document.getElementById(previewId);
+    if (!preview) {
+      preview = document.createElement('div');
+      preview.id = previewId;
+      preview.style.cssText = 'display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;';
+      var inputWrap = list.parentElement.querySelector('.comment-input-wrap');
+      if (inputWrap) inputWrap.insertBefore(preview, inputWrap.querySelector('.comment-input-row'));
     }
+    for (var i = 0; i < Math.min(input.files.length, 3); i++) {
+      var img = document.createElement('div');
+      img.className = 'comment-img';
+      img.style.cssText = 'display:flex;align-items:center;justify-content:center;font-size:14px;color:#999;position:relative;';
+      img.innerHTML = '📷<span style="font-size:9px;margin-left:2px;">'+escapeHtml(input.files[i].name.substring(0,6))+'</span><div style="position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:#ff4d4f;color:#fff;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="this.parentElement.remove()">×</div>';
+      preview.appendChild(img);
+    }
+    input.value = '';
   }
 }
 
 function submitComment(role) {
-  const input = document.getElementById('commentInput-' + role);
-  const text = input.value.trim();
-  
-  if (!text) {
-    alert('请输入诊断留言内容');
+  var input = document.getElementById('commentInput-' + role);
+  var text = input.value.trim();
+  var preview = document.getElementById('commentImgPreview-' + role);
+  var hasPendingImgs = preview && preview.children.length > 0;
+
+  if (!text && !hasPendingImgs) {
+    alert('请输入诊断留言内容或上传图片');
     return;
   }
-  
-  const list = document.getElementById('commentList-' + role);
-  if (!list) return;
-  
-  // 创建新留言
-  const newComment = document.createElement('div');
-  newComment.className = 'comment-item';
-  newComment.innerHTML = `
-    <div class="comment-avatar">我</div>
-    <div class="comment-body">
-      <div class="comment-header"><span class="comment-name">李技师</span><span class="comment-time">刚刚</span></div>
-      <div class="comment-content">${text}</div>
-    </div>
-  `;
-  
-  list.appendChild(newComment);
-  
-  // 清空输入框
+
+  var orderId = _currentDetailData.id || 'WO-2026060000';
+  var d = new Date();
+  var pad = function(n){ return n < 10 ? '0'+n : n; };
+  var now = d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+
+  var roleMap = {station:'station', site:'site', rd:'rd'};
+  var nameMap = {station:'张技师', site:'王站长', rd:'王运营'};
+  var imgs = [];
+  if(hasPendingImgs){
+    for(var i=0;i<preview.children.length;i++){
+      imgs.push('图片'+(i+1));
+    }
+  }
+
+  var newComment = { role: roleMap[role]||'ops', name: nameMap[role]||'我', time: now, text: text || '(已上传图片)' };
+  if(imgs.length) newComment.imgs = imgs;
+
+  getMobileComments(orderId).push(newComment);
+
+  // 重新渲染留言列表
+  var list = document.getElementById('commentList-' + role);
+  if(list){
+    list.innerHTML = renderMobileComments(orderId, role);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  // 清空输入
   input.value = '';
   input.style.height = 'auto';
-  
-  // 滚动到底部
-  const scrollArea = input.closest('.scroll-area');
-  if (scrollArea) {
-    scrollArea.scrollTop = scrollArea.scrollHeight;
-  }
-  
-  // 提示发送成功
-  alert('诊断留言已发送');
+  if(preview) preview.innerHTML = '';
 }
+
 function closeTempTask(el){
   const phone = el.closest('.phone');
   const mask = phone.querySelector('.sheet-mask');
